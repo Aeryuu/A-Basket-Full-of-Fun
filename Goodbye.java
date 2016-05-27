@@ -6,9 +6,22 @@ import java.io.*;
 import java.net.URL;
 import javax.imageio.*;
 import java.lang.*;
- 
+ /**
+ * The Goodbye class creates the panel and 
+ * graphics associated with the goodbye screen of the 
+ * Basket Full of Fun game. It creates the panel, 
+ * the graphics, and it creates text.
+ *  
+ * 
+ * @author Top Of the Stack (C Liu) on 05.20.16
+ * @version 3 05.26.16 Spent 1 hour
+ */ 
 public class Goodbye extends JPanel {
-  
+  /** Purpose: The purpose of this method is to 
+    * construct the Goodbye class.It sets up the panel, and
+    * allows the panel to be visible. It also sets 
+    * the size of the panels.
+    */
   public Goodbye() { 
     super();
     JFrame j=new JFrame("A Basket Full Of Fun: Goodbye!");
@@ -17,6 +30,10 @@ public class Goodbye extends JPanel {
     j.add(this);
     j.setVisible (true);
   }
+   /** Purpose: The purpose of this method is to 
+     * create a delay for the animation. 
+     * The try catch is used to create the delay.
+    */
   public void delay()
   {
     try 
@@ -27,6 +44,13 @@ public class Goodbye extends JPanel {
     {
     }
   }
+    /** Purpose: The purpose of this method is to 
+    * paint the panel. It draws the sky, some clouds, and adds the text.
+    * It also loads the logo image into the screen.
+    * The try catch errortraps the importing of the image.
+    * @param g Graphics allows use to the Graphics class.
+    */
+  
    public void paintComponent (Graphics g)
   {
      BufferedImage logo=null;

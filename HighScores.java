@@ -2,7 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.awt.print.*;
+import java.awt.geom.*;
+import javax.swing.*;
 /**
  * The HighScores class can create the JPanel for the High Scores screen and it has a method that updates the 
  * high scores file with a passed in String. The new score will be sorted into the high scores if it is high enough.
@@ -10,8 +14,8 @@ import java.io.*;
  * go back to the Menu screen.
  *  
  * 
- * @author Top Of the Stack (Alice Z) on 05.16.16 
- * @version 1 05.18.16 Spent 1.5 hours
+ * @author Top Of the Stack (Alice Z) on 05.16.16  modified by C Liu on 05.26.16
+ * @version 3 05.18.16 Spent 3.5 hours
  * 
  * <p>
  * <b> Instance variables: </b>
@@ -25,11 +29,17 @@ public class HighScores extends JPanel
 {
   private final int MAX_HIGHSCORES = 10;
   private String [][] highScores = new String[MAX_HIGHSCORES][3];
+  JFrame j;
   /**
    * The class constructor will read in the high scores from the file and store them in the class's String array.
    */ 
   public HighScores()
   {
+     j=new JFrame("A Basket Full Of Fun: Level 1");
+    j.setSize(800,800);
+    this.setPreferredSize(new Dimension( 800,800));
+    j.add(this);
+    j.setVisible (true);
     try
     {
       BufferedReader in = new BufferedReader(new FileReader ("Input.txt"));
@@ -56,6 +66,40 @@ public class HighScores extends JPanel
     }
     catch(IOException e)
     {}
+  }
+   /**
+   * The purpose of this method is to create the graphics and text used
+   * on the high scores screen. This method draws some clouds and
+   * adds some green text and shapes.
+   * 
+   * @param g Graphics allows use of the Graphics class
+   */ 
+  public void paintComponent (Graphics g)
+  {
+    
+    super.paintComponent(g);
+    g.setColor (Colours.skyB);
+    g.fillRect(0,0,800,800);
+    Font f=new Font("Serif", Font.BOLD,40);
+   g.setFont(f );
+    g.setColor(Colours.lGreen);
+   g.drawString("HIGH SCORES!", 250,50);
+   g.fill3DRect(50,75,675,25,true);
+    g.fill3DRect(50,675,675,25,true);
+   //clouds
+   g.setColor (Color.white);
+   g.fillOval(20,40,200,30);
+    g.fillOval(550,40,120,30);
+    
+     g.fillOval(0,40,70,20);
+    g.fillOval(40,20,70,50);
+    g.fillOval(80,30,70,20);
+    g.fillOval(140,40,70,30);
+    
+    g.fillOval(660,20,70,50);
+    g.fillOval(600,30,70,20);
+    g.fillOval(660,40,70,30);
+     g.fillOval(700,40,80,30);
   }
   
    /**
@@ -106,20 +150,13 @@ public class HighScores extends JPanel
   {
     GridBagLayout gbl = new GridBagLayout();
     GridBagConstraints gbc = new GridBagConstraints();
-    JLabel test = new JLabel("High Scores");
     JLabel testName= new JLabel("Name"),testScore= new JLabel("Score"),testLevel= new JLabel("Level");
     JButton testExit = new JButton("Back To Menu"), testPrint = new JButton("Print High Scores");
     
     setLayout(gbl);
-    gbc.insets = new Insets(10,10,10,10);
+    gbc.insets = new Insets(15,15,15,15);
     gbc.gridx=0;
-    gbc.gridy=0;
-    gbc.gridwidth = 5;
-    gbc.anchor = gbc.CENTER;
-    add (test,gbc);
-    gbc.gridwidth = 1;
     
-    gbc.weighty = 1;
     gbc.anchor = gbc.LINE_START;
     gbc.gridy=1;
     add(testName,gbc);
@@ -147,11 +184,44 @@ public class HighScores extends JPanel
     }
     gbc.gridx=4;
     gbc.gridy=7;
+    
+    gbc.insets = new Insets(15,250,15,15);
     add(testPrint,gbc);
     testPrint.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        //print here
+       try
+    {
+      PrinterJob job = PrinterJob.getPrinterJob();
+      job.setPrintable(new Printable() {
+        public int print(Graphics graphics, PageFormat pageFormat, int pageIndex)
+        {
+          if (pageIndex != 0)
+            return NO_SUCH_PAGE;
+          BufferedImage image = (BufferedImage)j.createImage(j.getContentPane().getSize().width,j.getContentPane().getSize().height);
+          
+          //BufferedImage image = (BufferedImage)frame.createImage(475,500);
+          j.getContentPane().paint(image.getGraphics());
+          try
+          {
+            ImageIO.write(image, "png", new File("testImage.png"));
+            System.out.println("Image was created");
+          }
+          catch (IOException e)
+          {
+          }
+          Graphics2D graphics2 = (Graphics2D)graphics;
+          graphics2.translate(pageFormat.getImageableX(),pageFormat.getImageableY());
+          //graphics.drawImage(image, 0, 0, j.getContentPane().getSize().width, j.getContentPane().getSize().height, null);
+          
+          graphics.drawImage(image, 0, 0, 500, 700, null);
+          return PAGE_EXISTS;
+        }});     
+      job.print();
+    }
+    catch (PrinterException p)
+    {
+    }
       }});
     
     gbc.gridy=9;
@@ -159,7 +229,15 @@ public class HighScores extends JPanel
     testExit.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        //switch panel here to menu Caroline
+        new Menus(0);
       }});
+    revalidate();
+    repaint();
   }
+  public static void main(String[] args) { 
+    HighScores s=new HighScores ();
+    s.setUpHighScoresPanel();
+    s.j.add(s);
+  }
+  
 }
