@@ -27,8 +27,6 @@ public class BasketFun extends JPanel {
    */
   public void makePanel1()
   {
- 
-    add(makeButtons("Pause","Click here to pause the game!"));
      add(makeButtons("Apple","Click here to drop one apple into the basket!"));
      add(makeButtons("Orange","Click here to drop one orange into the basket!"));
     add(makeButtons("Banana","Click here to drop one banana into the basket!"));
@@ -48,7 +46,6 @@ public class BasketFun extends JPanel {
      this.levelNum=levelNum;
      backName=bName;
      bCol=s;
-     System.out.println(backName);
     JFrame j=new JFrame("A Basket Full Of Fun: Level 1");
     j.setSize(1000,850);
     this.setPreferredSize(new Dimension( 1000,850));
@@ -59,6 +56,11 @@ public class BasketFun extends JPanel {
     f.setHgap(40);
     f.setAlignment (FlowLayout.LEFT);
     this.setLayout(f);
+    JButton check=new JButton("CHECK!");
+    JButton empty=new JButton ("Empty the basket!");
+  
+   add(makeButtons("Pause","Click here to pause the game!"));
+     
     if (levelNum==1)
     {
     makePanel1();
@@ -66,12 +68,16 @@ public class BasketFun extends JPanel {
     else if (levelNum==2)
     {
       makePanel2();
-      
     }
     else{
       
-      
+      makePanel3();
     }
+     add(check);
+    add(empty);
+    add(makeButtons("Basket","Clicking the buttons, puts food into this basket!"));
+     revalidate();
+     repaint();
   }  
    
   public void paintComponent( Graphics g)
@@ -98,7 +104,6 @@ public class BasketFun extends JPanel {
    */
   public void makePanel2()
   {
-    add(makeButtons("Pause","Click here to pause the game!"));
      add(makeButtons("Red","Click here to drop one apple into the basket!"));
      add(makeButtons("Yellow","Click here to drop one orange into the basket!"));
      add(makeButtons("Green","Click here to drop one banana into the basket!"));
@@ -108,6 +113,16 @@ public class BasketFun extends JPanel {
      repaint();
   }
   
+  public void makePanel3()
+  {
+    add(makeButtons("Tomato","Click here to drop one apple into the basket!"));
+     add(makeButtons("RedA","Click here to drop one orange into the basket!"));
+     add(makeButtons("GreenA","Click here to drop one banana into the basket!"));
+     add(makeButtons("Carrot","Click here to drop one grape into the basket!"));
+     add(makeButtons("Potato","Click here to drop one watermelon into the basket!"));
+     revalidate();
+     repaint();
+  }
   
    
   /**Purpose: The purpose of this method is to create the 
@@ -132,11 +147,11 @@ public class BasketFun extends JPanel {
 //    
 //  }
   
-  //forest green;new Color(37,177,77)
+  //forest green and farm grass green;new Color(37,177,77)
   //ocean 0,126,255
   
   public static void main(String[] args) { 
-    BasketFun s=new BasketFun (2,"back2", new Color (0,126,255));
+    BasketFun s=new BasketFun (3,"back3", new Color (37,177,77));
   }
   
   
