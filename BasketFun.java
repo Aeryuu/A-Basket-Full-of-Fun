@@ -18,6 +18,8 @@ import java.awt.event.*;
   * <p>
   * <b> Instance variables: </b>
   * <p>
+  * <b> levelNum </b> This int is used to store which level the user chose to play.
+  * <p>
   * <b> bCol </b> This Color variable is used to store the background colour.
   * <p>
   * <b> backName </b> This String is used to store the file name of the background image being used for the level.
@@ -89,7 +91,7 @@ public class BasketFun extends JPanel{
     * The parameter for the inner methods is e - a reference variable for ActionEvent.
     * The try/catch is to errortrap FileIO.
     */
-  public void makePanel1()
+  private void makePanel1()
   {
     JButton apple =makeButtons("Apple","Click here to drop an apple into the basket!"), orange = makeButtons("Orange","Click here to drop an orange into the basket!");
     add(apple);
@@ -148,7 +150,7 @@ public class BasketFun extends JPanel{
   }
   
   /**This method will make and add the underwater themed buttons to the panel for Level 2. */
-  public void makePanel2()
+  private void makePanel2()
   {
     add(makeButtons("Red","Click here to drop a red fish into the basket!"));
     add(makeButtons("Yellow","Click here to drop a yellow fish into the basket!"));
@@ -158,7 +160,7 @@ public class BasketFun extends JPanel{
   }
   
   /**This method will make and add the farm themed buttons to the panel for Level 3.*/
-  public void makePanel3()
+  private void makePanel3()
   {
     add(makeButtons("Tomato","Click here to drop a tomato into the basket!"));
     add(makeButtons("RedA","Click here to drop a red apple into the basket!"));
@@ -173,7 +175,7 @@ public class BasketFun extends JPanel{
     * @param imageName String passed in the for the image file's name.
     * @param text String passed in text for the tool tip.
     */
-  public JButton makeButtons(String imageName,String text)
+  private JButton makeButtons(String imageName,String text)
   {
     ImageIcon icon=new ImageIcon(this.getClass().getResource( imageName + ".jpg"));
     JButton button=new JButton(icon);
