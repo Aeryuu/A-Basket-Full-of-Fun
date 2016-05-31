@@ -18,7 +18,7 @@ import java.awt.*;
 public class Colours {
   
   static Color niceB=new Color(135,206,250);
-  static Color skyB=new Color(0,191,255);
+  static Color skyB=new Color(0,142,255);
   static Color lGreen=new Color(0,128,0);
   static Color bBrown=new Color(205,133,63);
   
