@@ -26,6 +26,8 @@ public class Menus extends JPanel
 {
   private GridBagLayout gbl = new GridBagLayout();
   private GridBagConstraints gbc = new GridBagConstraints();
+  JFrame j;
+  JPanel r = this;
   
   /**
    * The class constructor has a parameter pass to see which menu is going to be set up. If the pass is 0, the Main
@@ -34,7 +36,7 @@ public class Menus extends JPanel
    */ 
   public Menus(int whichMenu)
   {
-    JFrame j=new JFrame("A Basket Full Of Fun: Menu");
+    j=new JFrame("A Basket Full Of Fun: Menu");
     j.setSize(800,800);
     this.setPreferredSize(new Dimension( 800,800));
     j.add(this);
@@ -57,54 +59,47 @@ public class Menus extends JPanel
     g.setColor (Colours.skyB);
     g.fillRect(0,0,800,800);
     
-     g.setColor (Color.white);
+    g.setColor (Color.white);
     g.fillOval(20,40,200,30);
-   g.fillOval(550,40,120,30);
+    g.fillOval(550,40,120,30);
     
-      g.fillOval(20,540,200,30);
-      g.fillOval(90,560,220,40);
-       g.fillOval(40,520,90,40);
-      
+    g.fillOval(20,540,200,30);
+    g.fillOval(90,560,220,40);
+    g.fillOval(40,520,90,40);
+    
     g.fillOval(550,540,120,30);
-     g.fillOval(570,550,220,40);
-      g.fillOval(610,520,90,70);
+    g.fillOval(570,550,220,40);
+    g.fillOval(610,520,90,70);
     
     for (int i=320;i<800;i=i+340)
     {
-     g.fillOval(300,i,200,50);
-    g.fillOval(190,i+30,300,60);
-     g.fillOval(430,i+30,200,50);
-     g.fillOval(310,i+50,200,50);
-     g.fillOval(170,i+60,200,30);
+      g.fillOval(300,i,200,50);
+      g.fillOval(190,i+30,300,60);
+      g.fillOval(430,i+30,200,50);
+      g.fillOval(310,i+50,200,50);
+      g.fillOval(170,i+60,200,30);
     }
     
-     g.fillOval(600,200,200,50);
+    g.fillOval(600,200,200,50);
     g.fillOval(490,230,300,60);
-     g.fillOval(730,230,200,50);
-     g.fillOval(610,250,200,50);
-     g.fillOval(470,260,200,30);
-     
-      g.fillOval(50,200,200,50);
+    g.fillOval(730,230,200,50);
+    g.fillOval(610,250,200,50);
+    g.fillOval(470,260,200,30);
+    
+    g.fillOval(50,200,200,50);
     g.fillOval(-60,230,300,60);
-     g.fillOval(180,230,200,50);
-     g.fillOval(60,250,200,50);
-     g.fillOval(-80,260,200,30);
+    g.fillOval(180,230,200,50);
+    g.fillOval(60,250,200,50);
+    g.fillOval(-80,260,200,30);
     
-    
-     try{
-      
-    
+    try{
       BufferedImage logo = ImageIO.read(new File ("Title.jpg"));
-      
-     
-        g.drawImage(logo,290,0,null);
+      g.drawImage(logo,290,0,null);
       
     }
     catch(Exception e){
     }
     //clouds
-   
-    
     g.fillOval(0,40,70,20);
     g.fillOval(40,20,70,50);
     g.fillOval(80,30,70,20);
@@ -148,7 +143,13 @@ public class Menus extends JPanel
     testHigh.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        new HighScores();
+        HighScores h = new HighScores();
+        h.setUpHighScoresPanel();
+        j.remove(r);
+        j.add(h);
+        j.revalidate();
+        j.repaint();
+        
       }});
     
     gbc.gridy=4;
@@ -187,34 +188,22 @@ public class Menus extends JPanel
       {
         new BasketFun(1,"back1", new Color (37,177,77));
       }});
-    add(testTwo,gbc);
-    add(testThree,gbc);
-    revalidate();
-    repaint();
     
     gbc.gridy=2;
-    //if locked joptionpane
-    //level buttons appear to go to level xx of that difficulty 
-    add(testOne,gbc);
+    add(testTwo,gbc);
     testOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        new BasketFun(2,"back2", new Color (37,177,77));
       }});
-    add(testTwo,gbc);
-    add(testThree,gbc);
     
     gbc.gridy=3;
-    
-    //if locked joptionpane
-    //level buttons appear to go to level xx of that difficulty 
-    add(testOne,gbc);
+    add(testThree,gbc);
     testOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        //switch panel to gamescreen Caroline and set up with hard, level 1
+        new BasketFun(3,"back3", new Color (37,177,77));
       }});
-    add(testTwo,gbc);
-    add(testThree,gbc);
     
     gbc.gridy=4;
     add(testExit,gbc);
@@ -227,7 +216,7 @@ public class Menus extends JPanel
     revalidate();
     repaint();
   }
-   public static void main(String[] args) { 
+  public static void main(String[] args) { 
     Menus g=new Menus(0);
   }
 }

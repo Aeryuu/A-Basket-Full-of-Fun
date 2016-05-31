@@ -35,17 +35,14 @@ public class HighScores extends JPanel
    */ 
   public HighScores()
   {
-   
-    
-    j=new JFrame("A Basket Full Of Fun: Level 1");
-    j.setSize(800,800);
-    this.setPreferredSize(new Dimension( 800,800));
-    j.add(this);
-    j.setVisible (true);
-     
+   // j=new JFrame("A Basket Full Of Fun: Level 1");
+   // j.setSize(800,800);
+   // this.setPreferredSize(new Dimension( 800,800));
+   // j.add(this);
+   // j.setVisible (true);
     try
     {
-      BufferedReader in = new BufferedReader(new FileReader ("input.txt"));
+      BufferedReader in = new BufferedReader(new FileReader ("Input.txt"));
       for(int x = 0;x<MAX_HIGHSCORES;x++)
       {
         String line = in.readLine();
@@ -69,7 +66,6 @@ public class HighScores extends JPanel
     }
     catch(IOException e)
     {}
-    setUpHighScoresPanel();
   }
   /**
    * The purpose of this method is to create the graphics and text used
@@ -80,7 +76,7 @@ public class HighScores extends JPanel
    */ 
   public void paintComponent (Graphics g)
   {
-   
+    
     super.paintComponent(g);
     g.setColor (Colours.skyB);
     g.fillRect(0,0,800,800);
@@ -148,12 +144,9 @@ public class HighScores extends JPanel
   /**
    * This will setup the High Scores screen. The High Scores screen will have a title, a button to print the high
    * scores, a button to go back to main menu, and it will display the list of high scores.
-   * The parameter for the inner methods is e - a reference variable for ActionEvent.The try catch in this 
-   * method is used to prevent the printing from crashing. the for loop is used to create the labels
-   * for the high scores.
    * The parameter for the inner methods is e - a reference variable for ActionEvent.
    */ 
-  private void setUpHighScoresPanel()
+ public void setUpHighScoresPanel()
   {
     GridBagLayout gbl = new GridBagLayout();
     GridBagConstraints gbc = new GridBagConstraints();
@@ -212,7 +205,6 @@ public class HighScores extends JPanel
               try
               {
                 ImageIO.write(image, "png", new File("testImage.png"));
-                System.out.println("Image was created");
               }
               catch (IOException e)
               {
@@ -220,11 +212,14 @@ public class HighScores extends JPanel
               Graphics2D graphics2 = (Graphics2D)graphics;
               graphics2.translate(pageFormat.getImageableX(),pageFormat.getImageableY());
               //graphics.drawImage(image, 0, 0, j.getContentPane().getSize().width, j.getContentPane().getSize().height, null);
-              
+              testExit.setVisible(false);
+              testPrint.setVisible(false);
               graphics.drawImage(image, 0, 0, 500, 700, null);
               return PAGE_EXISTS;
             }});     
           job.print();
+          testExit.setVisible(true);
+          testPrint.setVisible(true);
         }
         catch (PrinterException p)
         {
@@ -238,10 +233,12 @@ public class HighScores extends JPanel
       {
         new Menus(0);
       }});
-    
-    j.add(this);
     revalidate();
     repaint();
   }
+//  public static void main(String[] args) { 
+//    HighScores s=new HighScores (0);
+//    s.j.add(s);
+//  }
   
 }
