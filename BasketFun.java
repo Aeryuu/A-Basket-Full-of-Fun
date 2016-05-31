@@ -13,7 +13,7 @@ import java.awt.event.*;
   * buttons are created in this class. It will also add the background to the panel.
   * 
   *  @author Top Of The Stack(C Liu) and modified by Top of The Stack (Alice Z)
-  *  @version 1 05.20.16 Spent 7 hours
+  *  @version 2 05.20.16 Spent 7 hours
   * 
   * <p>
   * <b> Instance variables: </b>
@@ -32,7 +32,7 @@ public class BasketFun extends JPanel{
   private int levelNum;
   private String backName;
   private Color bCol;
-  private JFrame j;
+  JFrame j;
   
   /**The class constructor will create a JPanel that is added to a JFrame that is also created here. The buttons that
     * all levels have in common: pause, empty, and check, are made and added here as well. The layout used is flow. 
