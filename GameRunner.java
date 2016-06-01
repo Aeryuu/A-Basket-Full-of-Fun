@@ -1,12 +1,33 @@
+import javax.swing.*;
+import java.awt.*;
 /**
- * The GameRunner class is the driver class that creates GameGUIRunner as well
+ * The GameRunner class is the driver class that creates a GameRunner object and a SplashScreen object as well
  * as executes the program. 
  * 
- * @author Top of the Stack (Alice Zhang)
+ * @author Top of the Stack (Alice Zhang) on 05.11.16
  * @version 1 05.13.16
+ * 
+ * @author of modification Top of the Stack (Alice Zhang)
+ * @version 2 06.01.16
+ * This class now has a constructor that creates the central JFrame that the game will be played on. It will also create
+ * a SplashScreen object and add it to the JFrame to start the game off. The main method now creates a GameRunner
+ * object.
  */ 
 
-public class GameRunner {
+public class GameRunner extends JFrame {
+  /** The class constructor creates the JFrame that the other classes' JPanels are going to be added on. It also creates
+    * a SplashScreen object to add it to the JFrame to start the game.
+    */ 
+  public GameRunner()
+  {
+    super("A Basket Full of Fun");
+    //SplashScreen s = new SplashScreen ();
+    // add(s);
+    Menus m = new Menus (0);
+    add(m);
+    setSize (800, 800);
+    setVisible (true);
+  }
   /** This method calls the GameGUIRunner constructor to
     * create the application.
     * 
@@ -14,7 +35,6 @@ public class GameRunner {
     * parameters to be used when executing the program.
     */ 
   public static void main(String[] args) { 
-    GameGUIRunner gui = new GameGUIRunner ();
-    gui.displayGame();
+    new GameRunner();
   }
 }
