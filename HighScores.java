@@ -224,11 +224,11 @@ public class HighScores extends JPanel
     exit.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        Menus m = new Menus(1,j);
-        m.j.remove(b);
-        m.add(m);
-        m.j.revalidate();
-        m.j.repaint();
+        Menus m = new Menus(0,j);
+        j.remove(b);
+        j.add(m);
+        j.revalidate();
+        j.repaint();
       }});
     revalidate();
     repaint();
