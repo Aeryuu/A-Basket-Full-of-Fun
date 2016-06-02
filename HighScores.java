@@ -14,9 +14,14 @@ import javax.swing.*;
  * go back to the Menu screen.
  *  
  * 
+ * @author Top Of the Stack (Alice Z) 
+ * @version 1 05.16.16 Spent 3.5 hours
+ * 
+ * @author of modification C Liu on 05.26.16
+ * @version 2 05.26.16 Spent 3.5 hours
+ * 
  * @author Top Of the Stack (Alice Z) on 05.16.16  modified by C Liu on 05.26.16
  * @version 3 05.18.16 Spent 3.5 hours
- * 
  * <p>
  * <b> Instance variables: </b>
  * <p>
@@ -30,16 +35,17 @@ public class HighScores extends JPanel
   private final int MAX_HIGHSCORES = 10;
   private String [][] highScores = new String[MAX_HIGHSCORES][3];
   JFrame j;
+  JPanel b = this;
   /**
    * The class constructor will read in the high scores from the file and store them in the class's String array.
    */ 
   public HighScores()
   {
-   // j=new JFrame("A Basket Full Of Fun: Level 1");
-   // j.setSize(800,800);
-   // this.setPreferredSize(new Dimension( 800,800));
-   // j.add(this);
-   // j.setVisible (true);
+    // j=new JFrame("A Basket Full Of Fun: Level 1");
+    // j.setSize(800,800);
+    // this.setPreferredSize(new Dimension( 800,800));
+    // j.add(this);
+    // j.setVisible (true);
     try
     {
       BufferedReader in = new BufferedReader(new FileReader ("Input.txt"));
@@ -146,12 +152,12 @@ public class HighScores extends JPanel
    * scores, a button to go back to main menu, and it will display the list of high scores.
    * The parameter for the inner methods is e - a reference variable for ActionEvent.
    */ 
- public void setUpHighScoresPanel()
+  public void setUpHighScoresPanel()
   {
     GridBagLayout gbl = new GridBagLayout();
     GridBagConstraints gbc = new GridBagConstraints();
-    JLabel testName= new JLabel("Name"),testScore= new JLabel("Score"),testLevel= new JLabel("Level");
-    JButton testExit = new JButton("Back To Menu"), testPrint = new JButton("Print High Scores");
+    JLabel name= new JLabel("Name"),score= new JLabel("Score"),level= new JLabel("Level");
+    JButton exit = new JButton("Back To Menu"), print = new JButton("Print High Scores");
     
     setLayout(gbl);
     gbc.insets = new Insets(15,15,15,15);
@@ -159,35 +165,35 @@ public class HighScores extends JPanel
     
     gbc.anchor = gbc.LINE_START;
     gbc.gridy=1;
-    add(testName,gbc);
+    add(name,gbc);
     
     gbc.gridx=1;
-    add(testScore,gbc);gbc.gridx=0;
+    add(score,gbc);gbc.gridx=0;
     
     gbc.gridx=2;
-    add(testLevel,gbc);
+    add(level,gbc);
     
     for(int x = 2; x<=11;x++)
     {
       gbc.gridx=0;
       gbc.gridy=x;
-      testName = new JLabel((x-1) + ". " + highScores[x-2][0]);
-      add(testName,gbc);
+      name = new JLabel((x-1) + ". " + highScores[x-2][0]);
+      add(name,gbc);
       
       gbc.gridx=1;
-      testScore = new JLabel(highScores[x-2][1]);
-      add(testScore,gbc);
+      score = new JLabel(highScores[x-2][1]);
+      add(score,gbc);
       
       gbc.gridx=2;
-      testLevel = new JLabel(highScores[x-2][2]);
-      add(testLevel,gbc);
+      level = new JLabel(highScores[x-2][2]);
+      add(level,gbc);
     }
     gbc.gridx=4;
     gbc.gridy=7;
     
     gbc.insets = new Insets(15,250,15,15);
-    add(testPrint,gbc);
-    testPrint.addActionListener (new ActionListener(){
+    add(print,gbc);
+    print.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
         try
@@ -204,7 +210,7 @@ public class HighScores extends JPanel
               j.getContentPane().paint(image.getGraphics());
               try
               {
-                ImageIO.write(image, "png", new File("testImage.png"));
+                ImageIO.write(image, "png", new File("image.png"));
               }
               catch (IOException e)
               {
@@ -212,14 +218,14 @@ public class HighScores extends JPanel
               Graphics2D graphics2 = (Graphics2D)graphics;
               graphics2.translate(pageFormat.getImageableX(),pageFormat.getImageableY());
               //graphics.drawImage(image, 0, 0, j.getContentPane().getSize().width, j.getContentPane().getSize().height, null);
-              testExit.setVisible(false);
-              testPrint.setVisible(false);
+              exit.setVisible(false);
+              print.setVisible(false);
               graphics.drawImage(image, 0, 0, 500, 700, null);
               return PAGE_EXISTS;
             }});     
           job.print();
-          testExit.setVisible(true);
-          testPrint.setVisible(true);
+          exit.setVisible(true);
+          print.setVisible(true);
         }
         catch (PrinterException p)
         {
@@ -227,11 +233,15 @@ public class HighScores extends JPanel
       }});
     
     gbc.gridy=9;
-    add(testExit,gbc);
-    testExit.addActionListener(new ActionListener(){
+    add(exit,gbc);
+    exit.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        new Menus(0);
+        Menus m = new Menus(1);
+        m.j.remove(b);
+        m.add(m);
+        m.j.revalidate();
+        m.j.repaint();
       }});
     revalidate();
     repaint();

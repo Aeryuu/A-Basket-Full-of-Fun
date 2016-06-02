@@ -12,8 +12,11 @@ import java.awt.event.*;
   * button to reset everything in the basket, and a check button to see if the user has fulfilled the request. These
   * buttons are created in this class. It will also add the background to the panel.
   * 
-  *  @author Top Of The Stack(C Liu) and modified by Top of The Stack (Alice Z)
-  *  @version 2 05.20.16 Spent 7 hours
+  *@author Top Of The Stack(C Liu) and modified by Top of The Stack (Alice Z)
+  * @version 1 05.20.16 Spent 4 hours
+  * 
+  * @author of modifications by Top of The Stack (Alice Z)
+  * @version 2 05.20.16 Spent 3 hours
   * 
   * <p>
   * <b> Instance variables: </b>
@@ -72,19 +75,53 @@ public class BasketFun extends JPanel{
     if (levelNum==1)
     {
       makePanel1();
+      generateRequest(3);
     }
     else if (levelNum==2)
     {
       makePanel2();
+      generateRequest(5);
     }
-    else{
+    else
+    {
       makePanel3();
+      generateRequest(7);
     }
     add(check);
     add(empty);
     add(makeButtons("Basket","Clicking the buttons, puts food into this basket!"));
     revalidate();
     repaint();
+  }
+  
+  private void generateRequest(int maxNum)
+  {
+    int randAmnt,randAmnt2;
+    if(myDifficulty == 3)
+    {
+      randAmnt= randomizeAmounts(maxNum);
+      randAmnt2= randomizeAmounts(maxNum);
+      System.out.println("I would like to have " + randAmnt + randomizeFoods(foods,randAmnt) + " and " + randAmnt2 + randomizeFoods(foods,randAmnt2) +".");
+    }
+    else
+    {
+      randAmnt= randomizeAmounts(maxNum);
+      System.out.println("I would like to have " + randAmnt + randomizeFoods(foods,randAmnt)+".");
+    }
+  }
+  
+  private String randomizeFoods(int randAmnt)
+  {
+    int r = (int)(Math.random()*foods.size());
+    if(randAmnt !=1 && foods.get(r).indexOf("fish") == -1)
+      return " "+foods.get(r)+"s";
+    return " "+foods.get(r);
+  }
+  
+  private int randomizeAmounts(int maxNum)
+  {
+    int r = (int)(Math.random()*maxNum +1);
+    return r;
   }
   
   /**This method will make and add the forest themed buttons to the panel for Level 1.

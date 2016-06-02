@@ -12,9 +12,14 @@ import java.awt.image.*;
  * title, 3 buttons for level difficulty, and 3 levels of gameplay for each level of difficulty. 
  *   
  * 
+ * @author Top Of the Stack (Alice Z)
+ * @version 1 05.16.16 Spent 3 hours
+ * 
+ * @author of modification C Liu on 05.26.16
+ * @version 2 05.26.16 Spent 3 hours
+ * 
  * @author Top Of the Stack (Alice Z) on 05.16.16 modified by C Liu on 05.26.16
  * @version 3 05.18.16 Spent 3 hours
- * 
  * <p>
  * <b> Instance variables: </b>
  * <p>
@@ -28,7 +33,7 @@ public class Menus extends JPanel
   private GridBagConstraints gbc = new GridBagConstraints();
   JFrame j;
   JPanel r = this;
-  
+  private int whichMenu;
   /**
    * The class constructor has a parameter pass to see which menu is going to be set up. If the pass is 0, the Main
    * Menu panel will be set up. Otherwise, the Level Select panel will be set up.
@@ -36,16 +41,11 @@ public class Menus extends JPanel
    */ 
   public Menus(int whichMenu)
   {
-    j=new JFrame("A Basket Full Of Fun: Menu");
-    j.setSize(800,800);
-    this.setPreferredSize(new Dimension( 800,800));
-    j.add(this);
-    j.setVisible (true);
-    setLayout(gbl);
-    gbc.insets = new Insets(150,0,0,0);
-    if(whichMenu == 0)
+    this.whichMenu = whichMenu;
+    if(whichMenu == 1)
       setUpMain();
     else
+      if(whichMenu ==2)
       setUpLevel();
   }
   /** Purpose: The purpose of this method is to 
@@ -118,29 +118,29 @@ public class Menus extends JPanel
    */ 
   private void setUpMain()
   {
-    JButton testInst = new JButton("Instructions"),testPlay = new JButton("Play Game");
-    JButton testHigh = new JButton("High Scores"),testExit = new JButton("Exit Game");
+    JButton inst = new JButton("Instructions"),play = new JButton("Play Game");
+    JButton high = new JButton("High Scores"),exit = new JButton("Exit Game");
     gbc.weighty=0;
     gbc.anchor = gbc.LINE_START;
     gbc.gridy = 1;
-    add(testInst,gbc);
-    testInst.addActionListener (new ActionListener(){
+    add(inst,gbc);
+    inst.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
         new InstructionScreen();
       }});
     
     gbc.gridy=2;
-    add(testPlay,gbc);
-    testPlay.addActionListener (new ActionListener(){
+    add(play,gbc);
+    play.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
         new Menus(1);
       }});
     
     gbc.gridy=3;
-    add(testHigh,gbc);
-    testHigh.addActionListener (new ActionListener(){
+    add(high,gbc);
+    high.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
         HighScores h = new HighScores();
@@ -153,8 +153,8 @@ public class Menus extends JPanel
       }});
     
     gbc.gridy=4;
-    add(testExit,gbc);
-    testExit.addActionListener (new ActionListener(){
+    add(exit,gbc);
+    exit.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
         
@@ -174,40 +174,40 @@ public class Menus extends JPanel
   private void setUpLevel()
   {
     
-    JButton testExit = new JButton("Back to Main Menu");
-    JButton testOne = new JButton("Level 1"), testTwo = new JButton("Level 2"), testThree = new JButton("Level 3");
+    JButton exit = new JButton("Back to Main Menu");
+    JButton levelOne = new JButton("Level 1"), levelTwo = new JButton("Level 2"), levelThree = new JButton("Level 3");
     gbc.weighty=1;
     gbc.anchor = GridBagConstraints.LINE_START;
     gbc.gridy = 1;
     //level buttons appear to go to level xx of that difficulty 
     gbc.gridy=1;
     gbc.gridx=2;
-    add(testOne,gbc);
-    testOne.addActionListener (new ActionListener(){
+    add(levelOne,gbc);
+    levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
         new BasketFun(1,"back1", new Color (37,177,77));
       }});
     
     gbc.gridy=2;
-    add(testTwo,gbc);
-    testOne.addActionListener (new ActionListener(){
+    add(levelTwo,gbc);
+    levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
         new BasketFun(2,"back2", new Color (37,177,77));
       }});
     
     gbc.gridy=3;
-    add(testThree,gbc);
-    testOne.addActionListener (new ActionListener(){
+    add(levelThree,gbc);
+    levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
         new BasketFun(3,"back3", new Color (37,177,77));
       }});
     
     gbc.gridy=4;
-    add(testExit,gbc);
-    testExit.addActionListener (new ActionListener(){
+    add(exit,gbc);
+    exit.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
         new Menus(0);
@@ -218,5 +218,16 @@ public class Menus extends JPanel
   }
   public static void main(String[] args) { 
     Menus g=new Menus(0);
+    g.j=new JFrame("A Basket Full Of Fun: Menu");
+    g.j.setSize(800,800);
+    g.setPreferredSize(new Dimension( 800,800));
+    g.j.add(g);
+    g.j.setVisible (true);
+    g.setLayout(g.gbl);
+    g.gbc.insets = new Insets(150,0,0,0);
+    if(g.whichMenu == 0)
+      g.setUpMain();
+    else
+      g.setUpLevel();
   }
 }
