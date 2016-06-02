@@ -12,11 +12,14 @@ import java.awt.event.*;
   * button to reset everything in the basket, and a check button to see if the user has fulfilled the request. These
   * buttons are created in this class. It will also add the background to the panel.
   * 
-  *@author Top Of The Stack(C Liu) and modified by Top of The Stack (Alice Z)
+  * @author Top Of The Stack(C Liu)
   * @version 1 05.20.16 Spent 4 hours
   * 
   * @author of modifications by Top of The Stack (Alice Z)
   * @version 2 05.20.16 Spent 3 hours
+  * 
+  * @author of modifications by Top of The Stack (Alice Z)
+  * @version 2 06.02.16 Spent 3 hours
   * 
   * <p>
   * <b> Instance variables: </b>
@@ -97,11 +100,11 @@ public class BasketFun extends JPanel{
   private void generateRequest(int maxNum)
   {
     int randAmnt,randAmnt2;
-    if(myDifficulty == 3)
+    if(levelNum == 3)
     {
       randAmnt= randomizeAmounts(maxNum);
       randAmnt2= randomizeAmounts(maxNum);
-      System.out.println("I would like to have " + randAmnt + randomizeFoods(foods,randAmnt) + " and " + randAmnt2 + randomizeFoods(foods,randAmnt2) +".");
+      System.out.println("I would like to have " + randAmnt + randomizeFoods(randAmnt) + " and " + randAmnt2 + randomizeFoods(foods,randAmnt2) +".");
     }
     else
     {
@@ -112,8 +115,9 @@ public class BasketFun extends JPanel{
   
   private String randomizeFoods(int randAmnt)
   {
+    String 
     int r = (int)(Math.random()*foods.size());
-    if(randAmnt !=1 && foods.get(r).indexOf("fish") == -1)
+    if(randAmnt !=1 && (levelNum != 2 && (r == 4 || r == 5)))
       return " "+foods.get(r)+"s";
     return " "+foods.get(r);
   }

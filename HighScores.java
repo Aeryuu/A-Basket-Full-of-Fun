@@ -204,20 +204,11 @@ public class HighScores extends JPanel
             {
               if (pageIndex != 0)
                 return NO_SUCH_PAGE;
-              BufferedImage image = (BufferedImage)j.createImage(j.getContentPane().getSize().width,j.getContentPane().getSize().height);
-              
-              //BufferedImage image = (BufferedImage)frame.createImage(475,500);
-              j.getContentPane().paint(image.getGraphics());
-              try
-              {
-                ImageIO.write(image, "png", new File("image.png"));
-              }
-              catch (IOException e)
-              {
-              }
+              BufferedImage image = (BufferedImage)j.createImage(j.getContentPane().getSize().width,j.getContentPane().getSize().height); //makes the image - you probably dont need
+              j.getContentPane().paint(image.getGraphics()); // puts the image onto the print sheet
               Graphics2D graphics2 = (Graphics2D)graphics;
-              graphics2.translate(pageFormat.getImageableX(),pageFormat.getImageableY());
-              //graphics.drawImage(image, 0, 0, j.getContentPane().getSize().width, j.getContentPane().getSize().height, null);
+              graphics2.translate(pageFormat.getImageableX(),pageFormat.getImageableY()); //you hafta translate it so nothing gets cut off
+              //graphics.drawImage(image, 0, 0, j.getContentPane().getSize().width, j.getContentPane().getSize().height, null); //draws the image
               exit.setVisible(false);
               print.setVisible(false);
               graphics.drawImage(image, 0, 0, 500, 700, null);
