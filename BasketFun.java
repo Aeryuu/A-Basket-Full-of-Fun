@@ -39,6 +39,7 @@ public class BasketFun extends JPanel{
   private String backName;
   private Color bCol;
   JFrame j;
+   String [] chars;
   
   /**The class constructor will create a JPanel that is added to a JFrame that is also created here. The buttons that
     * all levels have in common: pause, empty, and check, are made and added here as well. The layout used is flow. 
@@ -48,15 +49,16 @@ public class BasketFun extends JPanel{
     * @param bName This String is used to store the name of the background file.
     * @param s This Color is used to store the colour of the background.
     */
-  public BasketFun(int levelNum, String bName, Color s) { 
+  public BasketFun(int levelNum, String bName, Color s,String []chars ) { 
     super();
     this.levelNum=levelNum;
     backName=bName;
     bCol=s;
+    this.chars=chars;
     System.out.println(backName);
     j=new JFrame("A Basket Full Of Fun: Level 1");
     j.setSize(1000,850);
-    this.setPreferredSize(new Dimension( 1000,850));
+    this.setPreferredSize(new Dimension( 1000,900));
     j.add(this);
     j.setVisible (true);
     
@@ -179,12 +181,18 @@ public class BasketFun extends JPanel{
     */
   public void paintComponent(Graphics g)
   {
-    BufferedImage b=null;
+    BufferedImage b=null, c=null;
     super.paintComponent(g);
     try
     {
       b = ImageIO.read(new File (backName+".jpg"));
       g.drawImage(b,0,0,null);
+  
+      //for (int i=0;i<chars.length;i++)
+      //{
+            c=ImageIO.read(new File("Monkey"+".jpg"));
+      g.drawImage(c,400,590,null);
+      //}
     }
     catch(IOException e){
     }
@@ -231,9 +239,10 @@ public class BasketFun extends JPanel{
 //    
 //  }
   
-//  public static void main(String[] args) { 
-//    BasketFun s= new BasketFun (1,"back1", new Color (37,177,77));
-//    //forest green and farm grass green;new Color(37,177,77)
-//    //ocean 0,126,255
-//  }
+  public static void main(String[] args) { 
+    String []c={"Bunny","Monkey","Panda"};
+    BasketFun s= new BasketFun (1,"back1", new Color (37,177,77),c);
+    //forest green and farm grass green;new Color(37,177,77)
+    //ocean 0,126,255
+  }
 }
