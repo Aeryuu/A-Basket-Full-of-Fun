@@ -106,23 +106,23 @@ public class BasketFun extends JPanel{
     {
       randAmnt= randomizeAmounts(maxNum);
       randAmnt2= randomizeAmounts(maxNum);
-      System.out.println("I would like to have " + randAmnt + randomizeFoods(randAmnt) + " and " + randAmnt2 + randomizeFoods(foods,randAmnt2) +".");
+    //  System.out.println("I would like to have " + randAmnt + randomizeFoods(randAmnt) + " and " + randAmnt2 + randomizeFoods(foods,randAmnt2) +".");
     }
     else
     {
       randAmnt= randomizeAmounts(maxNum);
-      System.out.println("I would like to have " + randAmnt + randomizeFoods(foods,randAmnt)+".");
+     // System.out.println("I would like to have " + randAmnt + randomizeFoods(foods,randAmnt)+".");
     }
   }
   
-  private String randomizeFoods(int randAmnt)
-  {
-    String 
-    int r = (int)(Math.random()*foods.size());
-    if(randAmnt !=1 && (levelNum != 2 && (r == 4 || r == 5)))
-      return " "+foods.get(r)+"s";
-    return " "+foods.get(r);
-  }
+//  private String randomizeFoods(int randAmnt)
+//  {
+//    String food;
+//    int r = (int)(Math.random()*foods.size());
+//    if(randAmnt !=1 && (levelNum != 2 && (r == 4 || r == 5)))
+//      return " "+foods.get(r)+"s";
+//    return " "+foods.get(r);
+//  }
   
   private int randomizeAmounts(int maxNum)
   {

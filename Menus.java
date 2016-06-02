@@ -39,7 +39,7 @@ public class Menus extends JPanel
    * Menu panel will be set up. Otherwise, the Level Select panel will be set up.
    * @param whichMenu An int used to determine which menu panel to set up.
    */ 
-  public Menus(int whichMenu)
+  public Menus(int whichMenu, JFrame j)
   {
     this.whichMenu = whichMenu;
     if(whichMenu == 1)
@@ -135,7 +135,7 @@ public class Menus extends JPanel
     play.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        new Menus(1);
+        new Menus(1,j);
       }});
     
     gbc.gridy=3;
@@ -143,7 +143,7 @@ public class Menus extends JPanel
     high.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        HighScores h = new HighScores();
+        HighScores h = new HighScores(j);
         h.setUpHighScoresPanel();
         j.remove(r);
         j.add(h);
@@ -217,17 +217,13 @@ public class Menus extends JPanel
     repaint();
   }
   public static void main(String[] args) { 
-    Menus g=new Menus(0);
-    g.j=new JFrame("A Basket Full Of Fun: Menu");
-    g.j.setSize(800,800);
-    g.setPreferredSize(new Dimension( 800,800));
-    g.j.add(g);
-    g.j.setVisible (true);
-    g.setLayout(g.gbl);
-    g.gbc.insets = new Insets(150,0,0,0);
-    if(g.whichMenu == 0)
-      g.setUpMain();
-    else
-      g.setUpLevel();
+    JFrame j=new JFrame("A Basket Full Of Fun: Menu");
+    j.setSize(800,800);
+    j.add(g);
+    j.setVisible (true);
+    setLayout(g.gbl);
+    gbc.insets = new Insets(150,0,0,0);
+    Menus g=new Menus(0,j);
+    //setPreferredSize(new Dimension( 800,800));
   }
 }
