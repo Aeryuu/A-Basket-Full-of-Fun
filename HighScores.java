@@ -39,13 +39,9 @@ public class HighScores extends JPanel
   /**
    * The class constructor will read in the high scores from the file and store them in the class's String array.
    */ 
-  public HighScores()
+  public HighScores(JFrame jf)
   {
-    // j=new JFrame("A Basket Full Of Fun: Level 1");
-    // j.setSize(800,800);
-    // this.setPreferredSize(new Dimension( 800,800));
-    // j.add(this);
-    // j.setVisible (true);
+    j = jf;
     try
     {
       BufferedReader in = new BufferedReader(new FileReader ("Input.txt"));
@@ -204,10 +200,10 @@ public class HighScores extends JPanel
             {
               if (pageIndex != 0)
                 return NO_SUCH_PAGE;
-              BufferedImage image = (BufferedImage)j.createImage(j.getContentPane().getSize().width,j.getContentPane().getSize().height); //makes the image - you probably dont need
-              j.getContentPane().paint(image.getGraphics()); // puts the image onto the print sheet
+              BufferedImage image = (BufferedImage)j.createImage(j.getContentPane().getSize().width,j.getContentPane().getSize().height);
+              j.getContentPane().paint(image.getGraphics());
               Graphics2D graphics2 = (Graphics2D)graphics;
-              graphics2.translate(pageFormat.getImageableX(),pageFormat.getImageableY()); //you hafta translate it so nothing gets cut off
+              graphics2.translate(pageFormat.getImageableX(),pageFormat.getImageableY());
               //graphics.drawImage(image, 0, 0, j.getContentPane().getSize().width, j.getContentPane().getSize().height, null); //draws the image
               exit.setVisible(false);
               print.setVisible(false);
@@ -228,11 +224,11 @@ public class HighScores extends JPanel
     exit.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        Menus m = new Menus(1);
-        m.j.remove(b);
-        m.add(m);
-        m.j.revalidate();
-        m.j.repaint();
+        Menus m = new Menus(0,j);
+        j.remove(b);
+        j.add(m);
+        j.revalidate();
+        j.repaint();
       }});
     revalidate();
     repaint();

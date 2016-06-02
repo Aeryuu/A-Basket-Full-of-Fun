@@ -32,21 +32,24 @@ public class Menus extends JPanel
   private GridBagLayout gbl = new GridBagLayout();
   private GridBagConstraints gbc = new GridBagConstraints();
   JFrame j;
-  JPanel r = this;
+  JPanel r=this;
   private int whichMenu;
   /**
    * The class constructor has a parameter pass to see which menu is going to be set up. If the pass is 0, the Main
    * Menu panel will be set up. Otherwise, the Level Select panel will be set up.
    * @param whichMenu An int used to determine which menu panel to set up.
    */ 
-  public Menus(int whichMenu)
+  public Menus(int whichMenu, JFrame jf)
   {
+    setPreferredSize(new Dimension( 800,800));
+    setLayout(gbl);
+    gbc.insets = new Insets(150,0,0,0);
     this.whichMenu = whichMenu;
-    if(whichMenu == 1)
+    if(whichMenu ==0)
       setUpMain();
     else
-      if(whichMenu ==2)
       setUpLevel();
+    j = jf;
   }
   /** Purpose: The purpose of this method is to 
     * paint the panel. It draws the sky, some clouds, and adds the text.
@@ -135,7 +138,7 @@ public class Menus extends JPanel
     play.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        new Menus(1);
+        new Menus(1,j);
       }});
     
     gbc.gridy=3;
@@ -143,7 +146,7 @@ public class Menus extends JPanel
     high.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        HighScores h = new HighScores();
+        HighScores h = new HighScores(j);
         h.setUpHighScoresPanel();
         j.remove(r);
         j.add(h);
@@ -178,15 +181,13 @@ public class Menus extends JPanel
     JButton levelOne = new JButton("Level 1"), levelTwo = new JButton("Level 2"), levelThree = new JButton("Level 3");
     gbc.weighty=1;
     gbc.anchor = GridBagConstraints.LINE_START;
-    gbc.gridy = 1;
-    //level buttons appear to go to level xx of that difficulty 
     gbc.gridy=1;
     gbc.gridx=2;
     add(levelOne,gbc);
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        new BasketFun(1,"back1", new Color (37,177,77));
+        //new BasketFun(1,"back1", new Color (37,177,77));
       }});
     
     gbc.gridy=2;
@@ -194,7 +195,7 @@ public class Menus extends JPanel
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        new BasketFun(2,"back2", new Color (37,177,77));
+      //  new BasketFun(2,"back2", new Color (37,177,77));
       }});
     
     gbc.gridy=3;
@@ -202,7 +203,7 @@ public class Menus extends JPanel
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        new BasketFun(3,"back3", new Color (37,177,77));
+     //   new BasketFun(3,"back3", new Color (37,177,77));
       }});
     
     gbc.gridy=4;
@@ -210,24 +211,17 @@ public class Menus extends JPanel
     exit.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        new Menus(0);
+        new Menus(0,j);
       }});
     
     revalidate();
     repaint();
   }
   public static void main(String[] args) { 
-    Menus g=new Menus(0);
-    g.j=new JFrame("A Basket Full Of Fun: Menu");
-    g.j.setSize(800,800);
-    g.setPreferredSize(new Dimension( 800,800));
-    g.j.add(g);
-    g.j.setVisible (true);
-    g.setLayout(g.gbl);
-    g.gbc.insets = new Insets(150,0,0,0);
-    if(g.whichMenu == 0)
-      g.setUpMain();
-    else
-      g.setUpLevel();
+    JFrame jf=new JFrame("A Basket Full Of Fun: Menu");
+    jf.setSize(800,800);
+   
+    jf.add(new Menus(0,jf));
+    jf.setVisible (true);
   }
 }
