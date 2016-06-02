@@ -21,6 +21,9 @@ import java.awt.event.*;
   * @author of modifications by Top of The Stack (Alice Z)
   * @version 2 06.02.16 Spent 3 hours
   * 
+  * @author of modifications by Top of The Stack (Caroline L)
+  * @version 2 06.02.16 Spent  hours
+  * 
   * <p>
   * <b> Instance variables: </b>
   * <p>
@@ -117,7 +120,6 @@ public class BasketFun extends JPanel{
   
   private String randomizeFoods(int randAmnt)
   {
-    String 
     int r = (int)(Math.random()*foods.size());
     if(randAmnt !=1 && (levelNum != 2 && (r == 4 || r == 5)))
       return " "+foods.get(r)+"s";
@@ -187,12 +189,26 @@ public class BasketFun extends JPanel{
     {
       b = ImageIO.read(new File (backName+".jpg"));
       g.drawImage(b,0,0,null);
-  
+  if (levelNum==1)
+  {
       //for (int i=0;i<chars.length;i++)
       //{
-            c=ImageIO.read(new File("Monkey"+".jpg"));
+      c=ImageIO.read(new File("Monkey"+".jpg"));
       g.drawImage(c,400,590,null);
       //}
+  }
+  else if (levelNum==2)
+  {
+     c=ImageIO.read(new File("Monkey"+".jpg"));
+     g.drawImage(c,400,590,null);
+    
+  }
+  else 
+  {
+    
+     c=ImageIO.read(new File("Monkey"+".jpg"));
+      g.drawImage(c,400,590,null);
+  }
     }
     catch(IOException e){
     }
@@ -240,7 +256,9 @@ public class BasketFun extends JPanel{
 //  }
   
   public static void main(String[] args) { 
-    String []c={"Bunny","Monkey","Panda"};
+    String []c={"Squirrel","Monkey","Panda"};
+    String []b={"Seal","Dolphin1","Turtle","Jelly","Narwhal"};
+    String []d={"Pig","Bunny"};
     BasketFun s= new BasketFun (1,"back1", new Color (37,177,77),c);
     //forest green and farm grass green;new Color(37,177,77)
     //ocean 0,126,255
