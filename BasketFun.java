@@ -13,13 +13,21 @@ import java.awt.event.*;
   * buttons are created in this class. It will also add the background to the panel.
   * 
   * @author Top Of The Stack(C Liu)
-  * @version 1 05.20.16 Spent 4 hours
+  * @version 1 05.18.16 Spent 4 hours
   * 
   * @author of modifications by Top of The Stack (Alice Z)
   * @version 2 05.20.16 Spent 3 hours
+  * Added actionListeners to some food buttons. Now, a picture of the food they represent appears onto the screen.
+  * The constructor now only takes in the level number rather than both the level difficulty and level number. The
+  * constructor will make the level panel depending on the level number. There are various themes for each level. Level
+  * 1 is forest themed, level 2 is ocean themed, and level 3 is farm themed.
   * 
   * @author of modifications by Top of The Stack (Alice Z)
-  * @version 3 06.02.16 Spent 3 hours
+  * @version 3 06.02.16 Spent 2 hours
+  * Added methods to generate requests, randomize amounts of fruits, and randomize foods. Each level generates a
+  * different kind of food and has a different maximum amount. The constructor now calls the method to generate the
+  * requests after setting up the level panel. Added a String array to store the names of the foods to help with the
+  * randomization of the foods.
   * 
   * @author of modifications by Top of The Stack (Caroline L)
   * @version 4 06.02.16 Spent  hours
@@ -34,6 +42,10 @@ import java.awt.event.*;
   * <b> backName </b> This String is used to store the file name of the background image being used for the level.
   * <p>
   * <b> j </b> This referene variable is used to point at the JFrame object that is created in the constructor.
+  * <p>
+  * <b> chars </b> This String array contains the names of the animal JPG's used in our game.
+  * <p>
+  * <b> foods </b> This String array contains the names of the foods.
   */ 
 
 public class BasketFun extends JPanel{
@@ -42,7 +54,7 @@ public class BasketFun extends JPanel{
   private String backName;
   private Color bCol;
   JFrame j;
-   String [] chars;
+  String [] chars, foods;
   
   /**The class constructor will create a JPanel that is added to a JFrame that is also created here. The buttons that
     * all levels have in common: pause, empty, and check, are made and added here as well. The layout used is flow. 
@@ -83,16 +95,19 @@ public class BasketFun extends JPanel{
     if (levelNum==1)
     {
       makePanel1();
+      foods = {"Apple","Orange","Banana","Grape","Watermelon"};
       generateRequest(3);
     }
     else if (levelNum==2)
     {
       makePanel2();
+      foods = {"Red","Yellow","Green","Octopus","Crab"};
       generateRequest(5);
     }
     else
     {
       makePanel3();
+      foods = {"Tomato","RedA","GreenA","Carrot","Potato"};
       generateRequest(7);
     }
     add(check);
@@ -109,22 +124,25 @@ public class BasketFun extends JPanel{
     {
       randAmnt= randomizeAmounts(maxNum);
       randAmnt2= randomizeAmounts(maxNum);
-     // System.out.println("I would like to have " + randAmnt + randomizeFoods(randAmnt) + " and " + randAmnt2 + randomizeFoods(foods,randAmnt2) +".");
+      // System.out.println("I would like to have " + randAmnt + randomizeFoods(randAmnt) + " and " + randAmnt2 + randomizeFoods(foods,randAmnt2) +".");
     }
     else
     {
       randAmnt= randomizeAmounts(maxNum);
-     // System.out.println("I would like to have " + randAmnt + randomizeFoods(foods,randAmnt)+".");
+      // System.out.println("I would like to have " + randAmnt + randomizeFoods(foods,randAmnt)+".");
     }
   }
   
-  //private String randomizeFoods(int randAmnt)
- // {
-    //int r = (int)(Math.random()*foods.size());
-    //if(randAmnt !=1 && (levelNum != 2 && (r == 4 || r == 5)))
-     // return " "+foods.get(r)+"s";
-   // return " "+foods.get(r);
- // }
+  private String randomizeFoods(int randAmnt)
+  {
+  int r = (int)(Math.random()*5);
+  if(randAmnt !=1 && (levelNum != 2 && (r == 4 || r == 5)))
+  {
+    
+  }
+   //return " "+foods.get(r)+"s";
+   //return " "+foods.get(r);
+   }
   
   private int randomizeAmounts(int maxNum)
   {
@@ -138,7 +156,10 @@ public class BasketFun extends JPanel{
     */
   private void makePanel1()
   {
-    JButton apple =makeButtons("Apple","Click here to drop an apple into the basket!"), orange = makeButtons("Orange","Click here to drop an orange into the basket!");
+    JButton apple =makeButtons(foods[1],"Click here to drop an apple into the basket!"), orange = makeButtons(foods[2],"Click here to drop an orange into the basket!");
+    JButton banana =makeButtons(foods[3],"Click here to drop an apple into the basket!"), grape = makeButtons(foods[4],"Click here to drop an orange into the basket!");
+    JButton watermelon =makeButtons(foods[5],"Click here to drop an apple into the basket!");
+    
     add(apple);
     apple.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
@@ -193,26 +214,26 @@ public class BasketFun extends JPanel{
       g.drawImage(b,0,0,null);
       b1 = ImageIO.read(new File ("Basket.jpg"));
       g.drawImage(b1,450,90,null);
-  if (levelNum==1)
-  {
-      //for (int i=0;i<chars.length;i++)
-      //{
-      c=ImageIO.read(new File("Squirrel"+".jpg"));
-      g.drawImage(c,400,550,null);
-      //}
-  }
-  else if (levelNum==2)
-  {
-     c=ImageIO.read(new File("Seal"+".jpg"));
-     g.drawImage(c,-10,340,null);
-    
-  }
-  else 
-  {
-    
-     c=ImageIO.read(new File("Bunny"+".jpg"));
-      g.drawImage(c,400,400,null);
-  }
+      if (levelNum==1)
+      {
+        //for (int i=0;i<chars.length;i++)
+        //{
+        c=ImageIO.read(new File("Squirrel"+".jpg"));
+        g.drawImage(c,400,550,null);
+        //}
+      }
+      else if (levelNum==2)
+      {
+        c=ImageIO.read(new File("Seal"+".jpg"));
+        g.drawImage(c,-10,340,null);
+        
+      }
+      else 
+      {
+        
+        c=ImageIO.read(new File("Bunny"+".jpg"));
+        g.drawImage(c,400,400,null);
+      }
     }
     catch(IOException e){
     }
