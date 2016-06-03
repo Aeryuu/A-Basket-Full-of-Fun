@@ -6,17 +6,39 @@ import java.io.*;
 import java.net.URL;
 import javax.imageio.*;
 import java.lang.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.Timer;
 /**
  * The Goodbye class creates the panel and 
  * graphics associated with the goodbye screen of the 
  * Basket Full of Fun game. It creates the panel, 
  * the graphics, and it creates text.
- *  
+ * 
+ *  <b>Instance variables: </b>
+ * <p>
+ * <b> t </b> This creates the timer used for the delay.
+ * 
+ * Modified by Top Of The Stack(C Liu) on 06.02.16.
+ * added Timer delay, as Thread.sleep causes issues. Added Timer var
+ * in order to add delay, 
+ * added actionPerformed method in order to create delay.
  * 
  * @author Top Of the Stack (C Liu) on 05.20.16
  * @version 3 05.26.16 Spent 1 hour
  */ 
-public class Goodbye extends JPanel {
+public class Goodbye extends JPanel implements ActionListener {
+  Timer t=new Timer(3000,this);
+  
+ /**Purpose: The purpose of this method is to close the screen
+   * after 3 seconds.
+    * 
+    * @param a ActionEvent passes in an action event.
+    */ 
+  public void actionPerformed(ActionEvent a) {
+      t.stop();
+      System.exit(0);
+      }
   /** Purpose: The purpose of this method is to 
     * construct the Goodbye class.It sets up the panel, and
     * allows the panel to be visible. It also sets 
@@ -30,21 +52,8 @@ public class Goodbye extends JPanel {
     this.setPreferredSize(new Dimension( 800,800));
     j.add(this);
     j.setVisible (true);
+    t.start();
    
-  }
-  /** Purpose: The purpose of this method is to 
-    * create a delay for the animation. 
-    * The try catch is used to create the delay.
-    */
-  public static void delay()
-  {
-    try 
-    {
-      Thread.sleep(3000);
-    }
-    catch(Exception e)
-    {
-    }
   }
   /** Purpose: The purpose of this method is to 
     * paint the panel. It draws the sky, some clouds, and adds the text.
@@ -100,8 +109,8 @@ public class Goodbye extends JPanel {
     g.fillOval(660,640,100,50);
     g.fillOval(500,640,100,30);
     g.fillOval(450,650,150,60);
+  
     
-    System.exit(0);
     
   }
 }

@@ -7,8 +7,9 @@ import java.util.*;
 import javax.swing.*;
 import java.io.*;
 import javax.imageio.*;
-import java.lang.*;
-
+import javax.swing.Timer;
+ import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 /** Purpose: The purpose of this class is to animate and draw the 
   * company's intro and the game's intro. The game's logo will 
@@ -16,14 +17,42 @@ import java.lang.*;
   * extend from the center of the logo to the ends of the screen.
   * The the game's intro will happen. The game's intro consists 
   * of a series of baskets and the game's title.
-  *
+  * * <b>Instance variables: </b>
+  * <p>
+  * <b> logo </b> This creates our logo.
+  * <p>
+  * <b> t </b> This creates the timer used for the delay.
+  * <p>
+  * <b> count </b> This moves the images used in the splashscreen.
   *  @author Top Of The Stack(C Liu)
   *  @version 1 05.13.16
+  * 
+  * Modified by Top Of The Stack(C Liu) on 06.02.16.
+  * added Timer delay, as Thread.sleep causes issues. Added 
+  * count variable in order to use Timer, added Timer var
+  * in order to add delay, added logo in order to import logo.
+  * added actionPerformed method in order to create delay.
   */
-public class SplashScreen extends JPanel{
-  
+//
+public class SplashScreen extends JPanel implements ActionListener {
   private BufferedImage logo=null;
-  
+  Timer t=new Timer(10,this);
+ int count=-100;
+ 
+ /**Purpose: The purpose of this method is to stop the timer
+   * once the image reaches a certain x-value.
+    * 
+    * @param a ActionEvent passes in an action event.
+    */
+ public void actionPerformed(ActionEvent a) {
+         count++;
+         if (count==1000)
+         {
+           t.stop();
+         }
+         repaint();
+      }
+
   /**Purpose: The purpose of this constructor is to construct the
     * JFrame, set the size, and add this panel to the JFrame. 
     * It then allows the screen to be visible.
@@ -33,10 +62,10 @@ public class SplashScreen extends JPanel{
     j.setSize(800,800);
     this.setPreferredSize(new Dimension( 200,200));
     j.add(this);
+    t.start();
     j.setVisible (true);
     
   }
-  
   /** Purpose: The purpose of this method is to 
     * paint the panel. It draws the sky, the sun, 
     * and a series of animated baskets.
@@ -51,30 +80,20 @@ public class SplashScreen extends JPanel{
       
       g.setColor (Colours.skyB);
       g.fillRect(0,0,800,800);
+         BufferedImage c = ImageIO.read(new File ("cloud.jpg"));
       logo = ImageIO.read(new File ("logo.jpg"));
-      
-      for  (int i=-100;i<=600;i++)
-      {
-        g.drawImage(logo,i,200,null);
-        repaint();
-      }
-      
+    
+        g.drawImage(logo,count,200,null);
+         g.drawImage(c,count+100,500,null);
+         g.drawImage(c,count-200,25,null);
+         
+         
+         g.setColor (Colours.skyB);
+        g.fillRect(count-1,200,1,200);
+    
     }
     catch(Exception e){
     }
-    
-  }
-  
-  public void delay(){
-    try{
-      Thread.sleep(100);
-      
-    }
-    catch(Exception e){
-      
-    }
-    
-    
     
   }
   /**The purpose of this method is to construct 
@@ -82,12 +101,12 @@ public class SplashScreen extends JPanel{
     * @param args []  String array that allows command line
     * parameters to be used when executing the program.
     */
-//  public static void main(String[] args) { 
-//    SplashScreen s=new SplashScreen ();
-//    
-//  }
+  public static void main(String[] args) { 
+    SplashScreen s=new SplashScreen ();
+    
+  }   
+  }
+ 
   
   
-  
-  
-}
+
