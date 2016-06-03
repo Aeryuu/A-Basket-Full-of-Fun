@@ -97,7 +97,7 @@ public class BasketFun extends JPanel{
     }
     add(check);
     add(empty);
-    add(makeButtons("Basket","Clicking the buttons, puts food into this basket!"));
+    //add(makeButtons("Basket","Clicking the buttons, puts food into this basket!"));
     revalidate();
     repaint();
   }
@@ -109,22 +109,22 @@ public class BasketFun extends JPanel{
     {
       randAmnt= randomizeAmounts(maxNum);
       randAmnt2= randomizeAmounts(maxNum);
-      System.out.println("I would like to have " + randAmnt + randomizeFoods(randAmnt) + " and " + randAmnt2 + randomizeFoods(foods,randAmnt2) +".");
+     // System.out.println("I would like to have " + randAmnt + randomizeFoods(randAmnt) + " and " + randAmnt2 + randomizeFoods(foods,randAmnt2) +".");
     }
     else
     {
       randAmnt= randomizeAmounts(maxNum);
-      System.out.println("I would like to have " + randAmnt + randomizeFoods(foods,randAmnt)+".");
+     // System.out.println("I would like to have " + randAmnt + randomizeFoods(foods,randAmnt)+".");
     }
   }
   
-  private String randomizeFoods(int randAmnt)
-  {
-    int r = (int)(Math.random()*foods.size());
-    if(randAmnt !=1 && (levelNum != 2 && (r == 4 || r == 5)))
-      return " "+foods.get(r)+"s";
-    return " "+foods.get(r);
-  }
+  //private String randomizeFoods(int randAmnt)
+ // {
+    //int r = (int)(Math.random()*foods.size());
+    //if(randAmnt !=1 && (levelNum != 2 && (r == 4 || r == 5)))
+     // return " "+foods.get(r)+"s";
+   // return " "+foods.get(r);
+ // }
   
   private int randomizeAmounts(int maxNum)
   {
@@ -183,31 +183,35 @@ public class BasketFun extends JPanel{
     */
   public void paintComponent(Graphics g)
   {
-    BufferedImage b=null, c=null;
+    BufferedImage b=null, c=null,b1=null;
     super.paintComponent(g);
     try
     {
+      
+      
       b = ImageIO.read(new File (backName+".jpg"));
       g.drawImage(b,0,0,null);
+      b1 = ImageIO.read(new File ("Basket.jpg"));
+      g.drawImage(b1,450,90,null);
   if (levelNum==1)
   {
       //for (int i=0;i<chars.length;i++)
       //{
-      c=ImageIO.read(new File("Monkey"+".jpg"));
-      g.drawImage(c,400,590,null);
+      c=ImageIO.read(new File("Squirrel"+".jpg"));
+      g.drawImage(c,400,550,null);
       //}
   }
   else if (levelNum==2)
   {
-     c=ImageIO.read(new File("Monkey"+".jpg"));
-     g.drawImage(c,400,590,null);
+     c=ImageIO.read(new File("Seal"+".jpg"));
+     g.drawImage(c,-10,340,null);
     
   }
   else 
   {
     
-     c=ImageIO.read(new File("Monkey"+".jpg"));
-      g.drawImage(c,400,590,null);
+     c=ImageIO.read(new File("Bunny"+".jpg"));
+      g.drawImage(c,400,400,null);
   }
     }
     catch(IOException e){
@@ -259,7 +263,7 @@ public class BasketFun extends JPanel{
     String []c={"Squirrel","Monkey","Panda"};
     String []b={"Seal","Dolphin1","Turtle","Jelly","Narwhal"};
     String []d={"Pig","Bunny"};
-    BasketFun s= new BasketFun (1,"back1", new Color (37,177,77),c);
+    BasketFun s= new BasketFun (3,"back3", new Color (37,177,77),d);
     //forest green and farm grass green;new Color(37,177,77)
     //ocean 0,126,255
   }

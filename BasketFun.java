@@ -19,10 +19,10 @@ import java.awt.event.*;
   * @version 2 05.20.16 Spent 3 hours
   * 
   * @author of modifications by Top of The Stack (Alice Z)
-  * @version 2 06.02.16 Spent 3 hours
+  * @version 3 06.02.16 Spent 3 hours
   * 
   * @author of modifications by Top of The Stack (Caroline L)
-  * @version 2 06.02.16 Spent  hours
+  * @version 4 06.02.16 Spent  hours
   * 
   * <p>
   * <b> Instance variables: </b>
