@@ -130,7 +130,10 @@ public class Menus extends JPanel
     inst.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        new InstructionScreen();
+        j.remove(r);
+        j.add(new InstructionScreen(j));
+        j.revalidate();
+        j.repaint();
       }});
     
     gbc.gridy=2;
@@ -160,8 +163,8 @@ public class Menus extends JPanel
     exit.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        
-        new Goodbye();
+        j.remove(r);
+        j.add(new Goodbye());
       }});
     revalidate();
     repaint();

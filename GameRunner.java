@@ -21,10 +21,8 @@ public class GameRunner extends JFrame {
   public GameRunner()
   {
     super("A Basket Full of Fun");
-    //SplashScreen s = new SplashScreen ();
-    // add(s);
-    Menus m = new Menus (0);
-    add(m);
+     //add(new SplashScreen (this));
+    add(new Menus (0,this));
     setSize (800, 800);
     setVisible (true);
   }

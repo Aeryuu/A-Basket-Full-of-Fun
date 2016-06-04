@@ -46,12 +46,7 @@ public class Goodbye extends JPanel implements ActionListener {
     */
   public Goodbye() { 
     super();
-    
-    JFrame j=new JFrame("A Basket Full Of Fun: Goodbye!");
-    j.setSize(800,800);
     this.setPreferredSize(new Dimension( 800,800));
-    j.add(this);
-    j.setVisible (true);
     t.start();
    
   }
