@@ -10,7 +10,11 @@ import java.awt.event.*;
  *  
  * 
  * @author Top Of the Stack (C Liu) on 05.20.16
- * @version 3 05.26.16 Spent 1 hour
+ * @version 1 05.26.16 Spent 1 hour
+ * 
+ * @author of modification Top of the Stack (Alice Zhang)
+ * @version 2 06.04.16 Spent 0.5 hour
+ * Back button is now working and has the ability to switch to the menu panel.
  */ 
 public class InstructionScreen extends JPanel {
   JPanel i = this;
@@ -20,7 +24,7 @@ public class InstructionScreen extends JPanel {
     */
   public InstructionScreen(JFrame j) { 
     super();
-    this.setPreferredSize(new Dimension( 800,800));
+    setPreferredSize(new Dimension( 800,800));
     FlowLayout f=new FlowLayout();
     f.setAlignment (FlowLayout.LEFT);
     setLayout(f);

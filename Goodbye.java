@@ -15,7 +15,7 @@ import javax.swing.Timer;
  * Basket Full of Fun game. It creates the panel, 
  * the graphics, and it creates text.
  * 
- *  <b>Instance variables: </b>
+ * <b>Instance variables: </b>
  * <p>
  * <b> t </b> This creates the timer used for the delay.
  * 
@@ -30,15 +30,15 @@ import javax.swing.Timer;
 public class Goodbye extends JPanel implements ActionListener {
   Timer t=new Timer(3000,this);
   
- /**Purpose: The purpose of this method is to close the screen
-   * after 3 seconds.
+  /**Purpose: The purpose of this method is to close the screen
+    * after 3 seconds.
     * 
     * @param a ActionEvent passes in an action event.
     */ 
   public void actionPerformed(ActionEvent a) {
-      t.stop();
-      System.exit(0);
-      }
+    t.stop();
+    System.exit(0);
+  }
   /** Purpose: The purpose of this method is to 
     * construct the Goodbye class.It sets up the panel, and
     * allows the panel to be visible. It also sets 
@@ -48,7 +48,6 @@ public class Goodbye extends JPanel implements ActionListener {
     super();
     this.setPreferredSize(new Dimension( 800,800));
     t.start();
-   
   }
   /** Purpose: The purpose of this method is to 
     * paint the panel. It draws the sky, some clouds, and adds the text.
@@ -59,7 +58,7 @@ public class Goodbye extends JPanel implements ActionListener {
   
   public void paintComponent (Graphics g)
   {
-   
+    
     BufferedImage logo=null;
     super.paintComponent(g);
     g.setColor (Colours.skyB);
@@ -75,14 +74,11 @@ public class Goodbye extends JPanel implements ActionListener {
     g.drawString("Thanks for feeding the animals!", 270,350);
     
     try{
-      
       logo = ImageIO.read(new File ("logo.jpg"));
       g.drawImage(logo,275,100,null);
     }
     catch(Exception e){
-      
     }
-    
     g.fill3DRect(50,75,700,25,true);
     //clouds
     g.setColor (Color.white);
@@ -104,8 +100,5 @@ public class Goodbye extends JPanel implements ActionListener {
     g.fillOval(660,640,100,50);
     g.fillOval(500,640,100,30);
     g.fillOval(450,650,150,60);
-  
-    
-    
   }
 }

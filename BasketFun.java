@@ -32,6 +32,10 @@ import java.awt.event.*;
   * @author of modifications by Top of The Stack (Caroline L)
   * @version 4 06.02.16 Spent  hours
   * 
+  * @author of modifications by Top of The Stack (Alice Z)
+  * @version 4.1 06.04.16 Spent 0.5 hours
+  * The constructor now has the JFrame from GameRunner being passed in as a reference variable.
+  * 
   * <p>
   * <b> Instance variables: </b>
   * <p>
@@ -64,23 +68,18 @@ public class BasketFun extends JPanel{
     * @param bName This String is used to store the name of the background file.
     * @param s This Color is used to store the colour of the background.
     */
-  public BasketFun(int levelNum, String bName, Color s,String []chars ) { 
+  public BasketFun(int levelNum, String bName, Color s, JFrame jf ) { 
     super();
     this.levelNum=levelNum;
     backName=bName;
     bCol=s;
-    this.chars=chars;
     System.out.println(backName);
-    j=new JFrame("A Basket Full Of Fun: Level 1");
-    j.setSize(1000,850);
     this.setPreferredSize(new Dimension( 1000,900));
-    j.add(this);
-    j.setVisible (true);
-    
+    j = jf;
     FlowLayout f=new FlowLayout();
     f.setHgap(40);
     f.setAlignment (FlowLayout.LEFT);
-    this.setLayout(f);
+    setLayout(f);
     JButton check=new JButton("CHECK!");
     JButton empty=new JButton ("Empty the basket!");
     
@@ -89,25 +88,25 @@ public class BasketFun extends JPanel{
     pause.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        //stop timer, make things appear
+        //stop timer, make things appear Caroline
       }});
     
     if (levelNum==1)
     {
       makePanel1();
-      foods = {"Apple","Orange","Banana","Grape","Watermelon"};
+      //foods = {"Apple","Orange","Banana","Grape","Watermelon"};
       generateRequest(3);
     }
     else if (levelNum==2)
     {
       makePanel2();
-      foods = {"Red","Yellow","Green","Octopus","Crab"};
+      //foods = {"Red","Yellow","Green","Octopus","Crab"};
       generateRequest(5);
     }
     else
     {
       makePanel3();
-      foods = {"Tomato","RedA","GreenA","Carrot","Potato"};
+     // foods = {"Tomato","RedA","GreenA","Carrot","Potato"};
       generateRequest(7);
     }
     add(check);
@@ -142,6 +141,7 @@ public class BasketFun extends JPanel{
   }
    //return " "+foods.get(r)+"s";
    //return " "+foods.get(r);
+  return "";
    }
   
   private int randomizeAmounts(int maxNum)
@@ -280,12 +280,12 @@ public class BasketFun extends JPanel{
 //    
 //  }
   
-  public static void main(String[] args) { 
-    String []c={"Squirrel","Monkey","Panda"};
-    String []b={"Seal","Dolphin1","Turtle","Jelly","Narwhal"};
-    String []d={"Pig","Bunny"};
-    BasketFun s= new BasketFun (3,"back3", new Color (37,177,77),d);
-    //forest green and farm grass green;new Color(37,177,77)
-    //ocean 0,126,255
-  }
+//  public static void main(String[] args) { 
+//    String []c={"Squirrel","Monkey","Panda"};
+//    String []b={"Seal","Dolphin1","Turtle","Jelly","Narwhal"};
+//    String []d={"Pig","Bunny"};
+//    BasketFun s= new BasketFun (3,"back3", new Color (37,177,77),d);
+//    //forest green and farm grass green;new Color(37,177,77)
+//    //ocean 0,126,255
+//  }
 }
