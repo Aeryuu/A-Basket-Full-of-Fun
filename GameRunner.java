@@ -6,10 +6,10 @@ import java.awt.event.*;
  * as executes the program. 
  * 
  * @author Top of the Stack (Alice Zhang) on 05.11.16
- * @version 1 05.13.16
+ * @version 1 05.13.16 Spent 0.5 hours
  * 
  * @author of modification Top of the Stack (Alice Zhang)
- * @version 2 06.01.16
+ * @version 2 06.01.16 Spent 0.5 hours
  * This class now has a constructor that creates the central JFrame that the game will be played on. It will also create
  * a SplashScreen object and add it to the JFrame to start the game off. The main method now creates a GameRunner
  * object.
@@ -22,11 +22,11 @@ public class GameRunner extends JFrame {
   public GameRunner()
   {
     super("A Basket Full of Fun");
-     //add(new SplashScreen (this));
-    //add(new Menus (0,this));
+    //add(new SplashScreen (this));
+    add(new Menus (0,this));
     setSize (800, 800);
     setResizable(false);
-    add(new BasketFun(1,"back1",new Color(37,177,77),this));
+    //add(new BasketFun(1,"back1",new Color(37,177,77),this));
     setVisible (true);
   }
   /** This method calls the GameGUIRunner constructor to

@@ -34,7 +34,7 @@ import java.awt.event.ActionEvent;
   * added actionPerformed method in order to create delay.
   * 
   * @author of modification Top of the Stack (Alice Zhang)
-  * @version 2 06.04.16
+  * @version 2 06.04.16 Spent 0.5 hours
   * After the intro is done, a dialog box now pops up prompting the user to enter their name. If the name is acceptable,
   * the dialog box would close and the main menu screen would appear. If the name is not acceptable (for example, it
   * is blank) an error message would pop up.
