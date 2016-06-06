@@ -28,6 +28,10 @@ import java.awt.image.*;
  * Main menu can now smoothly transition to instructions, high scores, level select, and goodbye. Also, the panel will
  * respond to pressing the "F1" key.
  * 
+ * @author Top Of the Stack (Alice Z)
+ * @version 3.1 06.04.16 Spent 2.5 hours
+ * Added code into the ActionListeners of the Level 2 and Level 3 buttons so that unless the previous level is complete,
+ * the user will get an error message telling them to complete the previous level.
  * <p>
  * <b> Instance variables: </b>
  * <p>
@@ -40,6 +44,7 @@ public class Menus extends JPanel
   private GridBagLayout gbl = new GridBagLayout();
   private GridBagConstraints gbc = new GridBagConstraints();
   private JFrame j;
+  private static boolean levelOneDone = false, levelTwoDone = false;
   /**
    * The class constructor has a parameter pass to see which menu is going to be set up. If the pass is 0, the Main
    * Menu panel will be set up. Otherwise, the Level Select panel will be set up.
@@ -189,6 +194,20 @@ public class Menus extends JPanel
     repaint();
   }
   
+  public static boolean getLevelOneDone()
+  {
+    return levelOneDone;
+  }
+  
+  public static void setLevelOneTrue()
+  {
+    levelOneDone = true;
+  }
+  
+  public static void setLevelTwoTrue()
+  {
+    levelTwoDone = true;
+  }
   /**
    * This will set up the Level Select screen. The Level Select screen will have a title, 3 buttons for level
    * difficulty, and 3 levels of gameplay for each level of difficulty. When the user clicks a level difficulty button,
@@ -220,7 +239,11 @@ public class Menus extends JPanel
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        if(levelOneDone)
           new BasketFun(2,"back2", new Color (37,177,77), j);
+        else
+          //JOptionpane
+          System.out.println(":p");
       }});
     
     gbc.gridy=3;
@@ -228,7 +251,11 @@ public class Menus extends JPanel
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        if(levelTwoDone)
            new BasketFun(3,"back3", new Color (37,177,77), j);
+         else
+          //JOptionpane
+          System.out.println(":p");
       }});
     
     gbc.gridy=4;
