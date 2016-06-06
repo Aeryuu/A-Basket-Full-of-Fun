@@ -40,7 +40,6 @@ public class Menus extends JPanel
   private GridBagLayout gbl = new GridBagLayout();
   private GridBagConstraints gbc = new GridBagConstraints();
   private JFrame j;
-  private JPanel r=this;
   /**
    * The class constructor has a parameter pass to see which menu is going to be set up. If the pass is 0, the Main
    * Menu panel will be set up. Otherwise, the Level Select panel will be set up.
@@ -146,7 +145,7 @@ public class Menus extends JPanel
     inst.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        j.remove(r);
+        j.remove(Menus.this);
         j.add(new InstructionScreen(j));
         j.revalidate();
         j.repaint();
@@ -157,7 +156,7 @@ public class Menus extends JPanel
     play.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        j.remove(r);
+        j.remove(Menus.this);
         j.add(new Menus(1,j));
         j.revalidate();
         j.repaint();
@@ -170,7 +169,7 @@ public class Menus extends JPanel
       {
         HighScores h = new HighScores(j);
         h.setUpHighScoresPanel();
-        j.remove(r);
+        j.remove(Menus.this);
         j.add(h);
         j.revalidate();
         j.repaint();
@@ -181,7 +180,7 @@ public class Menus extends JPanel
     exit.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        j.remove(r);
+        j.remove(Menus.this);
         j.add(new Goodbye());
         j.revalidate();
         j.repaint();
@@ -210,7 +209,10 @@ public class Menus extends JPanel
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        new BasketFun(1,"back1", new Color (37,177,77) , j);
+        j.remove(Menus.this);
+        j.add(new BasketFun(1,"back1", new Color (37,177,77) , j));
+        j.revalidate();
+        j.repaint();
       }});
     
     gbc.gridy=2;
