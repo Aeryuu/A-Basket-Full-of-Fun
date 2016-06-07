@@ -65,7 +65,7 @@ public class Menus extends JPanel
                            "pressed");
     this.getActionMap().put("pressed",new AbstractAction() {
       public void actionPerformed(ActionEvent e) {
-        System.out.println("Hai dere");
+        //insert chm file Caroline
       }});
   }
   /** Purpose: The purpose of this method is to 
@@ -252,8 +252,8 @@ public class Menus extends JPanel
       public void actionPerformed(ActionEvent e)
       {
         if(levelTwoDone)
-           new BasketFun(3,"back3", new Color (37,177,77), j);
-         else
+          new BasketFun(3,"back3", new Color (37,177,77), j);
+        else
           //JOptionpane
           System.out.println(":p");
       }});
