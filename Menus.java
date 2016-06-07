@@ -29,7 +29,7 @@ import java.awt.image.*;
  * respond to pressing the "F1" key.
  * 
  * @author Top Of the Stack (Alice Z)
- * @version 3.1 06.04.16 Spent 2.5 hours
+ * @version 3.1 06.04.16 Spent 1 hours
  * Added code into the ActionListeners of the Level 2 and Level 3 buttons so that unless the previous level is complete,
  * the user will get an error message telling them to complete the previous level.
  * <p>

@@ -10,7 +10,7 @@ import java.awt.geom.*;
  * The HighScores class can create the JPanel for the High Scores screen and it has a method that updates the 
  * high scores file with a passed in String. The new score will be sorted into the high scores if it is high enough.
  * There is a button on the High Scores screen that can print the high scores. There is another button that is used to
- * go back to the Menu screen.
+ * go back to the Menu screen. The high scores will be printed from the high scores screen without the buttons.
  *  
  * 
  * @author Top Of the Stack (Alice Z) 
@@ -19,8 +19,10 @@ import java.awt.geom.*;
  * @author of modification C Liu on 05.26.16
  * @version 2 05.26.16 Spent 3.5 hours
  * 
- * @author Top Of the Stack (Alice Z) on 05.16.16  modified by C Liu on 05.26.16
- * @version 3 05.18.16 Spent 3.5 hours
+ * @author Top Of the Stack (Alice Z)
+ * @version 3 06.02.16 Spent 1 hour
+ * Edited the printing screen so that the buttons don't appear. Printing button and back to menu button are now fully
+ * functional. The flow between high scores and main menu are smooth.
  * <p>
  * <b> Instance variables: </b>
  * <p>
