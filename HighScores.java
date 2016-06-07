@@ -19,7 +19,7 @@ import java.awt.geom.*;
  * @author of modification C Liu on 05.26.16
  * @version 2 05.26.16 Spent 3.5 hours
  * 
- * @author Top Of the Stack (Alice Z) on 05.16.16  modified by C Liu on 05.26.16
+ * @author Top Of the Stack (Alice Z)
  * @version 3 06.02.16 Spent 1 hour
  * Edited the printing screen so that the buttons don't appear. Printing button and back to menu button are now fully
  * functional. The flow between high scores and main menu are smooth.
