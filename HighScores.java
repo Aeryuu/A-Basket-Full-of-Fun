@@ -6,7 +6,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.print.*;
 import java.awt.geom.*;
-import javax.swing.*;
 /**
  * The HighScores class can create the JPanel for the High Scores screen and it has a method that updates the 
  * high scores file with a passed in String. The new score will be sorted into the high scores if it is high enough.
@@ -224,9 +223,8 @@ public class HighScores extends JPanel
     exit.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        Menus m = new Menus(0,j);
         j.remove(b);
-        j.add(m);
+        j.add(new Menus(0,j));
         j.revalidate();
         j.repaint();
       }});

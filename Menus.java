@@ -18,8 +18,20 @@ import java.awt.image.*;
  * @author of modification C Liu on 05.26.16
  * @version 2 05.26.16 Spent 3 hours
  * 
- * @author Top Of the Stack (Alice Z) on 05.16.16 modified by C Liu on 05.26.16
- * @version 3 05.18.16 Spent 3 hours
+ * @author Top Of the Stack (Alice Z)
+ * @version 3 06.02.16 Spent 0.5 hour
+ * Now, the JFrame from GameRunner is being passed in as a reference variable. It is used to switch the panels that are
+ * being displayed on it.
+ * 
+ * @author Top Of the Stack (Alice Z)
+ * @version 3 06.04.16 Spent 2.5 hours
+ * Main menu can now smoothly transition to instructions, high scores, level select, and goodbye. Also, the panel will
+ * respond to pressing the "F1" key.
+ * 
+ * @author Top Of the Stack (Alice Z)
+ * @version 3.1 06.04.16 Spent 2.5 hours
+ * Added code into the ActionListeners of the Level 2 and Level 3 buttons so that unless the previous level is complete,
+ * the user will get an error message telling them to complete the previous level.
  * <p>
  * <b> Instance variables: </b>
  * <p>
@@ -31,9 +43,8 @@ public class Menus extends JPanel
 {
   private GridBagLayout gbl = new GridBagLayout();
   private GridBagConstraints gbc = new GridBagConstraints();
-  JFrame j;
-  JPanel r=this;
-  private int whichMenu;
+  private JFrame j;
+  private static boolean levelOneDone = false, levelTwoDone = false;
   /**
    * The class constructor has a parameter pass to see which menu is going to be set up. If the pass is 0, the Main
    * Menu panel will be set up. Otherwise, the Level Select panel will be set up.
@@ -41,15 +52,21 @@ public class Menus extends JPanel
    */ 
   public Menus(int whichMenu, JFrame jf)
   {
+    super();
     setPreferredSize(new Dimension( 800,800));
     setLayout(gbl);
     gbc.insets = new Insets(150,0,0,0);
-    this.whichMenu = whichMenu;
     if(whichMenu ==0)
       setUpMain();
     else
       setUpLevel();
     j = jf;
+    this.getInputMap().put(KeyStroke.getKeyStroke("F1"),
+                           "pressed");
+    this.getActionMap().put("pressed",new AbstractAction() {
+      public void actionPerformed(ActionEvent e) {
+        System.out.println("Hai dere");
+      }});
   }
   /** Purpose: The purpose of this method is to 
     * paint the panel. It draws the sky, some clouds, and adds the text.
@@ -123,6 +140,9 @@ public class Menus extends JPanel
   {
     JButton inst = new JButton("Instructions"),play = new JButton("Play Game");
     JButton high = new JButton("High Scores"),exit = new JButton("Exit Game");
+    
+    setSize (800, 800);
+    setVisible (true);
     gbc.weighty=0;
     gbc.anchor = gbc.LINE_START;
     gbc.gridy = 1;
@@ -130,7 +150,10 @@ public class Menus extends JPanel
     inst.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        new InstructionScreen();
+        j.remove(Menus.this);
+        j.add(new InstructionScreen(j));
+        j.revalidate();
+        j.repaint();
       }});
     
     gbc.gridy=2;
@@ -138,7 +161,10 @@ public class Menus extends JPanel
     play.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        new Menus(1,j);
+        j.remove(Menus.this);
+        j.add(new Menus(1,j));
+        j.revalidate();
+        j.repaint();
       }});
     
     gbc.gridy=3;
@@ -148,11 +174,10 @@ public class Menus extends JPanel
       {
         HighScores h = new HighScores(j);
         h.setUpHighScoresPanel();
-        j.remove(r);
+        j.remove(Menus.this);
         j.add(h);
         j.revalidate();
         j.repaint();
-        
       }});
     
     gbc.gridy=4;
@@ -160,13 +185,29 @@ public class Menus extends JPanel
     exit.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        
-        new Goodbye();
+        j.remove(Menus.this);
+        j.add(new Goodbye());
+        j.revalidate();
+        j.repaint();
       }});
     revalidate();
     repaint();
   }
   
+  public static boolean getLevelOneDone()
+  {
+    return levelOneDone;
+  }
+  
+  public static void setLevelOneTrue()
+  {
+    levelOneDone = true;
+  }
+  
+  public static void setLevelTwoTrue()
+  {
+    levelTwoDone = true;
+  }
   /**
    * This will set up the Level Select screen. The Level Select screen will have a title, 3 buttons for level
    * difficulty, and 3 levels of gameplay for each level of difficulty. When the user clicks a level difficulty button,
@@ -187,7 +228,10 @@ public class Menus extends JPanel
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        //new BasketFun(1,"back1", new Color (37,177,77));
+        j.remove(Menus.this);
+        j.add(new BasketFun(1,"back1", new Color (37,177,77) , j));
+        j.revalidate();
+        j.repaint();
       }});
     
     gbc.gridy=2;
@@ -195,7 +239,11 @@ public class Menus extends JPanel
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-      //  new BasketFun(2,"back2", new Color (37,177,77));
+        if(levelOneDone)
+          new BasketFun(2,"back2", new Color (37,177,77), j);
+        else
+          //JOptionpane
+          System.out.println(":p");
       }});
     
     gbc.gridy=3;
@@ -203,7 +251,11 @@ public class Menus extends JPanel
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-     //   new BasketFun(3,"back3", new Color (37,177,77));
+        if(levelTwoDone)
+           new BasketFun(3,"back3", new Color (37,177,77), j);
+         else
+          //JOptionpane
+          System.out.println(":p");
       }});
     
     gbc.gridy=4;
@@ -217,11 +269,12 @@ public class Menus extends JPanel
     revalidate();
     repaint();
   }
-  public static void main(String[] args) { 
-    JFrame jf=new JFrame("A Basket Full Of Fun: Menu");
-    jf.setSize(800,800);
-   
-    jf.add(new Menus(0,jf));
-    jf.setVisible (true);
-  }
+  
+//  public static void main(String[] args) { 
+//    JFrame jf=new JFrame("A Basket Full Of Fun: Menu");
+//    jf.setSize(800,800);
+//    
+//    jf.add(new Menus(0,jf));
+//    jf.setVisible (true);
+//  }
 }
