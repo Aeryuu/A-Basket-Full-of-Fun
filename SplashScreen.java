@@ -37,8 +37,13 @@ import java.awt.event.ActionEvent;
   * Modified by Top Of The Stack(C Liu) on 06.06.16. spent 5 mins
   * added a jpg in order to make splashscreen more visually appealing.
   * changed value that stops count value from incrementing.
+=======
+  * @author of modification Top of the Stack (Alice Zhang)
+  * @version 2 06.04.16 Spent 0.5 hours
+  * After the intro is done, a dialog box now pops up prompting the user to enter their name. If the name is acceptable,
+  * the dialog box would close and the main menu screen would appear. If the name is not acceptable (for example, it
+  * is blank) an error message would pop up.
   */
-//
 public class SplashScreen extends JPanel implements ActionListener {
   private BufferedImage logo=null;
   Timer t=new Timer(10,this);
@@ -85,21 +90,19 @@ public class SplashScreen extends JPanel implements ActionListener {
       
       g.setColor (Colours.skyB);
       g.fillRect(0,0,800,800);
-         BufferedImage c = ImageIO.read(new File ("cloud.jpg"));
+      BufferedImage c = ImageIO.read(new File ("cloud.jpg"));
       logo = ImageIO.read(new File ("logo.jpg"));
-     BufferedImage logo1 = ImageIO.read(new File ("Title2.jpg"));
-        g.drawImage(logo,count,200,null);
-         g.drawImage(c,count+100,500,null);
-         g.drawImage(c,count-200,25,null);
-         g.drawImage(logo1,count-1000,100,null);
-         
-         g.setColor (Colours.skyB);
-        g.fillRect(count-1,200,1,200);
-    
+      BufferedImage logo1 = ImageIO.read(new File ("Title2.jpg"));
+      g.drawImage(logo,count,200,null);
+      g.drawImage(c,count+100,500,null);
+      g.drawImage(c,count-200,25,null);
+      g.drawImage(logo1,count-1000,100,null);
+      
+      g.setColor (Colours.skyB);
+      g.fillRect(count-1,200,1,200);
     }
     catch(Exception e){
     }
-    
   }
   }
  
