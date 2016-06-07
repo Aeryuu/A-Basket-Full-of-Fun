@@ -1,6 +1,7 @@
 import java.awt.*;
 /** Purpose: The purpose of this class is to contain all of the colours
   * used in the Basket Full Of Fun game.  
+  * 
   * <b>Instance variables: </b>
   * <p>
   * <b> niceB </b> This creates a blue used for objects in our game.
@@ -13,6 +14,10 @@ import java.awt.*;
   * 
   *  @author Top Of The Stack(C Liu)
   *  @version 1 05.13.16
+  * 
+  *  @author of modifications  by Top Of The Stack(C Liu)
+  *  @version 2 05.29.16 Spent 2 mins
+  *  Changed value of skyB colour
   */ 
 
 public class Colours {

@@ -24,14 +24,19 @@ import java.awt.event.ActionEvent;
   * <b> t </b> This creates the timer used for the delay.
   * <p>
   * <b> count </b> This moves the images used in the splashscreen.
-  *  @author Top Of The Stack(C Liu)
+  *  @author Top Of The Stack(C Liu) 
   *  @version 1 05.13.16
   * 
-  * Modified by Top Of The Stack(C Liu) on 06.02.16.
+  * Modified by Top Of The Stack(C Liu) on 06.02.16. spent 3 hours
   * added Timer delay, as Thread.sleep causes issues. Added 
   * count variable in order to use Timer, added Timer var
   * in order to add delay, added logo in order to import logo.
   * added actionPerformed method in order to create delay.
+  * Added better graphics.
+  * 
+  * Modified by Top Of The Stack(C Liu) on 06.06.16. spent 5 mins
+  * added a jpg in order to make splashscreen more visually appealing.
+  * changed value that stops count value from incrementing.
   */
 //
 public class SplashScreen extends JPanel implements ActionListener {
@@ -46,7 +51,7 @@ public class SplashScreen extends JPanel implements ActionListener {
     */
  public void actionPerformed(ActionEvent a) {
          count++;
-         if (count==1000)
+         if (count==1100)
          {
            t.stop();
          }
@@ -82,11 +87,11 @@ public class SplashScreen extends JPanel implements ActionListener {
       g.fillRect(0,0,800,800);
          BufferedImage c = ImageIO.read(new File ("cloud.jpg"));
       logo = ImageIO.read(new File ("logo.jpg"));
-    
+     BufferedImage logo1 = ImageIO.read(new File ("Title2.jpg"));
         g.drawImage(logo,count,200,null);
          g.drawImage(c,count+100,500,null);
          g.drawImage(c,count-200,25,null);
-         
+         g.drawImage(logo1,count-1000,100,null);
          
          g.setColor (Colours.skyB);
         g.fillRect(count-1,200,1,200);
@@ -96,15 +101,6 @@ public class SplashScreen extends JPanel implements ActionListener {
     }
     
   }
-  /**The purpose of this method is to construct 
-    * an object of the SplashScreen. 
-    * @param args []  String array that allows command line
-    * parameters to be used when executing the program.
-    */
-  public static void main(String[] args) { 
-    SplashScreen s=new SplashScreen ();
-    
-  }   
   }
  
   

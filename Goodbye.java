@@ -16,16 +16,17 @@ import javax.swing.Timer;
  * the graphics, and it creates text.
  * 
  *  <b>Instance variables: </b>
- * <p>
- * <b> t </b> This creates the timer used for the delay.
- * 
- * Modified by Top Of The Stack(C Liu) on 06.02.16.
- * added Timer delay, as Thread.sleep causes issues. Added Timer var
- * in order to add delay, 
- * added actionPerformed method in order to create delay.
+ *  <p>
+ *  <b> t </b> This creates the timer used for the delay.
  * 
  * @author Top Of the Stack (C Liu) on 05.20.16
- * @version 3 05.26.16 Spent 1 hour
+ * @version 1 05.26.16 Spent 1 hour
+ * 
+ * @ author of modifications by Top Of The Stack(C Liu) 
+ * @ version 2 on 06.02.16.
+ * added Timer delay, as Thread.sleep causes issues. Added Timer var
+ * in order to add delay, 
+ * added actionPerformed method in order to create delay, actionPerformed stops and exits screen
  */ 
 public class Goodbye extends JPanel implements ActionListener {
   Timer t=new Timer(3000,this);
