@@ -94,12 +94,12 @@ public class SplashScreen extends JPanel implements ActionListener {
     j.add(this);
     t.start();
   }
+  
   /** Purpose: The purpose of this method is to 
     * paint the panel. It draws the sky, the sun, 
     * and a series of animated baskets.
     * @param g Graphics allows use to the Graphics class.
     */
-  
   public void paintComponent (Graphics g)
   {
     super.paintComponent(g);

@@ -45,6 +45,11 @@ import java.awt.event.*;
   * the new variable foodRequest. The processing for the Check button is being worked on and the method generateRequest
   * is being modified to fit with it.
   * 
+  * @author of modifications by Top of The Stack (Alice Z)
+  * @version 5.1 06.06.16 Spent 0.5 hours
+  * Check button is now fully functioning and will unlock and move on to the next level if a certain amount of requests
+  * is fulfilled.
+  * 
   * <p>
   * <b> Instance variables: </b>
   * <p>
@@ -63,7 +68,7 @@ import java.awt.event.*;
 
 public class BasketFun extends JPanel{
   
-  private int levelNum, randAmnt1, randAmnt2, requestNum = 0;
+  private int levelNum, randAmnt1, randAmnt2, requestNum = 0, maxRequest;
   private String backName;
   private Color bCol;
   JFrame j;
@@ -85,7 +90,7 @@ public class BasketFun extends JPanel{
     backName=bName;
     bCol=w;
     j = jf;
-    j.setSize(1000,900);
+    j.setSize(1000,850);
     setPreferredSize(new Dimension(1000,900));
     s = new SpringLayout();
     setLayout(s);
@@ -101,27 +106,29 @@ public class BasketFun extends JPanel{
         //stop timer, make things appear Caroline
       }});
     
-    if (levelNum==1)
+    if (levelNum==1) //3 requests
     {
       foods[0] = "Apple";
       foods[1] ="Orange";
-      foods [2] = "Banana";
-      foods [3]="Grape";
-      foods[4]="Watermelon";
+      foods[2] = "Banana";
+      foods[3] ="Grape";
+      foods[4] ="Watermelon";
       makePanel1();
       maxNum = 3;
+      maxRequest = 3;
     }
-    else if (levelNum==2)
+    else if (levelNum==2) //5 requests
     {
       foods[0] = "Red";
-      foods[1] ="Yellow";
-      foods [2] = "Green";
-      foods [3]="Octopus";
-      foods[4]="Crab";
+      foods[1] = "Yellow";
+      foods[2] = "Green";
+      foods[3] = "Octopus";
+      foods[4] = "Crab";
       makePanel2();
       maxNum = 5;
+      maxRequest = 5;
     }
-    else
+    else //5 requests
     {
       foods[0] = "Tomato";
       foods[1] = "RedA";
@@ -130,6 +137,7 @@ public class BasketFun extends JPanel{
       foods[4]="Potato";
       makePanel3();
       maxNum = 7;
+      maxRequest = 5;
     }
     generateRequest(maxNum);
     s.putConstraint (s.NORTH, check, 50, s.NORTH, this);
@@ -146,13 +154,13 @@ public class BasketFun extends JPanel{
         {
           requestNum++;
           System.out.println("You did it!");
-          if(requestNum ==3)
+          if(requestNum ==3 && levelNum == 1)
           {
             if(!Menus.getLevelOneDone())
             {
               Menus.setLevelOneTrue();
               j.remove(BasketFun.this);
-              j.add(new BasketFun(2,"back2", new Color (37,177,77), j));
+              j.add(new BasketFun(2,"back2", new Color (0,126,255), j));
             }
             else
             {
@@ -160,6 +168,8 @@ public class BasketFun extends JPanel{
               j.remove(BasketFun.this);
               j.add(new BasketFun(3,"back3", new Color (37,177,77), j));
             }
+            j.revalidate();
+            j.repaint();
           }
           else
           {
@@ -203,23 +213,23 @@ public class BasketFun extends JPanel{
       randAmnt2= randomizeAmounts(maxNum);
       randFood = randomizeFoods(randAmnt1);
       randFood2 = randomizeFoods(randAmnt2);
-      if(randFood.indexOf("Apple") == 0)
+      if(randFood.indexOf("Apple") >= 0)
         foodRequest[0] = randAmnt1;
-      else if(randFood.indexOf("Orange")==0)
+      else if(randFood.indexOf("Orange")>=0)
         foodRequest[1]=randAmnt1;
-      else if(randFood.indexOf("Banana")==0)
+      else if(randFood.indexOf("Banana")>=0)
         foodRequest[2]=randAmnt1;
-      else if(randFood.indexOf("Grape")==0)
+      else if(randFood.indexOf("Grape")>=0)
         foodRequest[3]=randAmnt1;
       else
         foodRequest[4]=randAmnt1;
       if(randFood2.indexOf("Apple") >= 0)
         foodRequest[0] = randAmnt2;
-      else if(randFood2.indexOf("Orange")==0)
+      else if(randFood2.indexOf("Orange")>=0)
         foodRequest[1]=randAmnt2;
-      else if(randFood2.indexOf("Banana")==0)
+      else if(randFood2.indexOf("Banana")>=0)
         foodRequest[2]=randAmnt2;
-      else if(randFood2.indexOf("Grape")==0)
+      else if(randFood2.indexOf("Grape")>=0)
         foodRequest[3]=randAmnt2;
       else
         foodRequest[4]=randAmnt1;
@@ -229,13 +239,13 @@ public class BasketFun extends JPanel{
     {
       randAmnt1= randomizeAmounts(maxNum);
       randFood = randomizeFoods(randAmnt1);
-      if(randFood.indexOf("Apple") == 0)
+      if(randFood.indexOf("Apple") >= 0)
         foodRequest[0] = randAmnt1;
-      else if(randFood.indexOf("Orange")==0)
+      else if(randFood.indexOf("Orange")>=0)
         foodRequest[1]=randAmnt1;
-      else if(randFood.indexOf("Banana")==0)
+      else if(randFood.indexOf("Banana")>=0)
         foodRequest[2]=randAmnt1;
-      else if(randFood.indexOf("Grape")==0)
+      else if(randFood.indexOf("Grape")>=0)
         foodRequest[3]=randAmnt1;
       else
         foodRequest[4]=randAmnt1;
