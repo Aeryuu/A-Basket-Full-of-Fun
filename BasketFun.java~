@@ -276,8 +276,8 @@ public class BasketFun extends JPanel{
   private void makePanel1()
   {
     JButton apple =makeButtons(foods[0],"Click here to drop an apple into the basket!"), orange = makeButtons(foods[1],"Click here to drop an orange into the basket!");
-    JButton banana =makeButtons(foods[2],"Click here to drop a banana into the basket!"), grape = makeButtons(foods[3],"Click here to drop an orange into the basket!");
-    JButton watermelon =makeButtons(foods[4],"Click here to drop an apple into the basket!");
+    JButton banana =makeButtons(foods[2],"Click here to drop a banana into the basket!"), grape = makeButtons(foods[3],"Click here to drop a grape into the basket!");
+    JButton watermelon =makeButtons(foods[4],"Click here to drop a watermelon into the basket!");
     Image picture; ImageIcon icon;JLabel label, fruitNum;
     
     try
@@ -365,6 +365,114 @@ public class BasketFun extends JPanel{
     {}
   }
   
+  /**This method will make and add the underwater themed buttons to the panel for Level 2. */
+  private void makePanel2()
+  {
+    JButton red =makeButtons(foods[0],"Click here to drop a red fish into the basket!"), yellow = makeButtons(foods[1],"Click here to drop a yellow fish into the basket!");
+    JButton green =makeButtons(foods[2],"Click here to drop a green fish into the basket!"), octo = makeButtons(foods[3],"Click here to drop an octopus into the basket!");
+    JButton crab =makeButtons(foods[4],"Click here to drop a crab into the basket!");
+    Image picture; ImageIcon icon;JLabel label, fruitNum;
+    add(octo);
+    add(crab);
+    
+    try
+    {
+      s.putConstraint (s.WEST, red, 150, s.WEST, this);
+    add(red);
+      red.addActionListener(new ActionListener(){
+        public void actionPerformed(ActionEvent e)
+        {
+          foodCount[0]++;
+          revalidate();
+          repaint();
+        }});
+      picture =ImageIO.read (new File ("red.jpg"));
+      icon =new ImageIcon(picture);
+      label =new JLabel(icon);
+      s.putConstraint(s.WEST, label,460, s.WEST, BasketFun.this);
+      s.putConstraint(s.NORTH, label,50, s.SOUTH, banana);
+      add(label);
+      
+      s.putConstraint (s.WEST, yellow, 300, s.WEST, this);
+    add(yellow);
+      yellow.addActionListener(new ActionListener(){
+        public void actionPerformed(ActionEvent e)
+        { foodCount[1]++;
+          revalidate();
+          repaint();
+        }});
+      picture =ImageIO.read (new File ("orange.jpg"));
+      icon =new ImageIcon(picture);
+      label =new JLabel(icon);
+      s.putConstraint(s.WEST, label,460, s.WEST, BasketFun.this);
+      s.putConstraint(s.NORTH, label,180, s.SOUTH, banana);
+      add(label);
+      
+      s.putConstraint (s.WEST, green, 450, s.WEST, this);
+    add(green);
+      green.addActionListener(new ActionListener(){
+        public void actionPerformed(ActionEvent e)
+        {
+          foodCount[2]++;
+          revalidate();
+          repaint();
+        }});
+      picture =ImageIO.read (new File ("banana.jpg"));
+      icon =new ImageIcon(picture);
+      label =new JLabel(icon);
+      s.putConstraint(s.WEST, label,630, s.WEST, BasketFun.this);
+      s.putConstraint(s.NORTH, label,120, s.SOUTH, banana);
+      add(label);
+      
+      s.putConstraint (s.WEST, grape, 600, s.WEST, this);
+      add(grape);
+      grape.addActionListener(new ActionListener(){
+        public void actionPerformed(ActionEvent e)
+        {
+          foodCount[3]++;
+          revalidate();
+          repaint();
+        }});
+      picture =ImageIO.read (new File ("grape.jpg"));
+      icon =new ImageIcon(picture);
+      label =new JLabel(icon);
+      s.putConstraint(s.WEST, label,800, s.WEST, BasketFun.this);
+      s.putConstraint(s.NORTH, label,50, s.SOUTH, banana);
+      add(label);
+      
+      s.putConstraint (s.WEST, watermelon, 750, s.WEST, this);
+      add(watermelon);
+      watermelon.addActionListener(new ActionListener(){
+        public void actionPerformed(ActionEvent e)
+        {
+          foodCount[4]++;
+          revalidate();
+          repaint();
+        }});
+      picture =ImageIO.read (new File ("watermelon.jpg"));
+      icon =new ImageIcon(picture);
+      label =new JLabel(icon);
+      s.putConstraint(s.WEST, label,800, s.WEST, BasketFun.this);
+      s.putConstraint(s.NORTH, label,180, s.SOUTH, banana);
+      add(label);
+    }
+    catch(IOException e)
+    {}
+  }
+  
+  /**This method will make and add the farm themed buttons to the panel for Level 3.*/
+  private void makePanel3()
+  {
+    JButton tomato =makeButtons(foods[0],"Click here to drop a tomato into the basket!"), red = makeButtons(foods[1],"Click here to drop a red apple into the basket!");
+    JButton green =makeButtons(foods[2],"Click here to drop a green apple into the basket!"), carrot = makeButtons(foods[3],"Click here to drop a carrot into the basket!");
+    JButton potato =makeButtons(foods[4],"Click here to drop a potato into the basket!");
+    Image picture; ImageIcon icon;JLabel label, fruitNum;
+    add(makeButtons("Tomato","Click here to drop a tomato into the basket!"));
+    add(makeButtons("RedA","Click here to drop a red apple into the basket!"));
+    add(makeButtons("GreenA","Click here to drop a green apple into the basket!"));
+    add(makeButtons("Carrot","Click here to drop a carrot into the basket!"));
+    add(makeButtons("Potato","Click here to drop a potato into the basket!"));
+  }
   
   /**This method will draw the level backgrounds depending on the level.
     * @param g This will be used to draw the image of the background onto the panel.
@@ -396,7 +504,6 @@ public class BasketFun extends JPanel{
       }
       else 
       {
-        
         c=ImageIO.read(new File("Bunny"+".jpg"));
         g.drawImage(c,400,400,null);
       }
@@ -412,26 +519,6 @@ public class BasketFun extends JPanel{
     g.drawString(Integer.toString(foodCount[4]), 900, 330);
     g.setColor(new Color(51,51,51));
     
-  }
-  
-  /**This method will make and add the underwater themed buttons to the panel for Level 2. */
-  private void makePanel2()
-  {
-    add(makeButtons("Red","Click here to drop a red fish into the basket!"));
-    add(makeButtons("Yellow","Click here to drop a yellow fish into the basket!"));
-    add(makeButtons("Green","Click here to drop a green fish into the basket!"));
-    add(makeButtons("Octopus","Click here to drop an octopus into the basket!"));
-    add(makeButtons("Crab","Click here to drop a crab into the basket!"));
-  }
-  
-  /**This method will make and add the farm themed buttons to the panel for Level 3.*/
-  private void makePanel3()
-  {
-    add(makeButtons("Tomato","Click here to drop a tomato into the basket!"));
-    add(makeButtons("RedA","Click here to drop a red apple into the basket!"));
-    add(makeButtons("GreenA","Click here to drop a green apple into the basket!"));
-    add(makeButtons("Carrot","Click here to drop a carrot into the basket!"));
-    add(makeButtons("Potato","Click here to drop a potato into the basket!"));
   }
   
   /**This method creates the buttons based off of the passed in image file's name and the text for the tool tip. The
