@@ -17,6 +17,8 @@ import java.awt.image.*;
  * 
  * @author of modification C Liu on 05.26.16
  * @version 2 05.26.16 Spent 3 hours
+ * added paintComponents in order to create graphics(20 clouds), imported images,
+ * chnaged constraints in order to center buttons
  * 
  * @author Top Of the Stack (Alice Z)
  * @version 3 06.02.16 Spent 0.5 hour
@@ -32,6 +34,10 @@ import java.awt.image.*;
  * @version 3.1 06.04.16 Spent 1 hours
  * Added code into the ActionListeners of the Level 2 and Level 3 buttons so that unless the previous level is complete,
  * the user will get an error message telling them to complete the previous level.
+ * 
+ * @author of modification C Liu on 06.08.16
+ * @version 4 06.08.16 Spent  10 mins
+ * edited x values of graphics to center buttons
  * <p>
  * <b> Instance variables: </b>
  * <p>
@@ -53,7 +59,7 @@ public class Menus extends JPanel
   public Menus(int whichMenu, JFrame jf)
   {
     super();
-    setPreferredSize(new Dimension( 800,800));
+    setPreferredSize(new Dimension( 1000,900));
     setLayout(gbl);
     gbc.insets = new Insets(150,0,0,0);
     if(whichMenu ==0)
@@ -77,57 +83,57 @@ public class Menus extends JPanel
     
     super.paintComponent(g);
     g.setColor (Colours.skyB);
-    g.fillRect(0,0,800,800);
+    g.fillRect(0,0,1000,900);
     
     g.setColor (Color.white);
-    g.fillOval(20,40,200,30);
-    g.fillOval(550,40,120,30);
+    g.fillOval(120,40,200,30);
+    g.fillOval(650,40,120,30);
     
-    g.fillOval(20,540,200,30);
-    g.fillOval(90,560,220,40);
-    g.fillOval(40,520,90,40);
+    g.fillOval(120,540,200,30);
+    g.fillOval(190,560,220,40);
+    g.fillOval(140,520,90,40);
     
-    g.fillOval(550,540,120,30);
-    g.fillOval(570,550,220,40);
-    g.fillOval(610,520,90,70);
+    g.fillOval(680,540,120,30);
+    g.fillOval(690,550,220,40);
+    g.fillOval(710,520,90,70);
     
     for (int i=320;i<800;i=i+340)
     {
-      g.fillOval(300,i,200,50);
-      g.fillOval(190,i+30,300,60);
-      g.fillOval(430,i+30,200,50);
-      g.fillOval(310,i+50,200,50);
-      g.fillOval(170,i+60,200,30);
+      g.fillOval(400,i,200,50);
+      g.fillOval(290,i+30,300,60);
+      g.fillOval(530,i+30,200,50);
+      g.fillOval(410,i+50,200,50);
+      g.fillOval(270,i+60,200,30);
     }
     
-    g.fillOval(600,200,200,50);
-    g.fillOval(490,230,300,60);
-    g.fillOval(730,230,200,50);
-    g.fillOval(610,250,200,50);
-    g.fillOval(470,260,200,30);
+    g.fillOval(700,200,200,50);
+    g.fillOval(690,230,300,60);
+    g.fillOval(830,230,200,50);
+    g.fillOval(710,250,200,50);
+    g.fillOval(670,260,200,30);
     
-    g.fillOval(50,200,200,50);
-    g.fillOval(-60,230,300,60);
-    g.fillOval(180,230,200,50);
-    g.fillOval(60,250,200,50);
-    g.fillOval(-80,260,200,30);
+    g.fillOval(150,200,200,50);
+    g.fillOval(40,230,300,60);
+    g.fillOval(280,230,200,50);
+    g.fillOval(160,250,200,50);
+    g.fillOval(20,260,200,30);
     
     try{
       BufferedImage logo = ImageIO.read(new File ("Title.jpg"));
-      g.drawImage(logo,290,0,null);
+      g.drawImage(logo,400,0,null);
       
     }
     catch(Exception e){
     }
     //clouds
-    g.fillOval(0,40,70,20);
-    g.fillOval(40,20,70,50);
+    g.fillOval(30,40,70,20);
+    g.fillOval(60,20,70,50);
     g.fillOval(80,30,70,20);
     g.fillOval(140,40,70,30);
     
-    g.fillOval(660,20,70,50);
-    g.fillOval(600,30,70,20);
-    g.fillOval(660,40,70,30);
+    g.fillOval(680,20,70,50);
+    g.fillOval(620,30,70,20);
+    g.fillOval(680,40,70,30);
     g.fillOval(700,40,80,30);
     
   }
@@ -229,7 +235,7 @@ public class Menus extends JPanel
       public void actionPerformed(ActionEvent e)
       {
         j.remove(Menus.this);
-        j.add(new BasketFun(1,"back1", new Color (37,177,77) , j));
+        //j.add(new BasketFun(1,"back1", new Color (37,177,77) , j));
         j.revalidate();
         j.repaint();
       }});
@@ -239,11 +245,11 @@ public class Menus extends JPanel
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        if(levelOneDone)
-          new BasketFun(2,"back2", new Color (37,177,77), j);
-        else
+       // if(levelOneDone)
+         // new BasketFun(2,"back2", new Color (37,177,77), j);
+       // else
           //JOptionpane
-          System.out.println(":p");
+        //  System.out.println(":p");
       }});
     
     gbc.gridy=3;
@@ -251,11 +257,11 @@ public class Menus extends JPanel
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        if(levelTwoDone)
-          new BasketFun(3,"back3", new Color (37,177,77), j);
-        else
+     //   if(levelTwoDone)
+         // new BasketFun(3,"back3", new Color (37,177,77), j);
+     //   else
           //JOptionpane
-          System.out.println(":p");
+      //    System.out.println(":p");
       }});
     
     gbc.gridy=4;
@@ -263,7 +269,10 @@ public class Menus extends JPanel
     exit.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        new Menus(0,j);
+        j.remove(Menus.this);
+        j.add(new Menus(0,j));
+        j.revalidate();
+        j.repaint();
       }});
     
     revalidate();

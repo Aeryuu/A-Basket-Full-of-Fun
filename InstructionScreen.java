@@ -15,6 +15,10 @@ import java.awt.event.*;
  * @author of modification Top of the Stack (Alice Zhang)
  * @version 2 06.04.16 Spent 0.5 hour
  * Back button is now working and has the ability to switch to the menu panel.
+ * 
+ * @author of modification C Liu on 06.08.16
+ * @version 4 06.08.16 Spent  10 mins
+ * edited x values of graphics to center buttons and graphics
  */ 
 public class InstructionScreen extends JPanel {
   JPanel i = this;
@@ -24,7 +28,6 @@ public class InstructionScreen extends JPanel {
     */
   public InstructionScreen(JFrame j) { 
     super();
-    setPreferredSize(new Dimension( 800,800));
     FlowLayout f=new FlowLayout();
     f.setAlignment (FlowLayout.LEFT);
     setLayout(f);
@@ -51,25 +54,25 @@ public class InstructionScreen extends JPanel {
   {
     super.paintComponent(g);
     g.setColor (Colours.skyB);
-    g.fillRect(0,0,800,800);
+    g.fillRect(0,0,1000,900);
     Font f=new Font("Serif", Font.BOLD,40);
     g.setFont(f );
     g.setColor(Colours.lGreen);
-    g.drawString("INSTRUCTIONS!", 250,50);
-    g.fill3DRect(50,75,700,25,true);
+    g.drawString("INSTRUCTIONS!", 350,50);
+    g.fill3DRect(50,75,900,25,true);
     //clouds
     g.setColor (Color.white);
-    g.fillOval(20,40,200,30);
-    g.fillOval(600,40,120,30);
+    g.fillOval(120,40,200,30);
+    g.fillOval(700,40,120,30);
     
-    g.fillOval(20,40,70,20);
-    g.fillOval(60,20,70,50);
-    g.fillOval(100,30,70,20);
-    g.fillOval(160,40,70,30);
+    g.fillOval(120,40,70,20);
+    g.fillOval(160,20,70,50);
+    g.fillOval(200,30,70,20);
+    g.fillOval(260,40,70,30);
     
-    g.fillOval(640,20,70,50);
-    g.fillOval(600,30,70,20);
-    g.fillOval(660,40,70,30);
-    g.fillOval(700,40,80,30);
+    g.fillOval(740,20,70,50);
+    g.fillOval(700,30,70,20);
+    g.fillOval(760,40,70,30);
+    g.fillOval(800,40,80,30);
   }  
 }

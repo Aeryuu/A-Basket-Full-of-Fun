@@ -44,6 +44,11 @@ import java.awt.event.ActionEvent;
   * After the intro is done, a dialog box now pops up prompting the user to enter their name. If the name is acceptable,
   * the dialog box would close and the main menu screen would appear. If the name is not acceptable (for example, it
   * is blank) an error message would pop up.
+  * 
+  * @author of modification C Liu on 06.08.16
+  * @version 4 06.08.16 Spent  10 mins
+  * edited stop value in order to center graphics
+  * 
   */
 public class SplashScreen extends JPanel implements ActionListener {
   private BufferedImage logo=null;
@@ -57,8 +62,8 @@ public class SplashScreen extends JPanel implements ActionListener {
     * @param a ActionEvent passes in an action event.
     */
   public void actionPerformed(ActionEvent a) {
-    count++;
-    if (count==1100)
+    count=count+2;
+    if (count==1190)
     {
       t.stop();
       JDialog myDialog = new JDialog(j,"Text");
@@ -105,7 +110,7 @@ public class SplashScreen extends JPanel implements ActionListener {
     super.paintComponent(g);
     try{
       g.setColor (Colours.skyB);
-      g.fillRect(0,0,800,800);
+      g.fillRect(0,0,1000,900);
       BufferedImage c = ImageIO.read(new File ("cloud.jpg"));
       logo = ImageIO.read(new File ("logo.jpg"));
       BufferedImage logo1 = ImageIO.read(new File ("Title2.jpg"));

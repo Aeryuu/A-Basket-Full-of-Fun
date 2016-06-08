@@ -23,6 +23,10 @@ import java.awt.geom.*;
  * @version 3 06.02.16 Spent 1 hour
  * Edited the printing screen so that the buttons don't appear. Printing button and back to menu button are now fully
  * functional. The flow between high scores and main menu are smooth.
+ * 
+ * @author of modification C Liu on 06.08.16
+ * @version 4 06.08.16 Spent  10 mins
+ * edited x values of graphics to center buttons and graphics
  * <p>
  * <b> Instance variables: </b>
  * <p>
@@ -82,27 +86,27 @@ public class HighScores extends JPanel
     
     super.paintComponent(g);
     g.setColor (Colours.skyB);
-    g.fillRect(0,0,800,800);
+    g.fillRect(0,0,1000,900);
     Font f=new Font("Serif", Font.BOLD,40);
     g.setFont(f );
     g.setColor(Colours.lGreen);
-    g.drawString("HIGH SCORES!", 250,50);
-    g.fill3DRect(50,75,675,25,true);
-    g.fill3DRect(50,675,675,25,true);
+    g.drawString("HIGH SCORES!", 350,50);
+    g.fill3DRect(50,75,850,25,true);
+    g.fill3DRect(50,775,850,25,true);
     //clouds
     g.setColor (Color.white);
-    g.fillOval(20,40,200,30);
-    g.fillOval(550,40,120,30);
+    g.fillOval(120,40,200,30);
+    g.fillOval(650,40,120,30);
     
-    g.fillOval(0,40,70,20);
-    g.fillOval(40,20,70,50);
-    g.fillOval(80,30,70,20);
-    g.fillOval(140,40,70,30);
+    g.fillOval(100,40,70,20);
+    g.fillOval(140,20,70,50);
+    g.fillOval(180,30,70,20);
+    g.fillOval(240,40,70,30);
     
-    g.fillOval(660,20,70,50);
-    g.fillOval(600,30,70,20);
+    g.fillOval(760,20,70,50);
+    g.fillOval(700,30,70,20);
     g.fillOval(660,40,70,30);
-    g.fillOval(700,40,80,30);
+    g.fillOval(800,40,80,30);
   }
   
   /**
