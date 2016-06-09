@@ -56,6 +56,12 @@ import javax.swing.Timer;
   * All levels are working, buttons are now located on the basket rather than at the top of the screen, all buttons
   * except pause are working, and the transitions between levels are smooth. Added an instance variable used to store
   * the user's name.
+  * 
+  * @author of modifications by Top of The Stack (Caroline L)
+  * @version 7 06.09.16 Spent 1 hour
+  * addition of the opening of the CHM file, try catch added in order to errortap opening of CHM.
+  * Added Timer and added implementation of  pause button and score creation. Creation of pause method. 
+  * 
   * <p>
   * <b> Instance variables: </b>
   * <p>
@@ -105,7 +111,8 @@ public class BasketFun extends JPanel{
     * all levels have in common: pause, empty, and check, are made and added here as well. The layout used is flow. 
     * Depending on the level selected, the backgrounds, button creation methods, and themes are different. The if
     * statement is to determine which button creation method to call. The inner method is to open the chm file when
-    * the user presses F1.
+    * the user presses F1. The try catch used in this method is used to  errotrap the opening of the CHM.
+    * The parameter for the inner methods is e - a reference variable for ActionEvent.
     * @param levelNum This int is used to store which level the user has chosen to play.
     * @param bName This String is used to store the name of the background file.
     * @param s This Color is used to store the colour of the background.
@@ -122,7 +129,14 @@ public class BasketFun extends JPanel{
     this.getInputMap().put(KeyStroke.getKeyStroke("F1"),"pressed");
     this.getActionMap().put("pressed",new AbstractAction() {
       public void actionPerformed(ActionEvent e) {
-        //insert chm file Caroline
+        try 
+        {
+         Runtime.getRuntime().exec("hh.exe GameHelp.chm");
+        }
+        catch(IOException i)
+        {
+          System.out.println("HI");
+        }
       }});
     JButton check=new JButton("CHECK!"), empty=new JButton ("Empty the basket!"),pause = makeButtons("Pause","Click here to pause the game!");
     s.putConstraint (s.NORTH, pause, 0, s.WEST, this);
@@ -130,7 +144,7 @@ public class BasketFun extends JPanel{
     pause.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        //stop timer, make things appear Caroline
+       pause();
       }});
     int maxNum;
     if (levelNum==1) //3 requests
@@ -672,6 +686,30 @@ public class BasketFun extends JPanel{
     button.setBackground(bCol);
     button.setToolTipText(text);
     return button;
+  }
+  
+  public void pause()
+  {
+    int result = JOptionPane.showConfirmDialog((Component) null, "Would you like to go back to the main menu, or continue playing the game?","PAUSE", JOptionPane.YES_NO_CANCEL_OPTION);
+    if (result==0)
+    {
+      j.remove(BasketFun.this);
+        j.add(new Menus(0,j));
+        j.revalidate();
+        j.repaint();
+    }
+    else if (result==1)
+    {
+      
+    }
+    else 
+    {
+      
+      
+    }
+
+    
+    
   }
   
 //  public static void main(String[] args) { 

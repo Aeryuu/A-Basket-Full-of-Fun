@@ -40,7 +40,6 @@ public class HighScores extends JPanel
   private final int MAX_HIGHSCORES = 10;
   private String [][] highScores = new String[MAX_HIGHSCORES][3];
   JFrame j;
-  JPanel b = this;
   /**
    * The class constructor will read in the high scores from the file and store them in the class's String array.
    */ 
@@ -229,7 +228,7 @@ public class HighScores extends JPanel
     exit.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        j.remove(b);
+        j.remove(HighScores.this);
         j.add(new Menus(0,j));
         j.revalidate();
         j.repaint();

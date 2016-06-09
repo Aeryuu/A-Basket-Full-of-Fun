@@ -117,8 +117,6 @@ public class BasketFun extends JPanel{
     backName=bName;
     bCol=w;
     j = jf;
-    j.setSize(1000,850);
-    setPreferredSize(new Dimension(1000,900));
     s = new SpringLayout();
     setLayout(s);
     this.getInputMap().put(KeyStroke.getKeyStroke("F1"),"pressed");
