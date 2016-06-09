@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.io.*;
 import javax.imageio.*;
 import java.awt.event.*;
+import javax.swing.Timer;
 
 /** The BasketFun class creates the game screen panel and contains all of the game logic. The game screen will have 5
   * food buttons that are different depending on the selected level, a pause button to pause the game midway, a
@@ -50,6 +51,11 @@ import java.awt.event.*;
   * Check button is now fully functioning and will unlock and move on to the next level if a certain amount of requests
   * is fulfilled.
   * 
+  * @author of modifications by Top of The Stack (Alice Z)
+  * @version 6 06.07.16 Spent 4 hours
+  * All levels are working, buttons are now located on the basket rather than at the top of the screen, all buttons
+  * except pause are working, and the transitions between levels are smooth. Added an instance variable used to store
+  * the user's name.
   * <p>
   * <b> Instance variables: </b>
   * <p>
@@ -59,33 +65,54 @@ import java.awt.event.*;
   * <p>
   * <b> backName </b> This String is used to store the file name of the background image being used for the level.
   * <p>
-  * <b> j </b> This referene variable is used to point at the JFrame object that is created in the constructor.
+  * <b> j </b> This reference variable is used to point at the JFrame object that is created in the constructor.
   * <p>
   * <b> chars </b> This String array contains the names of the animal JPG's used in our game.
   * <p>
   * <b> foods </b> This String array contains the names of the foods.
+  * <p>
+  * <b> randAmnt1 </b> This int is used to store the first randomly generated amount of foods. Used in all levels.
+  * <p>
+  * <b> randAmnt2 </b> This int is used to store the second randomly generated amount of foods. Used only in level 3.
+  * <p>
+  * <b> requestNum </b> This int stores the number of requests that the user has already completed.
+  * <p>
+  * <b> user </b> This String is used to store the name of the user.
+  * <p>
+  * <b> s </b> This SpringLayout reference variable is used to refer to a spring layout object and is used to format
+  * the game screen.
+  * <p>
+  * <b> foodCount </b> This int array is used to store the amount of food that the user clicks.
+  * <p>
+  * <b> foodRequest </b> This int array is used to store the amount of food that is needed to fulfill the request. If
+  * foodCount equals foodRequest, then, the user fulfills a request.
+  * <p>
+  * <b> requestText </b> This JLabel is used to display what each character wants onto the screen.
   */ 
 
 public class BasketFun extends JPanel{
-  
-  private int levelNum, randAmnt1, randAmnt2, requestNum = 0, maxRequest;
-  private String backName;
+  Timer timer;
+  private int levelNum, randAmnt1, randAmnt2, requestNum = 0;
+  private String backName, user;
   private Color bCol;
-  JFrame j;
-  String [] chars, foods = new String [5];
+  private JFrame j;
+  private String [] chars, foods = new String [5];
   private SpringLayout s;
   private int [] foodCount = {0,0,0,0,0}, foodRequest = new int[5];
+  private JLabel requestText;
   
   /**The class constructor will create a JPanel that is added to a JFrame that is also created here. The buttons that
     * all levels have in common: pause, empty, and check, are made and added here as well. The layout used is flow. 
     * Depending on the level selected, the backgrounds, button creation methods, and themes are different. The if
-    * statement is to determine which button creation method to call.
+    * statement is to determine which button creation method to call. The inner method is to open the chm file when
+    * the user presses F1.
     * @param levelNum This int is used to store which level the user has chosen to play.
     * @param bName This String is used to store the name of the background file.
     * @param s This Color is used to store the colour of the background.
     */
-  public BasketFun(int level, String bName, Color w, JFrame jf ) { 
+  public BasketFun(int level, String bName, Color w, JFrame jf, String userName) { 
     super();
+    user = userName;
     levelNum=level;
     backName=bName;
     bCol=w;
@@ -94,10 +121,12 @@ public class BasketFun extends JPanel{
     setPreferredSize(new Dimension(1000,900));
     s = new SpringLayout();
     setLayout(s);
-    JButton check=new JButton("CHECK!");
-    JButton empty=new JButton ("Empty the basket!");
-    int maxNum;
-    JButton pause = makeButtons("Pause","Click here to pause the game!");
+    this.getInputMap().put(KeyStroke.getKeyStroke("F1"),"pressed");
+    this.getActionMap().put("pressed",new AbstractAction() {
+      public void actionPerformed(ActionEvent e) {
+        //insert chm file Caroline
+      }});
+    JButton check=new JButton("CHECK!"), empty=new JButton ("Empty the basket!"),pause = makeButtons("Pause","Click here to pause the game!");
     s.putConstraint (s.NORTH, pause, 0, s.WEST, this);
     add(pause);
     pause.addActionListener(new ActionListener(){
@@ -105,17 +134,16 @@ public class BasketFun extends JPanel{
       {
         //stop timer, make things appear Caroline
       }});
-    
+    int maxNum;
     if (levelNum==1) //3 requests
     {
       foods[0] = "Apple";
-      foods[1] ="Orange";
+      foods[1] = "Orange";
       foods[2] = "Banana";
-      foods[3] ="Grape";
-      foods[4] ="Watermelon";
+      foods[3] = "Grape";
+      foods[4] = "Watermelon";
       makePanel1();
       maxNum = 3;
-      maxRequest = 3;
     }
     else if (levelNum==2) //5 requests
     {
@@ -126,64 +154,122 @@ public class BasketFun extends JPanel{
       foods[4] = "Crab";
       makePanel2();
       maxNum = 5;
-      maxRequest = 5;
     }
     else //5 requests
     {
       foods[0] = "Tomato";
       foods[1] = "RedA";
-      foods [2] = "GreenA";
-      foods [3]="Carrot";
-      foods[4]="Potato";
+      foods[2] = "GreenA";
+      foods[3] = "Carrot";
+      foods[4] = "Potato";
       makePanel3();
       maxNum = 7;
-      maxRequest = 5;
     }
     generateRequest(maxNum);
-    s.putConstraint (s.NORTH, check, 50, s.NORTH, this);
+    s.putConstraint (s.NORTH, check, 220, s.NORTH, this);
+    s.putConstraint (s.WEST, check, 350, s.WEST, this);
     add(check);
     check.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
         for(int x = 0;x < 5;x++)
         {
-        System.out.println(foodCount[x] + " count");
-        System.out.println(foodRequest[x] + " request");
+          System.out.println(foodCount[x] + " count");
+          System.out.println(foodRequest[x] + " request");
         }
         if(foodAreSame())
         {
           requestNum++;
-          System.out.println("You did it!");
+          remove(requestText);
+          revalidate();
+          repaint();
           if(requestNum ==3 && levelNum == 1)
           {
             if(!Menus.getLevelOneDone())
             {
               Menus.setLevelOneTrue();
               j.remove(BasketFun.this);
-              j.add(new BasketFun(2,"back2", new Color (0,126,255), j));
+              j.add(new BasketFun(2,"back2", new Color (0,126,255), j, user));
             }
-            else
+          }
+          else if (requestNum == 5)
+          {
+            if(levelNum == 2)
             {
               Menus.setLevelTwoTrue();
               j.remove(BasketFun.this);
-              j.add(new BasketFun(3,"back3", new Color (37,177,77), j));
+              j.add(new BasketFun(3,"back3", new Color (37,177,77), j, user));
             }
-            j.revalidate();
-            j.repaint();
+            else
+              if(levelNum ==3)
+            {
+              //String updateScore = user + " " + score + " " + levelNum;
+              HighScores h = new HighScores(j);
+              //h.update(updateScore.split());
+              h.setUpHighScoresPanel();
+              j.remove(BasketFun.this);
+              j.add(h);
+            }
           }
           else
           {
-          for(int x = 0;x < 5;x++)
-          foodRequest[x]=0;
+            for(int x = 0;x < 5;x++)
+              foodRequest[x]=0;
             generateRequest(maxNum);
           }
-          for(int x = 0;x < 5;x++)
-          foodCount[x] = 0;
-    revalidate();
-    repaint();
+          j.revalidate();
+          j.repaint();
         }
+        else
+        {
+          timer=new Timer(3000,this);
+          timer.start();
+          remove(requestText);
+          JLabel text = new JLabel("That isn't right! Try again!");
+          if(levelNum == 1)
+          {
+            s.putConstraint (s.NORTH, requestText,640, s.NORTH, BasketFun.this);
+            s.putConstraint (s.WEST, requestText, 560, s.WEST, BasketFun.this);
+          }
+          else if(levelNum == 2)
+          {
+            s.putConstraint (s.NORTH, requestText,500, s.NORTH, BasketFun.this);
+            s.putConstraint (s.WEST, requestText, 540, s.WEST, BasketFun.this);
+          }
+          else
+          {
+            s.putConstraint (s.NORTH, text,470, s.NORTH, BasketFun.this);
+            s.putConstraint (s.WEST, text, 540, s.WEST, BasketFun.this);
+          }
+          add(text);
+          revalidate();
+          repaint();
+          timer.stop();
+          remove(text);
+          if(levelNum == 1)
+          {
+            s.putConstraint (s.NORTH, requestText,640, s.NORTH, BasketFun.this);
+            s.putConstraint (s.WEST, requestText, 560, s.WEST, BasketFun.this);
+          }
+          else if(levelNum == 2)
+          {
+            s.putConstraint (s.NORTH, requestText,500, s.NORTH, BasketFun.this);
+            s.putConstraint (s.WEST, requestText, 540, s.WEST, BasketFun.this);
+          }
+          else
+          {
+            s.putConstraint (s.NORTH, requestText,500, s.NORTH, BasketFun.this);
+            s.putConstraint (s.WEST, requestText, 540, s.WEST, BasketFun.this);
+          }
+          add(requestText);
+          revalidate();
+          repaint();
+        }
+        for(int x = 0;x < 5;x++)
+          foodCount[x] = 0;
       }});
-    s.putConstraint (s.NORTH, empty, 25, s.WEST, this);
+    s.putConstraint (s.NORTH, empty, 300, s.NORTH, this);
+    s.putConstraint (s.WEST, empty, 300, s.WEST, this);
     add(empty); 
     empty.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
@@ -196,13 +282,16 @@ public class BasketFun extends JPanel{
     revalidate();
     repaint();
   }
- 
+  
+  public void actionPerformed(ActionEvent a) {
+    timer.stop();
+  }
   public boolean foodAreSame()
   {
     for(int x= 0;x < 5;x ++)
       if(foodCount[x]!=foodRequest[x])
       return false;
-      return true;
+    return true;
   }
   private void generateRequest(int maxNum)
   {
@@ -210,55 +299,110 @@ public class BasketFun extends JPanel{
     if(levelNum == 3)
     {
       randAmnt1= randomizeAmounts(maxNum);
-      randAmnt2= randomizeAmounts(maxNum);
       randFood = randomizeFoods(randAmnt1);
-      randFood2 = randomizeFoods(randAmnt2);
-      if(randFood.indexOf("Apple") >= 0)
+      if(randFood.indexOf("Tomato") >= 0)
         foodRequest[0] = randAmnt1;
-      else if(randFood.indexOf("Orange")>=0)
+      else if(randFood.indexOf("Red")>=0)
+      {
         foodRequest[1]=randAmnt1;
-      else if(randFood.indexOf("Banana")>=0)
+        if(randFood.indexOf("s")>=0)
+          randFood = " Red Apples";
+        else
+          randFood = " Red Apple";
+      }
+      else if(randFood.indexOf("Green")>=0)
+      {
         foodRequest[2]=randAmnt1;
-      else if(randFood.indexOf("Grape")>=0)
+        if(randFood.indexOf("s")>=0)
+          randFood = " Green Apples";
+        else
+          randFood = " Green Apple";
+      }
+      else if(randFood.indexOf("Carrot")>=0)
         foodRequest[3]=randAmnt1;
       else
         foodRequest[4]=randAmnt1;
-      if(randFood2.indexOf("Apple") >= 0)
+      randAmnt2= randomizeAmounts(maxNum);
+      randFood2 = randomizeFoods(randAmnt2);
+      if(randFood2.indexOf("Tomato") >= 0)
         foodRequest[0] = randAmnt2;
-      else if(randFood2.indexOf("Orange")>=0)
+      else if(randFood2.indexOf("Red")>=0)
+      {
         foodRequest[1]=randAmnt2;
-      else if(randFood2.indexOf("Banana")>=0)
+        if(randFood2.indexOf("s")>=0)
+          randFood2 = " Red Apples";
+        else
+          randFood2 = " Red Apple";
+      }
+      else if(randFood2.indexOf("Green")>=0)
+      {
         foodRequest[2]=randAmnt2;
-      else if(randFood2.indexOf("Grape")>=0)
+        if(randFood2.indexOf("s")>=0)
+          randFood2 = " Green Apples";
+        else
+          randFood2 = " Green Apple";
+      }
+      else if(randFood2.indexOf("Carrot")>=0)
         foodRequest[3]=randAmnt2;
       else
-        foodRequest[4]=randAmnt1;
+        foodRequest[4]=randAmnt2;
       System.out.println("I would like to have " + randAmnt1 + randFood + " and " + randAmnt2 + randFood2 +".");
+      requestText = new JLabel("<html><body>I would like to have<br>" + randAmnt1 + randFood + " and <br>" + randAmnt2 + randFood2 +".</body></html>");
+      s.putConstraint (s.NORTH, requestText,460, s.NORTH, BasketFun.this);
+      s.putConstraint (s.WEST, requestText, 570, s.WEST, BasketFun.this);
+      add(requestText);
     }
     else
     {
       randAmnt1= randomizeAmounts(maxNum);
       randFood = randomizeFoods(randAmnt1);
-      if(randFood.indexOf("Apple") >= 0)
+      if(randFood.indexOf("Apple") >= 0 || randFood.indexOf("Red") >= 0 )
         foodRequest[0] = randAmnt1;
-      else if(randFood.indexOf("Orange")>=0)
+      else if(randFood.indexOf("Orange")>=0|| randFood.indexOf("Yellow") >= 0 )
         foodRequest[1]=randAmnt1;
-      else if(randFood.indexOf("Banana")>=0)
+      else if(randFood.indexOf("Banana")>=0|| randFood.indexOf("Green") >= 0 )
         foodRequest[2]=randAmnt1;
-      else if(randFood.indexOf("Grape")>=0)
+      else if(randFood.indexOf("Grape")>=0|| randFood.indexOf("Octo") >= 0 )
         foodRequest[3]=randAmnt1;
       else
         foodRequest[4]=randAmnt1;
       System.out.println("I would like to have " + randAmnt1 + randFood +".");
+      requestText = new JLabel("<html><body>I would like to have <br>" + randAmnt1 + randFood +".</body><html>");
+      if(levelNum ==1)
+      {
+        s.putConstraint (s.NORTH, requestText,640, s.NORTH, BasketFun.this);
+        s.putConstraint (s.WEST, requestText, 560, s.WEST, BasketFun.this);
+      }
+      else
+      {
+        s.putConstraint (s.NORTH, requestText,415, s.NORTH, BasketFun.this);
+        s.putConstraint (s.WEST, requestText, 180, s.WEST, BasketFun.this);
+      }
+      add(requestText);
     }
   }
   
   private String randomizeFoods(int randAmnt)
   {
     int r = (int)(Math.random()*5);
-    if(randAmnt !=1 && (levelNum != 2 || (r == 4 || r == 5)))
+    if(foodRequest[r] != 0)
+    {
+      System.out.println("redone");
+      return randomizeFoods(randAmnt);
+    }
+    if(randAmnt !=1 && (levelNum != 2 || (r == 4)))
     {
       return " "+foods[r]+"s";
+    }
+    if(levelNum == 2)
+    {
+      if(r == 0 || r == 1 || r == 2)
+        return " " + foods[r] + " Fish";
+      else
+        if(randAmnt > 1)
+        return " Octopi";
+      else
+        return " Octopus";
     }
     return " "+foods[r];
   }
@@ -278,91 +422,60 @@ public class BasketFun extends JPanel{
     JButton apple =makeButtons(foods[0],"Click here to drop an apple into the basket!"), orange = makeButtons(foods[1],"Click here to drop an orange into the basket!");
     JButton banana =makeButtons(foods[2],"Click here to drop a banana into the basket!"), grape = makeButtons(foods[3],"Click here to drop a grape into the basket!");
     JButton watermelon =makeButtons(foods[4],"Click here to drop a watermelon into the basket!");
-    Image picture; ImageIcon icon;JLabel label, fruitNum;
     
-    try
-    {
-      s.putConstraint (s.WEST, apple, 150, s.WEST, this);
-      add(apple);
-      apple.addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent e)
-        {
-          foodCount[0]++;
-          revalidate();
-          repaint();
-        }});
-      picture =ImageIO.read (new File ("apple.jpg"));
-      icon =new ImageIcon(picture);
-      label =new JLabel(icon);
-      s.putConstraint(s.WEST, label,460, s.WEST, BasketFun.this);
-      s.putConstraint(s.NORTH, label,50, s.SOUTH, banana);
-      add(label);
-      
-      s.putConstraint (s.WEST, orange, 300, s.WEST, this);
-      add(orange);
-      orange.addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent e)
-        { foodCount[1]++;
-          revalidate();
-          repaint();
-        }});
-      picture =ImageIO.read (new File ("orange.jpg"));
-      icon =new ImageIcon(picture);
-      label =new JLabel(icon);
-      s.putConstraint(s.WEST, label,460, s.WEST, BasketFun.this);
-      s.putConstraint(s.NORTH, label,180, s.SOUTH, banana);
-      add(label);
-      
-      s.putConstraint (s.WEST, banana, 450, s.WEST, this);
-      add(banana);
-      banana.addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent e)
-        {
-          foodCount[2]++;
-          revalidate();
-          repaint();
-        }});
-      picture =ImageIO.read (new File ("banana.jpg"));
-      icon =new ImageIcon(picture);
-      label =new JLabel(icon);
-      s.putConstraint(s.WEST, label,630, s.WEST, BasketFun.this);
-      s.putConstraint(s.NORTH, label,120, s.SOUTH, banana);
-      add(label);
-      
-      s.putConstraint (s.WEST, grape, 600, s.WEST, this);
-      add(grape);
-      grape.addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent e)
-        {
-          foodCount[3]++;
-          revalidate();
-          repaint();
-        }});
-      picture =ImageIO.read (new File ("grape.jpg"));
-      icon =new ImageIcon(picture);
-      label =new JLabel(icon);
-      s.putConstraint(s.WEST, label,800, s.WEST, BasketFun.this);
-      s.putConstraint(s.NORTH, label,50, s.SOUTH, banana);
-      add(label);
-      
-      s.putConstraint (s.WEST, watermelon, 750, s.WEST, this);
-      add(watermelon);
-      watermelon.addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent e)
-        {
-          foodCount[4]++;
-          revalidate();
-          repaint();
-        }});
-      picture =ImageIO.read (new File ("watermelon.jpg"));
-      icon =new ImageIcon(picture);
-      label =new JLabel(icon);
-      s.putConstraint(s.WEST, label,800, s.WEST, BasketFun.this);
-      s.putConstraint(s.NORTH, label,180, s.SOUTH, banana);
-      add(label);
-    }
-    catch(IOException e)
-    {}
+    s.putConstraint (s.WEST, apple, 460, s.WEST, this);
+    s.putConstraint(s.NORTH, apple,110, s.NORTH, this);
+    add(apple);
+    apple.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      {
+        foodCount[0]++;
+        revalidate();
+        repaint();
+      }});
+    
+    s.putConstraint (s.WEST, orange, 460, s.WEST, this);
+    s.putConstraint(s.NORTH, orange,300, s.NORTH, this);
+    add(orange);
+    orange.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      { foodCount[1]++;
+        revalidate();
+        repaint();
+      }});
+    
+    s.putConstraint (s.WEST, banana, 600, s.WEST, this);
+    s.putConstraint(s.NORTH, banana,210, s.NORTH, this);
+    add(banana);
+    banana.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      {
+        foodCount[2]++;
+        revalidate();
+        repaint();
+      }});
+    
+    s.putConstraint (s.WEST, grape, 790, s.WEST, this);
+    s.putConstraint(s.NORTH, grape,110, s.NORTH, this);
+    add(grape);
+    grape.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      {
+        foodCount[3]++;
+        revalidate();
+        repaint();
+      }});
+    
+    s.putConstraint (s.WEST, watermelon, 780, s.WEST, this);
+    s.putConstraint(s.NORTH, watermelon,300, s.NORTH, this);
+    add(watermelon);
+    watermelon.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      {
+        foodCount[4]++;
+        revalidate();
+        repaint();
+      }});
   }
   
   /**This method will make and add the underwater themed buttons to the panel for Level 2. */
@@ -371,93 +484,61 @@ public class BasketFun extends JPanel{
     JButton red =makeButtons(foods[0],"Click here to drop a red fish into the basket!"), yellow = makeButtons(foods[1],"Click here to drop a yellow fish into the basket!");
     JButton green =makeButtons(foods[2],"Click here to drop a green fish into the basket!"), octo = makeButtons(foods[3],"Click here to drop an octopus into the basket!");
     JButton crab =makeButtons(foods[4],"Click here to drop a crab into the basket!");
-    Image picture; ImageIcon icon;JLabel label, fruitNum;
-    add(octo);
-    add(crab);
     
-    try
-    {
-      s.putConstraint (s.WEST, red, 150, s.WEST, this);
+    s.putConstraint(s.WEST, red,460, s.WEST, this);
+    s.putConstraint(s.NORTH, red,110, s.NORTH, this);
     add(red);
-      red.addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent e)
-        {
-          foodCount[0]++;
-          revalidate();
-          repaint();
-        }});
-      picture =ImageIO.read (new File ("red.jpg"));
-      icon =new ImageIcon(picture);
-      label =new JLabel(icon);
-      s.putConstraint(s.WEST, label,460, s.WEST, BasketFun.this);
-      s.putConstraint(s.NORTH, label,50, s.SOUTH, banana);
-      add(label);
-      
-      s.putConstraint (s.WEST, yellow, 300, s.WEST, this);
+    red.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      {
+        foodCount[0]++;
+        revalidate();
+        repaint();
+      }});
+    
+    s.putConstraint(s.WEST, yellow,460, s.WEST, this);
+    s.putConstraint(s.NORTH, yellow,300, s.NORTH, this);
     add(yellow);
-      yellow.addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent e)
-        { foodCount[1]++;
-          revalidate();
-          repaint();
-        }});
-      picture =ImageIO.read (new File ("orange.jpg"));
-      icon =new ImageIcon(picture);
-      label =new JLabel(icon);
-      s.putConstraint(s.WEST, label,460, s.WEST, BasketFun.this);
-      s.putConstraint(s.NORTH, label,180, s.SOUTH, banana);
-      add(label);
-      
-      s.putConstraint (s.WEST, green, 450, s.WEST, this);
+    yellow.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      { 
+        foodCount[1]++;
+        revalidate();
+        repaint();
+      }});
+    
+    s.putConstraint(s.WEST, green,600, s.WEST, this);
+    s.putConstraint(s.NORTH, green,210, s.NORTH, this);
     add(green);
-      green.addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent e)
-        {
-          foodCount[2]++;
-          revalidate();
-          repaint();
-        }});
-      picture =ImageIO.read (new File ("banana.jpg"));
-      icon =new ImageIcon(picture);
-      label =new JLabel(icon);
-      s.putConstraint(s.WEST, label,630, s.WEST, BasketFun.this);
-      s.putConstraint(s.NORTH, label,120, s.SOUTH, banana);
-      add(label);
-      
-      s.putConstraint (s.WEST, grape, 600, s.WEST, this);
-      add(grape);
-      grape.addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent e)
-        {
-          foodCount[3]++;
-          revalidate();
-          repaint();
-        }});
-      picture =ImageIO.read (new File ("grape.jpg"));
-      icon =new ImageIcon(picture);
-      label =new JLabel(icon);
-      s.putConstraint(s.WEST, label,800, s.WEST, BasketFun.this);
-      s.putConstraint(s.NORTH, label,50, s.SOUTH, banana);
-      add(label);
-      
-      s.putConstraint (s.WEST, watermelon, 750, s.WEST, this);
-      add(watermelon);
-      watermelon.addActionListener(new ActionListener(){
-        public void actionPerformed(ActionEvent e)
-        {
-          foodCount[4]++;
-          revalidate();
-          repaint();
-        }});
-      picture =ImageIO.read (new File ("watermelon.jpg"));
-      icon =new ImageIcon(picture);
-      label =new JLabel(icon);
-      s.putConstraint(s.WEST, label,800, s.WEST, BasketFun.this);
-      s.putConstraint(s.NORTH, label,180, s.SOUTH, banana);
-      add(label);
-    }
-    catch(IOException e)
-    {}
+    green.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      {
+        foodCount[2]++;
+        revalidate();
+        repaint();
+      }});
+    
+    s.putConstraint(s.WEST, octo,770, s.WEST, this);
+    s.putConstraint(s.NORTH, octo,110, s.NORTH, this);
+    add(octo);
+    octo.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      {
+        foodCount[3]++;
+        revalidate();
+        repaint();
+      }});
+    
+    s.putConstraint(s.WEST, crab,780, s.WEST, this);
+    s.putConstraint(s.NORTH, crab,300, s.NORTH, this);
+    add(crab);
+    crab.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      {
+        foodCount[4]++;
+        revalidate();
+        repaint();
+      }});
   }
   
   /**This method will make and add the farm themed buttons to the panel for Level 3.*/
@@ -466,12 +547,61 @@ public class BasketFun extends JPanel{
     JButton tomato =makeButtons(foods[0],"Click here to drop a tomato into the basket!"), red = makeButtons(foods[1],"Click here to drop a red apple into the basket!");
     JButton green =makeButtons(foods[2],"Click here to drop a green apple into the basket!"), carrot = makeButtons(foods[3],"Click here to drop a carrot into the basket!");
     JButton potato =makeButtons(foods[4],"Click here to drop a potato into the basket!");
-    Image picture; ImageIcon icon;JLabel label, fruitNum;
-    add(makeButtons("Tomato","Click here to drop a tomato into the basket!"));
-    add(makeButtons("RedA","Click here to drop a red apple into the basket!"));
-    add(makeButtons("GreenA","Click here to drop a green apple into the basket!"));
-    add(makeButtons("Carrot","Click here to drop a carrot into the basket!"));
-    add(makeButtons("Potato","Click here to drop a potato into the basket!"));
+    
+    s.putConstraint (s.WEST, tomato, 460, s.WEST, this);
+    s.putConstraint(s.NORTH, tomato,110, s.NORTH, this);
+    add(tomato);
+    tomato.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      {
+        foodCount[0]++;
+        revalidate();
+        repaint();
+      }});
+    
+    s.putConstraint (s.WEST, red, 460, s.WEST, this);
+    s.putConstraint(s.NORTH, red,300, s.NORTH, this);
+    add(red);
+    red.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      { 
+        foodCount[1]++;
+        revalidate();
+        repaint();
+      }});
+    
+    s.putConstraint (s.WEST, green, 610, s.WEST, this);
+    s.putConstraint(s.NORTH, green,210, s.NORTH, this);
+    add(green);
+    green.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      {
+        foodCount[2]++;
+        revalidate();
+        repaint();
+      }});
+    
+    s.putConstraint (s.WEST, carrot, 750, s.WEST, this);
+    s.putConstraint(s.NORTH, carrot,120, s.NORTH, this);
+    add(carrot);
+    carrot.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      {
+        foodCount[3]++;
+        revalidate();
+        repaint();
+      }});
+    
+    s.putConstraint (s.WEST, potato, 760, s.WEST, this);
+    s.putConstraint(s.NORTH, potato,300, s.NORTH, this);
+    add(potato);
+    potato.addActionListener(new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      {
+        foodCount[4]++;
+        revalidate();
+        repaint();
+      }});
   }
   
   /**This method will draw the level backgrounds depending on the level.
@@ -512,13 +642,18 @@ public class BasketFun extends JPanel{
     }
     g.setColor(Color.WHITE);
     g.setFont(new Font("TimesRoman", Font.PLAIN, 50)); 
-    g.drawString(Integer.toString(foodCount[0]), 540, 200);
-    g.drawString(Integer.toString(foodCount[1]), 540, 330);
-    g.drawString(Integer.toString(foodCount[2]), 720, 270);
-    g.drawString(Integer.toString(foodCount[3]),900, 200);
-    g.drawString(Integer.toString(foodCount[4]), 900, 330);
+    g.drawString(Integer.toString(foodCount[0]), 580, 170); //460 110
+    g.drawString(Integer.toString(foodCount[1]), 580, 360); //460 300
+    g.drawString(Integer.toString(foodCount[2]), 730, 270); //600 210
+    g.drawString(Integer.toString(foodCount[3]), 905, 170); //770 110
+    g.drawString(Integer.toString(foodCount[4]), 905, 360); //770 300
     g.setColor(new Color(51,51,51));
     
+    g.setColor(Color.WHITE);
+    if(levelNum ==1)
+      g.drawString("Requests Left: " + (3 - requestNum), 0, 200);
+    else
+      g.drawString("Requests Left: " + (5 - requestNum), 0, 200);
   }
   
   /**This method creates the buttons based off of the passed in image file's name and the text for the tool tip. The
