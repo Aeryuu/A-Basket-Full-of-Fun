@@ -73,20 +73,37 @@ public class Menus extends JPanel
     else
       setUpLevel();
     j = jf;
-        System.out.println("pressing");
-    Menus.this.getInputMap().put(KeyStroke.getKeyStroke("F1"), "pressed");
-    Menus.this.getActionMap().put("pressed",new AbstractAction() {
-      public void actionPerformed(ActionEvent e) {
-        //insert chm file Caroline
-        System.out.println(":D");
-      }});
-    this.addKeyListener(new KeyAdapter() {
-    public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_MINUS) {
-        System.out.println(":3");
-        }
-    }
-});
+//        System.out.println("pressing");
+//   this.getInputMap().put(KeyStroke.getKeyStroke("F1"), "pressed");
+//    this.getActionMap().put("pressed",new AbstractAction() {
+//      public void actionPerformed(ActionEvent e) {
+//        //insert chm file Caroline
+//        System.out.println(":D");
+//      }});
+//j.addKeyListener(new KeyAdapter() {
+//    public void keyPressed(KeyEvent e) {
+//        if(e.getKeyCode() == KeyEvent.VK_ENTER)
+//        {
+//        System.out.println(":3");
+//        }
+//    }
+//});
+     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+       public boolean dispatchKeyEvent(KeyEvent ke) {
+               if (ke.getID() == KeyEvent.KEY_PRESSED)
+               {
+                 if (ke.getKeyCode() == KeyEvent.VK_W)
+                 {
+                 JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
+                 return true;
+                 }
+                 if(ke.getKeyCode() == KeyEvent.VK_A)
+                   System.out.println(":3");
+                }
+               return true;
+            }
+        });
+
   }
   /** Purpose: The purpose of this method is to 
     * paint the panel. It draws the sky, some clouds, and adds the text.
@@ -253,88 +270,31 @@ public class Menus extends JPanel
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        String name;
-        boolean cancel = false;
-        while(true)
-        {
-          name = JOptionPane.showInputDialog("Please enter your name:");
-          if(name == null)
-          {
-            cancel = true;
-            break;
-          }
-          if(name.length() > 0)
-            break;
-          JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
-          revalidate();
-          repaint();
-        }
-        if(!cancel)
-        {
           j.remove(Menus.this);
-          j.add(new BasketFun(1,"back1", new Color (37,177,77) , j, name));
+          j.add(new BasketFun(1,"back1", new Color (37,177,77) , j));
           j.revalidate();
           j.repaint();
-        }
       }});
     this.getInputMap().put(KeyStroke.getKeyStroke("1"),"pressed");
     this.getActionMap().put("pressed",new AbstractAction() {
       public void actionPerformed(ActionEvent e)
       {
-        String name;
-        boolean cancel = false;
-        while(true)
-        {
-          name = JOptionPane.showInputDialog("Please enter your name:");
-          if(name == null)
-          {
-            cancel = true;
-            break;
-          }
-          if(name.length() > 0)
-            break;
-          JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
-          revalidate();
-          repaint();
-        }
-        if(!cancel)
-        {
           j.remove(Menus.this);
-          j.add(new BasketFun(1,"back1", new Color (37,177,77) , j, name));
+          j.add(new BasketFun(1,"back1", new Color (37,177,77) , j));
           j.revalidate();
           j.repaint();
-        }
       }});
     gbc.gridy=2;
     add(levelTwo,gbc);
     levelTwo.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        String name;
-        boolean cancel = false;
         if(levelOneDone)
         {
-          while(true)
-          {
-            name = JOptionPane.showInputDialog("Please enter your name:");
-            if(name == null)
-            {
-              cancel = true;
-              break;
-            }
-            if(name.length() > 0)
-              break;
-            JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
-            revalidate();
-            repaint();
-          }
-          if(!cancel)
-          {
           j.remove(Menus.this);
-            new BasketFun(2,"back2", new Color (0,126,255), j, name);
+            new BasketFun(2,"back2", new Color (0,126,255), j);
             j.revalidate();
             j.repaint();
-          }
         }
         else
           JOptionPane.showMessageDialog(null, "This level is locked! Play the previous level to unlock this one.", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -345,31 +305,12 @@ public class Menus extends JPanel
     levelThree.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        String name;
-        boolean cancel = false;
         if(levelTwoDone)
         {
-          while(true)
-          {
-            name = JOptionPane.showInputDialog("Please enter your name:");
-            if(name == null)
-            {
-              cancel = true;
-              break;
-            }
-            if(name.length() > 0)
-              break;
-            JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
-            revalidate();
-            repaint();
-          }
-          if(!cancel)
-          {
           j.remove(Menus.this);
-            new BasketFun(3,"back3", new Color (37,177,77), j,name);
+            new BasketFun(3,"back3", new Color (37,177,77), j);
             j.revalidate();
             j.repaint();
-          }
         }
         else
           JOptionPane.showMessageDialog(null, "This level is locked! Play the previous level to unlock this one.", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -388,6 +329,24 @@ public class Menus extends JPanel
     revalidate();
     repaint();
   }
+  
+  
+  
+  //while(true)
+//          {
+//            name = JOptionPane.showInputDialog("Please enter your name:");
+//            if(name == null)
+//            {
+//              cancel = true;
+//              break;
+//            }
+//            if(name.length() > 0)
+//              break;
+//            JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
+//            revalidate();
+//            repaint();
+//          }
+  
   
 //  public static void main(String[] args) { 
 //    JFrame jf=new JFrame("A Basket Full Of Fun: Menu");
