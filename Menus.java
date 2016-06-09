@@ -65,7 +65,7 @@ public class Menus extends JPanel
   public Menus(int whichMenu, JFrame jf)
   {
     super();
-    setPreferredSize(new Dimension( 1000,900));
+    setPreferredSize(new Dimension( 1000,810));
     setLayout(gbl);
     gbc.insets = new Insets(150,0,0,0);
     if(whichMenu ==0)
@@ -73,13 +73,20 @@ public class Menus extends JPanel
     else
       setUpLevel();
     j = jf;
-    this.getInputMap().put(KeyStroke.getKeyStroke("F1"),
-                           "pressed");
-    this.getActionMap().put("pressed",new AbstractAction() {
+        System.out.println("pressing");
+    Menus.this.getInputMap().put(KeyStroke.getKeyStroke("F1"), "pressed");
+    Menus.this.getActionMap().put("pressed",new AbstractAction() {
       public void actionPerformed(ActionEvent e) {
         //insert chm file Caroline
-        System.out.println("YIPPEE");
+        System.out.println(":D");
       }});
+    this.addKeyListener(new KeyAdapter() {
+    public void keyPressed(KeyEvent e) {
+        if(e.getKeyCode() == KeyEvent.VK_MINUS) {
+        System.out.println(":3");
+        }
+    }
+});
   }
   /** Purpose: The purpose of this method is to 
     * paint the panel. It draws the sky, some clouds, and adds the text.
@@ -270,7 +277,34 @@ public class Menus extends JPanel
           j.repaint();
         }
       }});
-    
+    this.getInputMap().put(KeyStroke.getKeyStroke("1"),"pressed");
+    this.getActionMap().put("pressed",new AbstractAction() {
+      public void actionPerformed(ActionEvent e)
+      {
+        String name;
+        boolean cancel = false;
+        while(true)
+        {
+          name = JOptionPane.showInputDialog("Please enter your name:");
+          if(name == null)
+          {
+            cancel = true;
+            break;
+          }
+          if(name.length() > 0)
+            break;
+          JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
+          revalidate();
+          repaint();
+        }
+        if(!cancel)
+        {
+          j.remove(Menus.this);
+          j.add(new BasketFun(1,"back1", new Color (37,177,77) , j, name));
+          j.revalidate();
+          j.repaint();
+        }
+      }});
     gbc.gridy=2;
     add(levelTwo,gbc);
     levelTwo.addActionListener (new ActionListener(){

@@ -188,15 +188,20 @@ public class BasketFun extends JPanel{
             if(!Menus.getLevelOneDone())
             {
               Menus.setLevelOneTrue();
+              System.out.println(Menus.getLevelOneDone());
+            }
               j.remove(BasketFun.this);
               j.add(new BasketFun(2,"back2", new Color (0,126,255), j, user));
-            }
           }
           else if (requestNum == 5)
           {
             if(levelNum == 2)
             {
+            if(!Menus.getLevelTwoDone())
+            {
               Menus.setLevelTwoTrue();
+              System.out.println(Menus.getLevelTwoDone());
+            }
               j.remove(BasketFun.this);
               j.add(new BasketFun(3,"back3", new Color (37,177,77), j, user));
             }
