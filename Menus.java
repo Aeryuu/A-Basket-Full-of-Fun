@@ -18,7 +18,7 @@ import java.awt.image.*;
  * @author of modification C Liu on 05.26.16
  * @version 2 05.26.16 Spent 3 hours
  * added paintComponents in order to create graphics(20 clouds), imported images,
- * chnaged constraints in order to center buttons
+ * changed constraints in order to center buttons
  * 
  * @author Top Of the Stack (Alice Z)
  * @version 3 06.02.16 Spent 5 minutes
@@ -44,7 +44,11 @@ import java.awt.image.*;
  * Level buttons now are fully functional. Level 2 and 3 are locked when the user first enters the game. A level can
  * only be unlocked if the previous level is played through successfully. If the level is unlocked, it prompts them 
  * for user input for their name. This is used for the high scores.
- * <p>
+ * 
+ * @author Top Of the Stack (Alice Z)
+ * @version 5.1 06.09.16 Spent 1 hours
+ * Added a few keyboard shortcuts. Shortcuts work but haven't coded what they do. Removed the add name dialog box
+ * that appears after user clicks a level.
  * <b> Instance variables: </b>
  * <p>
  * <b> gbc </b> This is a reference variable to a GridBagConstraints object.
