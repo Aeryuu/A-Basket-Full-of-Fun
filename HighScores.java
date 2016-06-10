@@ -31,7 +31,8 @@ import java.awt.geom.*;
  * @author Top Of the Stack (Alice Z)
  * @version 4.1 06.10.16 Spent 2 hours
  * Updated code used to update high scores. If the highscores.alca file is deleted, it will make a new one. If the
- * header is different, an error message will pop up saying that the file is corrupted.
+ * header is different, an error message will pop up saying that the file is corrupted. Score now updates after
+ * user completes each level.
  * <p>
  * <b> Instance variables: </b>
  * <p>
@@ -65,8 +66,7 @@ public class HighScores extends JPanel
         for(int x = 0;x<MAX_HIGHSCORES;x++)
         {
           String line = in.readLine();
-          System.out.println(line);
-          if(line == null || line=="")
+          if(line == null || line.equals(""))
           {
             highScores[x][0] = "";
             highScores[x][1] = "";
@@ -75,7 +75,6 @@ public class HighScores extends JPanel
           else
             highScores[x] = line.split(" ");
         }
-        System.out.println(highScores[0].length);
       }
       else
       {
@@ -173,7 +172,8 @@ public class HighScores extends JPanel
       {
         for(int y = 0;y < 3;y++)
         {
-          out.print(highScores[x][y] + " ");
+          if(!highScores[x][y].equals(""))
+            out.print(highScores[x][y] + " ");
         }
         out.println();
       }
