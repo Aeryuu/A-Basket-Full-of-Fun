@@ -54,18 +54,35 @@ import java.awt.image.*;
  * @version 5.1 06.09.16 Spent 10 mins 
  * Added the KeyboardFocus layouts in order to allow for key presses
  * to be heard.
+ * 
+ * @author Top Of the Stack (Alice Z)
+ * @version 5.1 06.09.16 Spent 1 hour
+ * Updated code for key shortcuts and are now all fully functional. Updated javadoc.
+ * 
  * <b> Instance variables: </b>
  * <p>
  * <b> gbc </b> This is a reference variable to a GridBagConstraints object.
  * <p>
  * <b> gbl </b> This is a reference variable to a GridBagLayout object.
+ * <p>
+ * <b> j </b> This is a reference variable to the main JFrame object.
+ * <p>
+ * <b> levelOneDone </b> This boolean stores whether or not the user has completed level 1. If this is true, users
+ * can access level 2.
+ * <p>
+ * <b> levelTwoDone </b> This boolean stores whether or not the user has completed level 2. If this is true, users
+ * can access level 3.
+ * <p>
+ * <b> whichMenu </b> This int stores which menu is supposed to be constructed.
  */ 
-public class Menus extends JPanel
+public class Menus extends JPanel implements KeyListener
 {
   private GridBagLayout gbl = new GridBagLayout();
   private GridBagConstraints gbc = new GridBagConstraints();
   private JFrame j;
   private static boolean levelOneDone = false, levelTwoDone = false;
+  private int whichMenu;
+  private String name;
   /**
    * The class constructor has a parameter pass to see which menu is going to be set up. If the pass is 0, the Main
    * Menu panel will be set up. Otherwise, the Level Select panel will be set up.
@@ -77,27 +94,155 @@ public class Menus extends JPanel
     setPreferredSize(new Dimension( 1000,810));
     setLayout(gbl);
     gbc.insets = new Insets(100,0,0,0);
+    this.whichMenu = whichMenu;
     if(whichMenu ==0)
       setUpMain();
     else
       setUpLevel();
     j = jf;
-//        System.out.println("pressing");
-//   this.getInputMap().put(KeyStroke.getKeyStroke("F1"), "pressed");
-//    this.getActionMap().put("pressed",new AbstractAction() {
-//      public void actionPerformed(ActionEvent e) {
-//        //insert chm file Caroline
-//        System.out.println(":D");
-//      }});
-//j.addKeyListener(new KeyAdapter() {
-//    public void keyPressed(KeyEvent e) {
-//        if(e.getKeyCode() == KeyEvent.VK_ENTER)
-//        {
-//        System.out.println(":3");
-//        }
-//    }
-//});
+    setFocusable(true);
+    addKeyListener(this);
   }
+  
+  /**
+   * This deals with what happens when the user types something. It is an override of the method in KeyListener.
+   * @param e This is a reference variable to KeyEvent.
+   */ 
+  public void keyTyped(KeyEvent e)
+  {}
+  /**
+   * This deals with what happens when the user presses a key. It is an override of the method in KeyListener.
+   * @param e This is a reference variable to KeyEvent.
+   */ 
+  public void keyPressed(KeyEvent e)
+  {}
+  /**
+   * This deals with what happens when the user releases a key. It is an override of the method in KeyListener. This one
+   * has all the code because if the user holds down a key, keyPressed would be called and thus, could result in
+   * multiple happenings. However, a user can only release a key once so this would not have that same problem. The if
+   * statements are to see if the user has released a certain key. The if statements are also used to determine which
+   * action to do depending on which menu is currently being displayed.
+   * @param e This is a reference variable to KeyEvent.
+   */ 
+  public void keyReleased(KeyEvent ke) {
+    boolean cancel = false;
+    if (ke.getKeyCode() == KeyEvent.VK_1)
+    {
+      j.remove(Menus.this);
+      if(whichMenu ==0)
+        j.add(new InstructionScreen(j));
+      else
+      {
+        while(true)
+        {
+        name = JOptionPane.showInputDialog("Please enter your name:");
+        if(name == null)
+        {
+          cancel = true;
+          break;
+        }
+        if(name.length() > 0)
+          break;
+        JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
+        revalidate();
+        repaint();
+      }
+      if(!cancel)
+        j.add(new BasketFun(1,"back1", new Color (37,177,77) , j, name));
+      }
+      j.revalidate();
+      j.repaint();
+    }
+    else if (ke.getKeyCode() == KeyEvent.VK_2)
+    {
+      j.remove(Menus.this);
+      if(whichMenu ==0)
+        j.add(new Menus(1,j));
+      else
+      {
+        if(levelOneDone)
+        {
+          while(true)
+          {
+          name = JOptionPane.showInputDialog("Please enter your name:");
+          if(name == null)
+          {
+            cancel = true;
+            break;
+          }
+          if(name.length() > 0)
+            break;
+          JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
+          revalidate();
+          repaint();
+        }
+        if(!cancel)
+          j.add(new BasketFun(2,"back2", new Color (0,126,255), j, name));
+        }
+        else
+          JOptionPane.showMessageDialog(null, "This level is locked! Play the previous level to unlock this one.", "Error!", JOptionPane.ERROR_MESSAGE);       
+      }
+      j.revalidate();
+      j.repaint();
+    }
+    else if (ke.getKeyCode() == KeyEvent.VK_3)
+    {
+      if(whichMenu ==0)
+      {
+        HighScores h = new HighScores(j);
+        h.setUpHighScoresPanel();
+        j.remove(Menus.this);
+        j.add(h);
+      }
+      else
+      { 
+        if(levelTwoDone)
+        {
+          while(true)
+          {
+            name = JOptionPane.showInputDialog("Please enter your name:");
+            if(name == null)
+            {
+              cancel = true;
+              break;
+            }
+            if(name.length() > 0)
+              break;
+            JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
+            revalidate();
+            repaint();
+          }
+          if(!cancel)
+            j.add(new BasketFun(3,"back3", new Color (37,177,77), j, name));
+        }
+        else
+          JOptionPane.showMessageDialog(null, "This level is locked! Play the previous level to unlock this one.", "Error!", JOptionPane.ERROR_MESSAGE);
+      }
+      j.revalidate();
+      j.repaint();
+    }
+    else if (ke.getKeyCode() == KeyEvent.VK_4)
+    {
+      j.remove(Menus.this);
+      if(whichMenu ==0)
+        j.add(new Goodbye());
+      else
+        j.add(new Menus(0,j));
+      j.revalidate();
+      j.repaint();
+    }
+    else
+      if(ke.getKeyCode() == KeyEvent.VK_F1)
+    {
+      try 
+      {
+        Runtime.getRuntime().exec("hh.exe GameHelp.chm");
+      }
+      catch(IOException i)
+      {
+      }
+    }}
+  
   /** Purpose: The purpose of this method is to 
     * paint the panel. It draws the sky, some clouds, and adds the text.
     * @param g Graphics allows use to the Graphics class.
@@ -160,7 +305,9 @@ public class Menus extends JPanel
     g.fillOval(680,40,70,30);
     g.fillOval(700,40,80,30);
     
+    requestFocus();
   }
+  
   /**
    * This will setup the Main Menu screen. The Main Menu screen will have a title, a button to view instructions
    * a button to go to level select to play the game, a button to view the high scores, and a button to exit the game.
@@ -185,27 +332,7 @@ public class Menus extends JPanel
         j.revalidate();
         j.repaint();
       }});
-    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
-       public boolean dispatchKeyEvent(KeyEvent ke) {
-               if (ke.getID() == KeyEvent.KEY_PRESSED)
-               {
-                 if (ke.getKeyCode() == KeyEvent.VK_1)
-                 {
-                 }
-                if (ke.getKeyCode() == KeyEvent.VK_2)
-                 {
-                 }
-                 if (ke.getKeyCode() == KeyEvent.VK_3)
-                 {
-                 }
-                  if (ke.getKeyCode() == KeyEvent.VK_4)
-                 {
-                 }
-                }
-               return true;
-            }
-        });
-
+    
     gbc.gridy=2;
     add(play,gbc);
     play.addActionListener (new ActionListener(){
@@ -222,7 +349,7 @@ public class Menus extends JPanel
     high.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        HighScores h = new HighScores(j);
+        HighScores h = new HighScores(j,0);
         h.setUpHighScoresPanel();
         j.remove(Menus.this);
         j.add(h);
@@ -230,21 +357,20 @@ public class Menus extends JPanel
         j.repaint();
       }});
     
-     gbc.gridy=4;
-      add(chm,gbc);
-  chm.addActionListener (new ActionListener(){
+    gbc.gridy=4;
+    add(chm,gbc);
+    chm.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-          try 
+        try 
         {
-         Runtime.getRuntime().exec("hh.exe GameHelp.chm");
+          Runtime.getRuntime().exec("hh.exe GameHelp.chm");
         }
         catch(IOException i)
         {
-          System.out.println("HI");
         }
       }});
-  
+    
     gbc.gridy=5;
     add(exit,gbc);
     exit.addActionListener (new ActionListener(){
@@ -258,22 +384,32 @@ public class Menus extends JPanel
     revalidate();
     repaint();
   }
-  
+  /**
+   * This method returns the value of levelOneDone.
+   */ 
   public static boolean getLevelOneDone()
   {
     return levelOneDone;
   }
-  
+  /**
+   * This method returns the value of levelTwoDone.
+   */ 
   public static boolean getLevelTwoDone()
   {
     return levelTwoDone;
   }
-  
+  /**
+   * This method allows the BasketFun class to set the variable levelOneDone to true. This happens when the user
+   * completes level 1.
+   */ 
   public static void setLevelOneTrue()
   {
     levelOneDone = true;
   }
-  
+  /**
+   * This method allows the BasketFun class to set the variable levelTwoDone to true. This happens when the user
+   * completes level 2.
+   */ 
   public static void setLevelTwoTrue()
   {
     levelTwoDone = true;
@@ -287,65 +423,68 @@ public class Menus extends JPanel
    */ 
   private void setUpLevel()
   {
-    
     JButton exit = new JButton("Back to Main Menu");
     JButton levelOne = new JButton("Level 1"), levelTwo = new JButton("Level 2"), levelThree = new JButton("Level 3");
     gbc.weighty=1;
     gbc.anchor = GridBagConstraints.LINE_START;
     gbc.gridy=1;
     gbc.gridx=2;
-    
-     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
-       public boolean dispatchKeyEvent(KeyEvent ke) {
-               if (ke.getID() == KeyEvent.KEY_PRESSED)
-               {
-                 if (ke.getKeyCode() == KeyEvent.VK_1)
-                 {
-                 }
-                if (ke.getKeyCode() == KeyEvent.VK_2)
-                 {
-                 }
-                 if (ke.getKeyCode() == KeyEvent.VK_3)
-                 {
-                 }
-                  if (ke.getKeyCode() == KeyEvent.VK_4)
-                 {
-                 }
-                }
-               return true;
-            }
-        });
     add(levelOne,gbc);
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        
+        boolean cancel = false;
+        while(true)
+        {
+          name = JOptionPane.showInputDialog("Please enter your name:");
+          if(name == null)
+          {
+            cancel = true;
+            break;
+          }
+          if(name.length() > 0)
+            break;
+          JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
+          revalidate();
+          repaint();
+        }
+        if(!cancel)
+        {
           j.remove(Menus.this);
-          j.add(new BasketFun(1,"back1", new Color (37,177,77) , j));
+          j.add(new BasketFun(1,"back1", new Color (37,177,77) , j, name));
           j.revalidate();
           j.repaint();
-      }});
-    this.getInputMap().put(KeyStroke.getKeyStroke("1"),"pressed");
-    this.getActionMap().put("pressed",new AbstractAction() {
-      public void actionPerformed(ActionEvent e)
-      {
-    
-          j.remove(Menus.this);
-          j.add(new BasketFun(1,"back1", new Color (37,177,77) , j));
-          j.revalidate();
-          j.repaint();
+        }
       }});
     gbc.gridy=2;
     add(levelTwo,gbc);
     levelTwo.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        boolean cancel = false;
         if(levelOneDone)
         {
-          j.remove(Menus.this);
-            new BasketFun(2,"back2", new Color (0,126,255), j);
+          while(true)
+          {
+            name = JOptionPane.showInputDialog("Please enter your name:");
+            if(name == null)
+            {
+              cancel = true;
+              break;
+            }
+            if(name.length() > 0)
+              break;
+            JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
+            revalidate();
+            repaint();
+          }
+          if(!cancel)
+          {
+            j.remove(Menus.this);
+            j.add(new BasketFun(2,"back2", new Color (0,126,255), j, name));
             j.revalidate();
             j.repaint();
+          }
         }
         else
           JOptionPane.showMessageDialog(null, "This level is locked! Play the previous level to unlock this one.", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -356,12 +495,30 @@ public class Menus extends JPanel
     levelThree.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        boolean cancel = false;
         if(levelTwoDone)
         {
-          j.remove(Menus.this);
-            new BasketFun(3,"back3", new Color (37,177,77), j);
+          while(true)
+          {
+            name = JOptionPane.showInputDialog("Please enter your name:");
+            if(name == null)
+            {
+              cancel = true;
+              break;
+            }
+            if(name.length() > 0)
+              break;
+            JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
+            revalidate();
+            repaint();
+          }
+          if(!cancel)
+          {
+            j.remove(Menus.this);
+            j.add(new BasketFun(3,"back3", new Color (37,177,77), j, name));
             j.revalidate();
             j.repaint();
+          }
         }
         else
           JOptionPane.showMessageDialog(null, "This level is locked! Play the previous level to unlock this one.", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -380,13 +537,4 @@ public class Menus extends JPanel
     revalidate();
     repaint();
   }
-  
-  
-//  public static void main(String[] args) { 
-//    JFrame jf=new JFrame("A Basket Full Of Fun: Menu");
-//    jf.setSize(800,800);
-//    
-//    jf.add(new Menus(0,jf));
-//    jf.setVisible (true);
-//  }
 }

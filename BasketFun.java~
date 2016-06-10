@@ -56,6 +56,14 @@ import javax.swing.Timer;
   * All levels are working, buttons are now located on the basket rather than at the top of the screen, all buttons
   * except pause are working, and the transitions between levels are smooth. Added an instance variable used to store
   * the user's name.
+  * 
+  * @author of modifications by Top of The Stack (Caroline L)
+  * @version 7 06.09.16 Spent 3 hour
+  * addition of the opening of the CHM file, try catch added in order to errortap opening of CHM.
+  * Added Timer and added implementation of  pause button and score creation. Creation of pause method.
+  * Added layouts for key shortcut P. Added implementation for the continuous generation
+  * of characters
+  * 
   * <p>
   * <b> Instance variables: </b>
   * <p>
@@ -88,31 +96,46 @@ import javax.swing.Timer;
   * foodCount equals foodRequest, then, the user fulfills a request.
   * <p>
   * <b> requestText </b> This JLabel is used to display what each character wants onto the screen.
+  * <p>
+  * <b> counter </b> This int is used to increment the value of the timer.
+  * <p>
+  * <b> complete </b> This boolean is used to stop the timer when the level ends
+  * <p>
+  * <b> t </b> This Timer is  used to create the timer used for our game.
+  * <p>
+  * <b> ccount </b> This int counter is used to generate the characters continuously. 
   */ 
 
-public class BasketFun extends JPanel{
-  Timer timer;
+public class BasketFun extends JPanel implements ActionListener{
+  Timer t=new Timer(1000,this);
+  int counter=0;
   private int levelNum, randAmnt1, randAmnt2, requestNum = 0;
   private String backName, user;
   private Color bCol;
   private JFrame j;
-  private String [] chars, foods = new String [5];
+  private String [] chars1= {"Squirrel","Monkey","Panda"};
+  private String [] chars2={"Seal","Dolphin1","Turtle","Jelly","Narwhal"};
+  private String [] chars3={"Pig","Bunny","Cow","Horse","Cat"};
+  private  String chars[];
+  private String []  foods = new String [5];
   private SpringLayout s;
   private int [] foodCount = {0,0,0,0,0}, foodRequest = new int[5];
   private JLabel requestText;
+  boolean complete=false;
+  int ccount=0;
   
   /**The class constructor will create a JPanel that is added to a JFrame that is also created here. The buttons that
     * all levels have in common: pause, empty, and check, are made and added here as well. The layout used is flow. 
     * Depending on the level selected, the backgrounds, button creation methods, and themes are different. The if
     * statement is to determine which button creation method to call. The inner method is to open the chm file when
-    * the user presses F1.
+    * the user presses F1. The try catch used in this method is used to  errotrap the opening of the CHM.
+    * The parameter for the inner methods is e - a reference variable for ActionEvent.
     * @param levelNum This int is used to store which level the user has chosen to play.
     * @param bName This String is used to store the name of the background file.
     * @param s This Color is used to store the colour of the background.
     */
-  public BasketFun(int level, String bName, Color w, JFrame jf, String userName) { 
+  public BasketFun(int level, String bName, Color w, JFrame jf) { 
     super();
-    user = userName;
     levelNum=level;
     backName=bName;
     bCol=w;
@@ -122,15 +145,23 @@ public class BasketFun extends JPanel{
     this.getInputMap().put(KeyStroke.getKeyStroke("F1"),"pressed");
     this.getActionMap().put("pressed",new AbstractAction() {
       public void actionPerformed(ActionEvent e) {
-        //insert chm file Caroline
+        try 
+        {
+         Runtime.getRuntime().exec("hh.exe GameHelp.chm");
+        }
+        catch(IOException i)
+        {
+          System.out.println("HI");
+        }
       }});
+    
     JButton check=new JButton("CHECK!"), empty=new JButton ("Empty the basket!"),pause = makeButtons("Pause","Click here to pause the game!");
     s.putConstraint (s.NORTH, pause, 0, s.WEST, this);
     add(pause);
     pause.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        //stop timer, make things appear Caroline
+       pause();
       }});
     int maxNum;
     if (levelNum==1) //3 requests
@@ -140,6 +171,7 @@ public class BasketFun extends JPanel{
       foods[2] = "Banana";
       foods[3] = "Grape";
       foods[4] = "Watermelon";
+      chars=chars1;
       makePanel1();
       maxNum = 3;
     }
@@ -150,6 +182,7 @@ public class BasketFun extends JPanel{
       foods[2] = "Green";
       foods[3] = "Octopus";
       foods[4] = "Crab";
+      chars=chars2;
       makePanel2();
       maxNum = 5;
     }
@@ -160,6 +193,7 @@ public class BasketFun extends JPanel{
       foods[2] = "GreenA";
       foods[3] = "Carrot";
       foods[4] = "Potato";
+      chars=chars3;
       makePanel3();
       maxNum = 7;
     }
@@ -178,6 +212,7 @@ public class BasketFun extends JPanel{
         if(foodAreSame())
         {
           requestNum++;
+            ccount++;
           remove(requestText);
           revalidate();
           repaint();
@@ -188,8 +223,9 @@ public class BasketFun extends JPanel{
               Menus.setLevelOneTrue();
               System.out.println(Menus.getLevelOneDone());
             }
+            complete=true;
               j.remove(BasketFun.this);
-              j.add(new BasketFun(2,"back2", new Color (0,126,255), j, user));
+              j.add(new BasketFun(2,"back2", new Color (0,126,255), j));
           }
           else if (requestNum == 5)
           {
@@ -200,12 +236,14 @@ public class BasketFun extends JPanel{
               Menus.setLevelTwoTrue();
               System.out.println(Menus.getLevelTwoDone());
             }
+             complete=true;
               j.remove(BasketFun.this);
-              j.add(new BasketFun(3,"back3", new Color (37,177,77), j, user));
+              j.add(new BasketFun(3,"back3", new Color (37,177,77), j));
             }
             else
               if(levelNum ==3)
             {
+               complete=true;
               //String updateScore = user + " " + score + " " + levelNum;
               HighScores h = new HighScores(j);
               //h.update(updateScore.split());
@@ -225,8 +263,6 @@ public class BasketFun extends JPanel{
         }
         else
         {
-          timer=new Timer(3000,this);
-          timer.start();
           remove(requestText);
           JLabel text = new JLabel("That isn't right! Try again!");
           if(levelNum == 1)
@@ -247,7 +283,6 @@ public class BasketFun extends JPanel{
           add(text);
           revalidate();
           repaint();
-          timer.stop();
           remove(text);
           if(levelNum == 1)
           {
@@ -265,6 +300,7 @@ public class BasketFun extends JPanel{
             s.putConstraint (s.WEST, requestText, 540, s.WEST, BasketFun.this);
           }
           add(requestText);
+         
           revalidate();
           repaint();
         }
@@ -282,12 +318,28 @@ public class BasketFun extends JPanel{
         revalidate();
         repaint();
       }});
+     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+       public boolean dispatchKeyEvent(KeyEvent ke) {
+               if (ke.getID() == KeyEvent.KEY_PRESSED)
+               {
+                 if (ke.getKeyCode() == KeyEvent.VK_P)
+                 {
+                 }
+                }
+               return true;
+            }
+        });
+      t.start();
     revalidate();
     repaint();
   }
   
   public void actionPerformed(ActionEvent a) {
-    timer.stop();
+    counter++;
+    if (complete==true)
+    {
+     t.stop(); 
+    }
   }
   public boolean foodAreSame()
   {
@@ -298,6 +350,7 @@ public class BasketFun extends JPanel{
   }
   private void generateRequest(int maxNum)
   {
+     
     String randFood, randFood2;
     if(levelNum == 3)
     {
@@ -383,6 +436,7 @@ public class BasketFun extends JPanel{
       }
       add(requestText);
     }
+  
   }
   
   private String randomizeFoods(int randAmnt)
@@ -481,7 +535,10 @@ public class BasketFun extends JPanel{
       }});
   }
   
-  /**This method will make and add the underwater themed buttons to the panel for Level 2. */
+  /**This method will make and add the underwater themed buttons to the panel for Level 2.
+    * The inner methods are used to increase a counter when the buttons are pressed.
+    * The parameter for the inner methods is e - a reference variable for ActionEvent.
+    */
   private void makePanel2()
   {
     JButton red =makeButtons(foods[0],"Click here to drop a red fish into the basket!"), yellow = makeButtons(foods[1],"Click here to drop a yellow fish into the basket!");
@@ -544,7 +601,10 @@ public class BasketFun extends JPanel{
       }});
   }
   
-  /**This method will make and add the farm themed buttons to the panel for Level 3.*/
+  /**This method will make and add the farm themed buttons to the panel for Level 3.
+    * The inner methods are used to increase a counter when the buttons are pressed.
+    * The parameter for the inner methods is e - a reference variable for ActionEvent.
+    */
   private void makePanel3()
   {
     JButton tomato =makeButtons(foods[0],"Click here to drop a tomato into the basket!"), red = makeButtons(foods[1],"Click here to drop a red apple into the basket!");
@@ -613,6 +673,7 @@ public class BasketFun extends JPanel{
     */
   public void paintComponent(Graphics g)
   {
+    
     BufferedImage b=null, c=null,b1=null;
     super.paintComponent(g);
     try
@@ -623,21 +684,18 @@ public class BasketFun extends JPanel{
       g.drawImage(b1,450,90,null);
       if (levelNum==1)
       {
-        //for (int i=0;i<chars.length;i++)
-        //{
-        c=ImageIO.read(new File("Squirrel"+".jpg"));
-        g.drawImage(c,400,550,null);
-        //}
+        c=ImageIO.read(new File(chars1[ccount]+".jpg"));
+        g.drawImage(c,400,555,null);
       }
       else if (levelNum==2)
       {
-        c=ImageIO.read(new File("Seal"+".jpg"));
+        c=ImageIO.read(new File(chars2[ccount]+".jpg"));
         g.drawImage(c,-10,340,null);
         
       }
       else 
       {
-        c=ImageIO.read(new File("Bunny"+".jpg"));
+        c=ImageIO.read(new File(chars3[ccount]+".jpg"));
         g.drawImage(c,400,400,null);
       }
     }
@@ -650,6 +708,9 @@ public class BasketFun extends JPanel{
     g.drawString(Integer.toString(foodCount[2]), 730, 270); //600 210
     g.drawString(Integer.toString(foodCount[3]), 905, 170); //770 110
     g.drawString(Integer.toString(foodCount[4]), 905, 360); //770 300
+    g.drawString ("Timer:"+Integer.toString (counter),700,700);
+    revalidate();
+    repaint();
     g.setColor(new Color(51,51,51));
     
     g.setColor(Color.WHITE);
@@ -674,12 +735,25 @@ public class BasketFun extends JPanel{
     return button;
   }
   
-//  public static void main(String[] args) { 
-//    String []c={"Squirrel","Monkey","Panda"};
-//    String []b={"Seal","Dolphin1","Turtle","Jelly","Narwhal"};
-//    String []d={"Pig","Bunny"};
-//    BasketFun s= new BasketFun (3,"back3", new Color (37,177,77),d);
-//    //forest green and farm grass green;new Color(37,177,77)
-//    //ocean 0,126,255
-//  }
+   /**This method pauses the game, and creates a dilaog box that allows the user
+     * to go back to the main menu. It pauses the timer, and restarts it
+     * if the user chooses to continue playing. The if is used to determine
+     * what occurs when an option is clicked in the dialog box
+    */
+  public void pause()
+  {
+    t.stop();
+    int result = JOptionPane.showConfirmDialog((Component) null, "Would you like to go back to the main menu? (Clicking 'No' will let you keep feeding the animals! Also if you go back to the main menu, you will have to start the level again!)","PAUSE", JOptionPane.YES_NO_OPTION);
+    if (result==0)
+    {
+      j.remove(BasketFun.this);
+        j.add(new Menus(0,j));
+        j.revalidate();
+        j.repaint();
+    }
+    else 
+    {
+      t.start();
+    }
+  }
 }

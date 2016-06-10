@@ -27,6 +27,11 @@ import java.awt.geom.*;
  * @author of modification C Liu on 06.08.16
  * @version 4 06.08.16 Spent  10 mins
  * edited x values of graphics to center buttons and graphics
+ * 
+ * @author Top Of the Stack (Alice Z)
+ * @version 4.1 06.10.16 Spent 2 hours
+ * Updated code used to update high scores. If the highscores.alca file is deleted, it will make a new one. If the
+ * header is different, an error message will pop up saying that the file is corrupted.
  * <p>
  * <b> Instance variables: </b>
  * <p>
@@ -40,41 +45,69 @@ import java.awt.geom.*;
 public class HighScores extends JPanel
 {
   private final int MAX_HIGHSCORES = 10;
-  private String [][] highScores = new String[MAX_HIGHSCORES][3];
-  JFrame j;
+  private final String HEADER = "This file is compatible with .alca files.";
+  private String [][] highScores;
+  private JFrame j;
+ private int whereComeFrom;
   /**
    * The class constructor will read in the high scores from the file and store them in the class's String array.
    */ 
-  public HighScores(JFrame jf)
+  public HighScores(JFrame jf, int whereComeFrom)
   {
     j = jf;
+    this.whereComeFrom = whereComeFrom;
+    highScores = new String[MAX_HIGHSCORES][3];
     try
     {
-      BufferedReader in = new BufferedReader(new FileReader ("Input.txt"));
-      for(int x = 0;x<MAX_HIGHSCORES;x++)
+      BufferedReader in = new BufferedReader(new FileReader ("HighScoresFile.alca"));
+      if(in.readLine().equals(HEADER))
       {
-        String line = in.readLine();
-        if(line == null)
+        for(int x = 0;x<MAX_HIGHSCORES;x++)
         {
-          highScores[x][0] = "";
-          highScores[x][1] = "";
-          highScores[x][2] = "";
+          String line = in.readLine();
+          System.out.println(line);
+          if(line == null || line=="")
+          {
+            highScores[x][0] = "";
+            highScores[x][1] = "";
+            highScores[x][2] = "";
+          }
+          else
+            highScores[x] = line.split(" ");
         }
-        else
-          highScores[x] = line.split(" ");
+        System.out.println(highScores[0].length);
       }
-      for(int x = 0;x < MAX_HIGHSCORES;x++)
+      else
       {
-        for(int y = 0;y < 3;y++)
-        {
-          System.out.print(highScores[x][y] + " ");
-        }
-        System.out.println();
+        JOptionPane.showMessageDialog(null, "This file has been corrupted!", "Error!", JOptionPane.ERROR_MESSAGE);
       }
     }
-    catch(IOException e)
+    catch(FileNotFoundException e)
+    {
+      try
+      {
+        PrintWriter out = new PrintWriter(new FileWriter("HighScoresFile.alca"));
+        out.println(HEADER);
+        out.close();
+        j.remove(this);
+        if(whereComeFrom == 0) //menus
+        {
+          HighScores h = new HighScores(j,0);
+          h.setUpHighScoresPanel();
+          j.add(h);
+        }
+        else
+        j.add(new HighScores(j,1));
+        j.revalidate();
+        j.repaint();
+      }
+      catch(IOException g)
+      {}
+    }
+    catch(IOException i)
     {}
   }
+  
   /**
    * The purpose of this method is to create the graphics and text used
    * on the high scores screen. This method draws some clouds and
@@ -115,11 +148,11 @@ public class HighScores extends JPanel
    * then be printed in the file. Nothing will change if new score isn't high enough.
    * @param newScore This String array will contain the individual parts of the new high score entry.
    */ 
-  public void update(String [] newScore) // already split
+  public void update(String [] newScore)
   {
     for(int x = 0;x < MAX_HIGHSCORES;x++)
     {
-      if(highScores[x][1] == "")
+      if(highScores[x][0] == "")
       {
         highScores[x] = newScore;
         break;
@@ -134,7 +167,8 @@ public class HighScores extends JPanel
     }
     try
     {
-      PrintWriter out = new PrintWriter(new FileWriter("Input.txt"));
+      PrintWriter out = new PrintWriter(new FileWriter("HighScoresFile.alca"));
+      out.println(HEADER);
       for(int x = 0;x < MAX_HIGHSCORES;x++)
       {
         for(int y = 0;y < 3;y++)
@@ -210,7 +244,6 @@ public class HighScores extends JPanel
               j.getContentPane().paint(image.getGraphics());
               Graphics2D graphics2 = (Graphics2D)graphics;
               graphics2.translate(pageFormat.getImageableX(),pageFormat.getImageableY());
-              //graphics.drawImage(image, 0, 0, j.getContentPane().getSize().width, j.getContentPane().getSize().height, null); //draws the image
               exit.setVisible(false);
               print.setVisible(false);
               graphics.drawImage(image, 0, 0, 500, 700, null);
@@ -238,9 +271,4 @@ public class HighScores extends JPanel
     revalidate();
     repaint();
   }
-//  public static void main(String[] args) { 
-//    HighScores s=new HighScores (0);
-//    s.j.add(s);
-//  }
-  
 }

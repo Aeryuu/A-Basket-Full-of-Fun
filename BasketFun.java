@@ -58,11 +58,15 @@ import javax.swing.Timer;
   * the user's name.
   * 
   * @author of modifications by Top of The Stack (Caroline L)
-  * @version 7 06.09.16 Spent 3 hour
+  * @version 7 06.09.16 Spent 3 hours
   * addition of the opening of the CHM file, try catch added in order to errortap opening of CHM.
   * Added Timer and added implementation of  pause button and score creation. Creation of pause method.
   * Added layouts for key shortcut P. Added implementation for the continuous generation
   * of characters
+  * 
+  * @author of modifications by Top of The Stack (Caroline L)
+  * @version 8 06.10.16 Spent 1 hour
+  * Added key shortcuts for pause and exit game. Everything is done.
   * 
   * <p>
   * <b> Instance variables: </b>
@@ -104,25 +108,26 @@ import javax.swing.Timer;
   * <b> t </b> This Timer is  used to create the timer used for our game.
   * <p>
   * <b> ccount </b> This int counter is used to generate the characters continuously. 
+  * <p>
+  * <b> errorCheck </b> This boolean is to determine when to display the incorrect check message.
+  * <p>
+  * <b> score </b> This stores the user's score.
   */ 
 
-public class BasketFun extends JPanel implements ActionListener{
-  Timer t=new Timer(1000,this);
-  int counter=0;
-  private int levelNum, randAmnt1, randAmnt2, requestNum = 0;
+public class BasketFun extends JPanel implements ActionListener, KeyListener{
+  private Timer t=new Timer(1000,this);
+  private int levelNum, randAmnt1, randAmnt2, requestNum = 0, ccount=0,  counter=0, score;
   private String backName, user;
   private Color bCol;
   private JFrame j;
   private String [] chars1= {"Squirrel","Monkey","Panda"};
   private String [] chars2={"Seal","Dolphin1","Turtle","Jelly","Narwhal"};
   private String [] chars3={"Pig","Bunny","Cow","Horse","Cat"};
-  private  String chars[];
-  private String []  foods = new String [5];
+  private String chars[], foods[] = new String [5];
   private SpringLayout s;
   private int [] foodCount = {0,0,0,0,0}, foodRequest = new int[5];
   private JLabel requestText;
-  boolean complete=false;
-  int ccount=0;
+  private boolean complete=false, errorCheck = false;
   
   /**The class constructor will create a JPanel that is added to a JFrame that is also created here. The buttons that
     * all levels have in common: pause, empty, and check, are made and added here as well. The layout used is flow. 
@@ -134,34 +139,22 @@ public class BasketFun extends JPanel implements ActionListener{
     * @param bName This String is used to store the name of the background file.
     * @param s This Color is used to store the colour of the background.
     */
-  public BasketFun(int level, String bName, Color w, JFrame jf) { 
+  public BasketFun(int level, String bName, Color w, JFrame jf, String userName) { 
     super();
     levelNum=level;
     backName=bName;
     bCol=w;
     j = jf;
+    user = userName;
     s = new SpringLayout();
     setLayout(s);
-    this.getInputMap().put(KeyStroke.getKeyStroke("F1"),"pressed");
-    this.getActionMap().put("pressed",new AbstractAction() {
-      public void actionPerformed(ActionEvent e) {
-        try 
-        {
-         Runtime.getRuntime().exec("hh.exe GameHelp.chm");
-        }
-        catch(IOException i)
-        {
-          System.out.println("HI");
-        }
-      }});
-    
     JButton check=new JButton("CHECK!"), empty=new JButton ("Empty the basket!"),pause = makeButtons("Pause","Click here to pause the game!");
     s.putConstraint (s.NORTH, pause, 0, s.WEST, this);
     add(pause);
     pause.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-       pause();
+        pause();
       }});
     int maxNum;
     if (levelNum==1) //3 requests
@@ -204,51 +197,62 @@ public class BasketFun extends JPanel implements ActionListener{
     check.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
-        for(int x = 0;x < 5;x++)
-        {
-          System.out.println(foodCount[x] + " count");
-          System.out.println(foodRequest[x] + " request");
-        }
         if(foodAreSame())
         {
           requestNum++;
-            ccount++;
+          ccount++;
           remove(requestText);
           revalidate();
           repaint();
           if(requestNum ==3 && levelNum == 1)
           {
             if(!Menus.getLevelOneDone())
-            {
               Menus.setLevelOneTrue();
-              System.out.println(Menus.getLevelOneDone());
-            }
             complete=true;
-              j.remove(BasketFun.this);
-              j.add(new BasketFun(2,"back2", new Color (0,126,255), j));
+            if(50 - counter >=0)
+              score = 50 - counter;
+            else
+              score = 0;
+            j.remove(BasketFun.this);
+            j.add(new BasketFun(2,"back2", new Color (0,126,255), j, user));
+            int click = JOptionPane.showConfirmDialog(null, "Your score is " + score + "!", "Score!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            String updateScore = user + " " + score + " " + levelNum;
+            HighScores h = new HighScores(j,1);
+            h.update(updateScore.split(" "));
           }
           else if (requestNum == 5)
           {
             if(levelNum == 2)
             {
-            if(!Menus.getLevelTwoDone())
-            {
-              Menus.setLevelTwoTrue();
-              System.out.println(Menus.getLevelTwoDone());
-            }
-             complete=true;
+              if(!Menus.getLevelTwoDone())
+                Menus.setLevelTwoTrue();
+              complete=true;
+              if(100 - counter >=0)
+                score = 100 - counter;
+              else
+                score = 0;
               j.remove(BasketFun.this);
-              j.add(new BasketFun(3,"back3", new Color (37,177,77), j));
+              j.add(new BasketFun(3,"back3", new Color (37,177,77), j, user));
+              int click = JOptionPane.showConfirmDialog(null, "Your score is " + score + "!", "Score!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+              String updateScore = user + " " + score + " " + levelNum;
+              HighScores h = new HighScores(j,1);
+              h.update(updateScore.split(" "));
             }
             else
               if(levelNum ==3)
             {
-               complete=true;
-              //String updateScore = user + " " + score + " " + levelNum;
-              HighScores h = new HighScores(j);
-              //h.update(updateScore.split());
-              h.setUpHighScoresPanel();
+              complete=true;
+              if(150 - counter >=0)
+                score = 150 - counter;
+              else
+                score = 0;
               j.remove(BasketFun.this);
+              JOptionPane.showConfirmDialog(null, "Your score is " + score + "!", "Score!", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+              String updateScore = (user + " " + score + " " + levelNum);
+              System.out.println(updateScore);
+              HighScores h = new HighScores(j,0);
+              h.update(updateScore.split(" "));
+              h.setUpHighScoresPanel();
               j.add(h);
             }
           }
@@ -263,44 +267,7 @@ public class BasketFun extends JPanel implements ActionListener{
         }
         else
         {
-          remove(requestText);
-          JLabel text = new JLabel("That isn't right! Try again!");
-          if(levelNum == 1)
-          {
-            s.putConstraint (s.NORTH, requestText,640, s.NORTH, BasketFun.this);
-            s.putConstraint (s.WEST, requestText, 560, s.WEST, BasketFun.this);
-          }
-          else if(levelNum == 2)
-          {
-            s.putConstraint (s.NORTH, requestText,500, s.NORTH, BasketFun.this);
-            s.putConstraint (s.WEST, requestText, 540, s.WEST, BasketFun.this);
-          }
-          else
-          {
-            s.putConstraint (s.NORTH, text,470, s.NORTH, BasketFun.this);
-            s.putConstraint (s.WEST, text, 540, s.WEST, BasketFun.this);
-          }
-          add(text);
-          revalidate();
-          repaint();
-          remove(text);
-          if(levelNum == 1)
-          {
-            s.putConstraint (s.NORTH, requestText,640, s.NORTH, BasketFun.this);
-            s.putConstraint (s.WEST, requestText, 560, s.WEST, BasketFun.this);
-          }
-          else if(levelNum == 2)
-          {
-            s.putConstraint (s.NORTH, requestText,500, s.NORTH, BasketFun.this);
-            s.putConstraint (s.WEST, requestText, 540, s.WEST, BasketFun.this);
-          }
-          else
-          {
-            s.putConstraint (s.NORTH, requestText,500, s.NORTH, BasketFun.this);
-            s.putConstraint (s.WEST, requestText, 540, s.WEST, BasketFun.this);
-          }
-          add(requestText);
-         
+          errorCheck = true;
           revalidate();
           repaint();
         }
@@ -318,30 +285,66 @@ public class BasketFun extends JPanel implements ActionListener{
         revalidate();
         repaint();
       }});
-     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
-       public boolean dispatchKeyEvent(KeyEvent ke) {
-               if (ke.getID() == KeyEvent.KEY_PRESSED)
-               {
-                 if (ke.getKeyCode() == KeyEvent.VK_P)
-                 {
-                 }
-                }
-               return true;
-            }
-        });
-      t.start();
+    setFocusable(true);
+    addKeyListener(this);
+    t.start();
     revalidate();
     repaint();
+  }
+  
+  /**
+   * This deals with what happens when the user types something. It is an override of the method in KeyListener.
+   * @param e This is a reference variable to KeyEvent.
+   */ 
+  public void keyTyped(KeyEvent e)
+  {}
+  /**
+   * This deals with what happens when the user presses a key. It is an override of the method in KeyListener.
+   * @param e This is a reference variable to KeyEvent.
+   */ 
+  public void keyPressed(KeyEvent e)
+  {}
+  /**
+   * This deals with what happens when the user releases a key. It is an override of the method in KeyListener. This one
+   * has all the code because if the user holds down a key, keyPressed would be called and thus, could result in
+   * multiple happenings. However, a user can only release a key once so this would not have that same problem. The if
+   * statements are to see if the user has released a certain key. The if statements are also used to determine which
+   * action to do depending on which menu is currently being displayed.
+   * @param e This is a reference variable to KeyEvent.
+   */ 
+  public void keyReleased(KeyEvent k)
+  {
+    if (k.getKeyCode() == KeyEvent.VK_P)
+    {
+     pause(); 
+    }
+    else 
+      if(k.getKeyCode() == KeyEvent.VK_X)
+    {
+       t.stop();
+    int result = JOptionPane.showConfirmDialog((Component) null, "Are you sure you want to exit the game? (Clicking 'No' will let you keep feeding the animals! Also if you exit the game, you will have to start the game over again!)","EXIT GAME", JOptionPane.YES_NO_OPTION);
+    if (result==0)
+    {
+      j.remove(BasketFun.this);
+      j.add(new Goodbye());
+      j.revalidate();
+      j.repaint();
+    }
+    else 
+    {
+      t.start();
+    }
+    }
   }
   
   public void actionPerformed(ActionEvent a) {
     counter++;
     if (complete==true)
     {
-     t.stop(); 
+      t.stop(); 
     }
   }
-  public boolean foodAreSame()
+  private boolean foodAreSame()
   {
     for(int x= 0;x < 5;x ++)
       if(foodCount[x]!=foodRequest[x])
@@ -350,7 +353,7 @@ public class BasketFun extends JPanel implements ActionListener{
   }
   private void generateRequest(int maxNum)
   {
-     
+    
     String randFood, randFood2;
     if(levelNum == 3)
     {
@@ -402,7 +405,6 @@ public class BasketFun extends JPanel implements ActionListener{
         foodRequest[3]=randAmnt2;
       else
         foodRequest[4]=randAmnt2;
-      System.out.println("I would like to have " + randAmnt1 + randFood + " and " + randAmnt2 + randFood2 +".");
       requestText = new JLabel("<html><body>I would like to have<br>" + randAmnt1 + randFood + " and <br>" + randAmnt2 + randFood2 +".</body></html>");
       s.putConstraint (s.NORTH, requestText,460, s.NORTH, BasketFun.this);
       s.putConstraint (s.WEST, requestText, 570, s.WEST, BasketFun.this);
@@ -422,7 +424,6 @@ public class BasketFun extends JPanel implements ActionListener{
         foodRequest[3]=randAmnt1;
       else
         foodRequest[4]=randAmnt1;
-      System.out.println("I would like to have " + randAmnt1 + randFood +".");
       requestText = new JLabel("<html><body>I would like to have <br>" + randAmnt1 + randFood +".</body><html>");
       if(levelNum ==1)
       {
@@ -436,17 +437,14 @@ public class BasketFun extends JPanel implements ActionListener{
       }
       add(requestText);
     }
-  
+    
   }
   
   private String randomizeFoods(int randAmnt)
   {
     int r = (int)(Math.random()*5);
     if(foodRequest[r] != 0)
-    {
-      System.out.println("redone");
       return randomizeFoods(randAmnt);
-    }
     if(randAmnt !=1 && (levelNum != 2 || (r == 4)))
     {
       return " "+foods[r]+"s";
@@ -486,6 +484,7 @@ public class BasketFun extends JPanel implements ActionListener{
     apple.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        errorCheck = false;
         foodCount[0]++;
         revalidate();
         repaint();
@@ -496,7 +495,9 @@ public class BasketFun extends JPanel implements ActionListener{
     add(orange);
     orange.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
-      { foodCount[1]++;
+      { 
+        errorCheck = false;
+        foodCount[1]++;
         revalidate();
         repaint();
       }});
@@ -507,6 +508,7 @@ public class BasketFun extends JPanel implements ActionListener{
     banana.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        errorCheck = false;
         foodCount[2]++;
         revalidate();
         repaint();
@@ -518,6 +520,7 @@ public class BasketFun extends JPanel implements ActionListener{
     grape.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        errorCheck = false;
         foodCount[3]++;
         revalidate();
         repaint();
@@ -529,6 +532,7 @@ public class BasketFun extends JPanel implements ActionListener{
     watermelon.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        errorCheck = false;
         foodCount[4]++;
         revalidate();
         repaint();
@@ -551,6 +555,7 @@ public class BasketFun extends JPanel implements ActionListener{
     red.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        errorCheck = false;
         foodCount[0]++;
         revalidate();
         repaint();
@@ -562,6 +567,7 @@ public class BasketFun extends JPanel implements ActionListener{
     yellow.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       { 
+        errorCheck = false;
         foodCount[1]++;
         revalidate();
         repaint();
@@ -573,6 +579,7 @@ public class BasketFun extends JPanel implements ActionListener{
     green.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        errorCheck = false;
         foodCount[2]++;
         revalidate();
         repaint();
@@ -584,6 +591,7 @@ public class BasketFun extends JPanel implements ActionListener{
     octo.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        errorCheck = false;
         foodCount[3]++;
         revalidate();
         repaint();
@@ -595,6 +603,7 @@ public class BasketFun extends JPanel implements ActionListener{
     crab.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        errorCheck = false;
         foodCount[4]++;
         revalidate();
         repaint();
@@ -617,6 +626,7 @@ public class BasketFun extends JPanel implements ActionListener{
     tomato.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        errorCheck = false;
         foodCount[0]++;
         revalidate();
         repaint();
@@ -628,6 +638,7 @@ public class BasketFun extends JPanel implements ActionListener{
     red.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       { 
+        errorCheck = false;
         foodCount[1]++;
         revalidate();
         repaint();
@@ -639,6 +650,7 @@ public class BasketFun extends JPanel implements ActionListener{
     green.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        errorCheck = false;
         foodCount[2]++;
         revalidate();
         repaint();
@@ -650,6 +662,7 @@ public class BasketFun extends JPanel implements ActionListener{
     carrot.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        errorCheck = false;
         foodCount[3]++;
         revalidate();
         repaint();
@@ -661,6 +674,7 @@ public class BasketFun extends JPanel implements ActionListener{
     potato.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        errorCheck = false;
         foodCount[4]++;
         revalidate();
         repaint();
@@ -718,6 +732,12 @@ public class BasketFun extends JPanel implements ActionListener{
       g.drawString("Requests Left: " + (3 - requestNum), 0, 200);
     else
       g.drawString("Requests Left: " + (5 - requestNum), 0, 200);
+    
+    if(errorCheck)
+    {
+      g.drawString("That's not right, please try again!", 0,700); 
+    }
+    requestFocus();
   }
   
   /**This method creates the buttons based off of the passed in image file's name and the text for the tool tip. The
@@ -735,21 +755,21 @@ public class BasketFun extends JPanel implements ActionListener{
     return button;
   }
   
-   /**This method pauses the game, and creates a dilaog box that allows the user
-     * to go back to the main menu. It pauses the timer, and restarts it
-     * if the user chooses to continue playing. The if is used to determine
-     * what occurs when an option is clicked in the dialog box
+  /**This method pauses the game, and creates a dilaog box that allows the user
+    * to go back to the main menu. It pauses the timer, and restarts it
+    * if the user chooses to continue playing. The if is used to determine
+    * what occurs when an option is clicked in the dialog box
     */
-  public void pause()
+  private void pause()
   {
     t.stop();
     int result = JOptionPane.showConfirmDialog((Component) null, "Would you like to go back to the main menu? (Clicking 'No' will let you keep feeding the animals! Also if you go back to the main menu, you will have to start the level again!)","PAUSE", JOptionPane.YES_NO_OPTION);
     if (result==0)
     {
       j.remove(BasketFun.this);
-        j.add(new Menus(0,j));
-        j.revalidate();
-        j.repaint();
+      j.add(new Menus(0,j));
+      j.revalidate();
+      j.repaint();
     }
     else 
     {

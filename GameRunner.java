@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 /**
  * The GameRunner class is the driver class that creates a GameRunner object and a SplashScreen object as well
  * as executes the program. 
