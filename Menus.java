@@ -49,6 +49,11 @@ import java.awt.image.*;
  * @version 5.1 06.09.16 Spent 1 hours
  * Added a few keyboard shortcuts. Shortcuts work but haven't coded what they do. Removed the add name dialog box
  * that appears after user clicks a level.
+ * 
+ * @author Top Of the Stack (Caroline L)
+ * @version 5.1 06.09.16 Spent 10 mins 
+ * Added the KeyboardFocus layouts in order to allow for key presses
+ * to be heard.
  * <b> Instance variables: </b>
  * <p>
  * <b> gbc </b> This is a reference variable to a GridBagConstraints object.
@@ -71,7 +76,7 @@ public class Menus extends JPanel
     super();
     setPreferredSize(new Dimension( 1000,810));
     setLayout(gbl);
-    gbc.insets = new Insets(150,0,0,0);
+    gbc.insets = new Insets(100,0,0,0);
     if(whichMenu ==0)
       setUpMain();
     else
@@ -92,22 +97,6 @@ public class Menus extends JPanel
 //        }
 //    }
 //});
-     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
-       public boolean dispatchKeyEvent(KeyEvent ke) {
-               if (ke.getID() == KeyEvent.KEY_PRESSED)
-               {
-                 if (ke.getKeyCode() == KeyEvent.VK_W)
-                 {
-                 JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
-                 return true;
-                 }
-                 if(ke.getKeyCode() == KeyEvent.VK_A)
-                   System.out.println(":3");
-                }
-               return true;
-            }
-        });
-
   }
   /** Purpose: The purpose of this method is to 
     * paint the panel. It draws the sky, some clouds, and adds the text.
@@ -181,7 +170,7 @@ public class Menus extends JPanel
   {
     JButton inst = new JButton("Instructions"),play = new JButton("Play Game");
     JButton high = new JButton("High Scores"),exit = new JButton("Exit Game");
-    
+    JButton chm=new JButton("Help Manual");
     setSize (800, 800);
     setVisible (true);
     gbc.weighty=0;
@@ -196,7 +185,27 @@ public class Menus extends JPanel
         j.revalidate();
         j.repaint();
       }});
-    
+    KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+       public boolean dispatchKeyEvent(KeyEvent ke) {
+               if (ke.getID() == KeyEvent.KEY_PRESSED)
+               {
+                 if (ke.getKeyCode() == KeyEvent.VK_1)
+                 {
+                 }
+                if (ke.getKeyCode() == KeyEvent.VK_2)
+                 {
+                 }
+                 if (ke.getKeyCode() == KeyEvent.VK_3)
+                 {
+                 }
+                  if (ke.getKeyCode() == KeyEvent.VK_4)
+                 {
+                 }
+                }
+               return true;
+            }
+        });
+
     gbc.gridy=2;
     add(play,gbc);
     play.addActionListener (new ActionListener(){
@@ -221,7 +230,22 @@ public class Menus extends JPanel
         j.repaint();
       }});
     
-    gbc.gridy=4;
+     gbc.gridy=4;
+      add(chm,gbc);
+  chm.addActionListener (new ActionListener(){
+      public void actionPerformed(ActionEvent e)
+      {
+          try 
+        {
+         Runtime.getRuntime().exec("hh.exe GameHelp.chm");
+        }
+        catch(IOException i)
+        {
+          System.out.println("HI");
+        }
+      }});
+  
+    gbc.gridy=5;
     add(exit,gbc);
     exit.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
@@ -270,10 +294,32 @@ public class Menus extends JPanel
     gbc.anchor = GridBagConstraints.LINE_START;
     gbc.gridy=1;
     gbc.gridx=2;
+    
+     KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+       public boolean dispatchKeyEvent(KeyEvent ke) {
+               if (ke.getID() == KeyEvent.KEY_PRESSED)
+               {
+                 if (ke.getKeyCode() == KeyEvent.VK_1)
+                 {
+                 }
+                if (ke.getKeyCode() == KeyEvent.VK_2)
+                 {
+                 }
+                 if (ke.getKeyCode() == KeyEvent.VK_3)
+                 {
+                 }
+                  if (ke.getKeyCode() == KeyEvent.VK_4)
+                 {
+                 }
+                }
+               return true;
+            }
+        });
     add(levelOne,gbc);
     levelOne.addActionListener (new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
+        
           j.remove(Menus.this);
           j.add(new BasketFun(1,"back1", new Color (37,177,77) , j));
           j.revalidate();
@@ -283,6 +329,7 @@ public class Menus extends JPanel
     this.getActionMap().put("pressed",new AbstractAction() {
       public void actionPerformed(ActionEvent e)
       {
+    
           j.remove(Menus.this);
           j.add(new BasketFun(1,"back1", new Color (37,177,77) , j));
           j.revalidate();
@@ -333,23 +380,6 @@ public class Menus extends JPanel
     revalidate();
     repaint();
   }
-  
-  
-  
-  //while(true)
-//          {
-//            name = JOptionPane.showInputDialog("Please enter your name:");
-//            if(name == null)
-//            {
-//              cancel = true;
-//              break;
-//            }
-//            if(name.length() > 0)
-//              break;
-//            JOptionPane.showMessageDialog(null, "Your name cannot be blank!", "Error!", JOptionPane.ERROR_MESSAGE);
-//            revalidate();
-//            repaint();
-//          }
   
   
 //  public static void main(String[] args) { 

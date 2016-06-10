@@ -34,6 +34,8 @@ import java.awt.geom.*;
  * <p>
  * <b> highScores </b> This String 2D array will be used to store the individual parts of the high scores already
  * stored in file.
+ * <p>
+ * <b> j </b> This variable allows us to access the JFrame
  */ 
 public class HighScores extends JPanel
 {

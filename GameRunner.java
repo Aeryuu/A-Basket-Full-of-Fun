@@ -26,7 +26,6 @@ public class GameRunner extends JFrame {
     add(new Menus (0,this));
     setSize (1000, 810);
     setResizable(false);
-    //add(new BasketFun(1,"back1",new Color(37,177,77),this));
     setVisible (true);
   }
   /** This method calls the GameGUIRunner constructor to

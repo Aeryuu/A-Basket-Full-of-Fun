@@ -6,8 +6,11 @@ import java.awt.event.*;
  * The InstructionScreen class creates the panel and 
  * graphics associated with the instructions of the 
  * Basket Full of Fun game. It creates the panel
- * , the graphics, and it creates the text detailing the instructions
+ * , the graphics, and it creates the text detailing the instructions.
  *  
+ * <b>Instance variables: </b>
+ * <p>
+ * <b> i </b> This JPanel allows us to reference this class
  * 
  * @author Top Of the Stack (C Liu) on 05.20.16
  * @version 1 05.26.16 Spent 1 hour
@@ -19,6 +22,10 @@ import java.awt.event.*;
  * @author of modification C Liu on 06.08.16
  * @version 4 06.08.16 Spent  10 mins
  * edited x values of graphics to center buttons and graphics
+ * 
+ * @author of modification C Liu on 06.09.16
+ * @version 4 06.08.16 Spent  30 mins
+ * added text and example buttons.
  */ 
 public class InstructionScreen extends JPanel {
   JPanel i = this;
@@ -29,10 +36,19 @@ public class InstructionScreen extends JPanel {
   public InstructionScreen(JFrame j) { 
     super();
     FlowLayout f=new FlowLayout();
+    f.setHgap(200);
+    f.setVgap(100);
     f.setAlignment (FlowLayout.LEFT);
     setLayout(f);
     JButton exit = new JButton("Back to Menu");
-    add(exit);
+    
+    ImageIcon icon=new ImageIcon(this.getClass().getResource("Apple.jpg"));
+    JButton button=new JButton(icon);
+    button.setBackground(Colours.skyB);
+    button.setToolTipText("Here is an example of a food button!");
+    
+    i.add(button);
+    i.add(exit);
     exit.addActionListener(new ActionListener(){
       public void actionPerformed(ActionEvent e)
       {
@@ -59,6 +75,15 @@ public class InstructionScreen extends JPanel {
     g.setFont(f );
     g.setColor(Colours.lGreen);
     g.drawString("INSTRUCTIONS!", 350,50);
+     Font f1=new Font("Serif", Font.BOLD,16);
+     g.setFont(f1 );
+    g.drawString("The animals are hungry! You can feed them, but they're really picky! Click the foods like this apple, to add 1 of that food into the basket!" , 50,250);
+     g.drawString("If you think you've put all the foods that the animal wants into the basket, press the 'Check' button!" , 250,350);
+     g.drawString("If you want to empty the basket, press the 'Empty the Basket' button!" , 300,450);
+    g.drawString("Just remember, if you do not give the animals the right food, they will not eat, so make sure you fill that basket with the right foods!" , 50,550);
+    g.drawString("Last but not least, HAVE FUN!" , 400,650);
+    
+    
     g.fill3DRect(50,75,900,25,true);
     //clouds
     g.setColor (Color.white);

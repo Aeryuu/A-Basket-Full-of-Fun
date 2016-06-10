@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
   * extend from the center of the logo to the ends of the screen.
   * The the game's intro will happen. The game's intro consists 
   * of a series of baskets and the game's title.
-  * * <b>Instance variables: </b>
+  * <b>Instance variables: </b>
   * <p>
   * <b> logo </b> This creates our logo.
   * <p>
@@ -47,7 +47,7 @@ import java.awt.event.ActionEvent;
   * 
   * @author of modification C Liu on 06.08.16
   * @version 4 06.08.16 Spent  10 mins
-  * edited stop value in order to center graphics
+  * edited stop values in order to center graphics
   * 
   */
 public class SplashScreen extends JPanel implements ActionListener {
