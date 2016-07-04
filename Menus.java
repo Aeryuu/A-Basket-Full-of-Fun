@@ -189,7 +189,7 @@ public class Menus extends JPanel implements KeyListener
     {
       if(whichMenu ==0)
       {
-        HighScores h = new HighScores(j);
+        HighScores h = new HighScores(j,0);
         h.setUpHighScoresPanel();
         j.remove(Menus.this);
         j.add(h);
